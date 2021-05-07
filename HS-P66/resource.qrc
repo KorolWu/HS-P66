@@ -2,5 +2,33 @@
     <qresource prefix="/src">
         <file>Image/hs.jpg</file>
         <file>Image/hs.png</file>
+        <file>Image/FixPos.png</file>
+        <file>Image/left.png</file>
+        <file>Image/ok.png</file>
+        <file>Image/ORG.png</file>
+        <file>Image/reset.png</file>
+        <file>Image/right.png</file>
+        <file>Image/son.png</file>
+        <file>Image/stop.png</file>
+        <file>Image/left_hover.png</file>
+        <file>Image/left_press.png</file>
+        <file>Image/ORG_hover.png</file>
+        <file>Image/ORG_press.png</file>
+        <file>Image/reset_hover.png</file>
+        <file>Image/reset_press.png</file>
+        <file>Image/right_hover.png</file>
+        <file>Image/right_press.png</file>
+        <file>Image/son_hover.png</file>
+        <file>Image/son_press.png</file>
+        <file>Image/stop_hover.png</file>
+        <file>Image/stop _press.png</file>
+        <file>Image/start.png</file>
+        <file>Image/emg.png</file>
+        <file>Image/home.png</file>
+        <file>Image/reset_o.png</file>
+        <file>Image/move.png</file>
+        <file>Image/seting.png</file>
+        <file>Image/vision.png</file>
+        <file>Image/log.png</file>
     </qresource>
 </RCC>
