@@ -30,5 +30,7 @@
         <file>Image/seting.png</file>
         <file>Image/vision.png</file>
         <file>Image/log.png</file>
+        <file>Image/gray.png</file>
+        <file>Image/green.png</file>
     </qresource>
 </RCC>

@@ -1,8 +1,9 @@
 ﻿#include "axisinfoui.h"
 #pragma execution_character_set("utf-8")
 
-AxisInfoUI::AxisInfoUI(QWidget *parent) : QWidget(parent)
+AxisInfoUI::AxisInfoUI(int axisID, QWidget *parent) : QWidget(parent)
 {
+    m_axisId = axisID;
     timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(timerUpInputData()));
     font.setPointSize(13);
@@ -59,7 +60,7 @@ AxisInfoUI::AxisInfoUI(QWidget *parent) : QWidget(parent)
     connect(btn[5],&QPushButton::pressed,this,&AxisInfoUI::RunRight);
     connect(btn[5],&QPushButton::released,this,&AxisInfoUI::RunStop);
     connect(btn[6],&QPushButton::clicked,this,&AxisInfoUI::RunQuickFixPos);
-    connect(btn[7],&QPushButton::clicked,this,&AxisInfoUI::RunStop);
+    connect(btn[7],&QPushButton::clicked,this,&AxisInfoUI::EmgStop);
     return;
 }
 void AxisInfoUI::CreatAsixUI()
@@ -69,7 +70,7 @@ void AxisInfoUI::CreatAsixUI()
     {
         hBox[0]->addWidget(btn[i]);
     }
-    btn[0]->setText("run ok");
+    //btn[0]->setText("run ok");
     //btn[0]->setTextSpacing(15);
     lable[1]->setText("速度:");
     QStringList list;
@@ -96,10 +97,20 @@ void AxisInfoUI::CreatAsixUI()
     vBox->addLayout(hBox[1]);
     vBox->addLayout(hBox[2]);
 }
+
+void AxisInfoUI::checkIsServoON()
+{
+    if( !( ( APS_motion_io_status( m_axisId ) >> MIO_SVON ) & 1 ) )
+    {
+        APS_set_servo_on( m_axisId, 1 );
+        QThread::msleep( 500 ); // Wait stable.
+    }
+}
+
 void AxisInfoUI::SetAxisName(const QString strName)
 {
-     lable[0]->setText("轴 " + strName);
-     m_axisName = strName;
+    lable[0]->setText("轴 " + strName);
+    m_axisName = strName;
 
 }
 void AxisInfoUI::SetAxisRanage(const double dstart,const double dend)
@@ -127,170 +138,129 @@ void AxisInfoUI::SetTraPos(double d)
 
 void AxisInfoUI::RunORG()
 {
-
+    //This example shows how home move operates
+    I32 return_code;
+    I32 msts;
+    // 1. Select home mode and config home parameters
+    APS_set_axis_param( m_axisId, PRA_HOME_MODE, 0 ); //Set home mode
+    APS_set_axis_param( m_axisId, PRA_HOME_DIR, 1 ); //Set home direction
+    APS_set_axis_param( m_axisId, PRA_HOME_CURVE, 0 ); // Set acceleration pattern (T-curve)
+    APS_set_axis_param( m_axisId, PRA_HOME_ACC, 1000000 ); // Set homing acceleration rate
+    APS_set_axis_param( m_axisId, PRA_HOME_VM, 100000 ); // Set homing maximum velocity.
+    APS_set_axis_param( m_axisId, PRA_HOME_VO, 50000 ); // Set homing
+    APS_set_axis_param( m_axisId, PRA_HOME_EZA, 0 ); // Set homing
+    APS_set_axis_param( m_axisId, PRA_HOME_SHIFT, 0 ); // Set homing
+    APS_set_axis_param( m_axisId, PRA_HOME_POS, 0 ); // Set homing
+    // 2. Start home move
+    return_code = APS_home_move(m_axisId); //Start homing
+    if( return_code != ERR_NoError )
+    {
+        /* Error handling */
+        qDebug()<<"home move failed";
+        return;
+    }
+    // 3. Wait for home move do ne,
+    do{
+        QThread::msleep(100);
+        msts = APS_motion_status( m_axisId );// Get motion status
+        msts = ( msts >> MTS_NSTP ) & 1; // Get motion done bit
+    }while( msts == 1 );
+    // 4. Check home move success or not
+    msts = APS_motion_status( m_axisId ); // Get motion status
+    msts = ( msts >> MTS_ASTP ) & 1; // Get abnormal stop bit
+    if( msts == 1 )
+    {
+        // Error handling ...
+        I32 stop_code;
+        APS_get_stop_code( m_axisId, &stop_code );
+        qDebug()<<"home move abnormal stop";
+    }else
+    {
+        // Homing success.
+        qDebug()<<"home move success";
+    }
 }
 
 void AxisInfoUI::RunSon()
 {
-    static bool ison = true;
-    if(m_bytePos == -1) return;
-    QVector<QPair<int,int>> temp;
-//    foreach (auto it, ConfigData::GetInstance()->xmlMap.swConfigXml.swXml_SER_Map.son_Stru.OutPutVec) {
-//        QPair<int,int> pair = QPair<int,int>(it.bit,it.value);
-//        temp.append(pair);
-//    }
-//    if(ison)
-//    {
-//        btn[2]->setText("S_OFF");
-
-//        CoreGlobal::BaseAxisOperate::SetAxisExcite(temp,m_bytePos);
-//    }
-//    else
-//    {
-//        btn[2]->setText("S_ON");
-//        for (auto ior = temp.begin();ior != temp.end();++ior)
-//        {
-//            if(ior->second == 1)
-//            {
-//                ior->second = 0;
-//            }
-//            else
-//            {
-//                ior->second = 1;
-//            }
-//        }
-//        CoreGlobal::BaseAxisOperate::SetAxisExciteOff(temp,m_bytePos);
-//    }
-//    ison = !ison;
+    //Check servo on or not
+    if( !( ( APS_motion_io_status( m_axisId ) >> MIO_SVON ) & 1 ) )
+    {
+       int ret = APS_set_servo_on( m_axisId, 1 );
+        if(ret)
+        {
+            btn[2]->setText("S_OFF");
+            qDebug()<<"Servo on fail\n";
+        }
+        else
+            btn[2]->setText("");
+        QThread::msleep( 500 ); // Wait stable.
+    }
+    else
+        return;
 }
 
 void AxisInfoUI::RunReSet()
 {
-//    if(m_bytePos == -1) return;
-//    if(m_bitInfo.contains("ReSet"))
-//    {
-//        CoreGlobal::BaseAxisOperate::SetAxisReset(m_bitInfo["ReSet"].bit,m_bytePos);
-//    }
+    int rse = APS_reset_sscnet_servo_alarm(m_axisId);
+    if(rse = ERR_NoError)
+    {
+        btn[0]->getIconPath(":/images/ok");
+    }
 }
 
 void AxisInfoUI::RunLeft()
 {
-//    uint Traspeed = cbb->currentText().toUInt()/200.0 *ConfigData::GetInstance()->iSpeed ;
-//    if(!ConfigData::GetInstance()->xmlMap.hwConfigXml.hwConfigXmlOutputMap.hwSerOutputMap.contains(m_axisName))
-//        return;
-//    uint accel = ConfigData::GetInstance()->iAccel;
-//    uint dccel = ConfigData::GetInstance()->iDccel;
-//    int imodel = ConfigData::GetInstance()->xmlMap.hwConfigXml.hwConfigXmlOutputMap.hwSerOutputMap[m_axisName].modelType.toInt();
-//    int Trapos = ConfigData::GetInstance()->xmlMap.hwConfigXml.hwConfigXmlOutputMap.hwSerOutputMap[m_axisName].swLimitStart.toInt();
-//    if(m_byteInfoMap.contains("Model"))
-//    {
-//        CoreGlobal::BaseAxisOperate::ChangeAxisModel(m_byteInfoMap["Model"].strType,m_byteInfoMap["Model"].byteNum,m_byteInfoMap["Model"].bytePos,imodel);
-//    }
-//    if(m_byteInfoMap.contains("Trapos"))
-//    {
-//        CoreGlobal::BaseAxisOperate::SetAxisPos(m_byteInfoMap["Trapos"].strType,m_byteInfoMap["Trapos"].byteNum,m_byteInfoMap["Trapos"].bytePos,Trapos);
-//    }
-//    if(m_byteInfoMap.contains("Traspeed"))
-//    {
-//        CoreGlobal::BaseAxisOperate::SetAxisSpeed(m_byteInfoMap["Traspeed"].strType,m_byteInfoMap["Traspeed"].byteNum,m_byteInfoMap["Traspeed"].bytePos,Traspeed);
-//    }
-//    if(m_byteInfoMap.contains("Accel"))
-//    {
-//        CoreGlobal::BaseAxisOperate::SetAxisACC(m_byteInfoMap["Accel"].strType,m_byteInfoMap["Accel"].byteNum,m_byteInfoMap["Accel"].bytePos,accel);
-//    }
-//    if(m_byteInfoMap.contains("Decel"))
-//    {
-//        CoreGlobal::BaseAxisOperate::SetAxisDCC(m_byteInfoMap["Decel"].strType,m_byteInfoMap["Decel"].byteNum,m_byteInfoMap["Decel"].bytePos,dccel);
-//    }
-//    if(m_bytePos == -1) return;
-//    if(m_bitInfo.contains("Run"))
-//    {
-//        CoreGlobal::BaseAxisOperate::SetAxisRun(m_bitInfo["Run"].bit,m_bytePos);
-//    }
-//    return;
+    APS_jog_mode_switch(m_axisId, 1 ); //打开点动模式。
+    APS_set_axis_param(m_axisId,PRA_JG_MODE,0);
+    APS_set_axis_param(m_axisId,PRA_JG_DIR,0);
+    APS_set_axis_param(m_axisId,PRA_JG_ACC,10000);
+    APS_set_axis_param(m_axisId,PRA_JG_VM,1000);
+    //APS_set_axis_param(m_axisId,PRA_JG_STOP,10000);
+    checkIsServoON();
+    APS_jog_start(m_axisId,1);// jog_start
 }
 
 void AxisInfoUI::RunRight()
 {
-    /*int Traspeed = cbb->currentText().toUInt()/200.0 *ConfigData::GetInstance()->iSpeed;
-    if(!ConfigData::GetInstance()->xmlMap.hwConfigXml.hwConfigXmlOutputMap.hwSerOutputMap.contains(m_axisName))
-        return;
-    uint accel = ConfigData::GetInstance()->iAccel;
-    uint dccel = ConfigData::GetInstance()->iDccel;
-    int imodel = ConfigData::GetInstance()->xmlMap.hwConfigXml.hwConfigXmlOutputMap.hwSerOutputMap[m_axisName].modelType.toInt();
-    int Trapos = ConfigData::GetInstance()->xmlMap.hwConfigXml.hwConfigXmlOutputMap.hwSerOutputMap[m_axisName].swLimitEnd.toInt();
-    if(m_byteInfoMap.contains("Model"))
-    {
-        CoreGlobal::BaseAxisOperate::ChangeAxisModel(m_byteInfoMap["Model"].strType,m_byteInfoMap["Model"].byteNum,m_byteInfoMap["Model"].bytePos,imodel);
-    }
-    if(m_byteInfoMap.contains("Trapos"))
-    {
-        CoreGlobal::BaseAxisOperate::SetAxisPos(m_byteInfoMap["Trapos"].strType,m_byteInfoMap["Trapos"].byteNum,m_byteInfoMap["Trapos"].bytePos,Trapos);
-    }
-    if(m_byteInfoMap.contains("Traspeed"))
-    {
-        CoreGlobal::BaseAxisOperate::SetAxisSpeed(m_byteInfoMap["Traspeed"].strType,m_byteInfoMap["Traspeed"].byteNum,m_byteInfoMap["Traspeed"].bytePos,Traspeed);
-    }
-    if(m_byteInfoMap.contains("Accel"))
-    {
-        CoreGlobal::BaseAxisOperate::SetAxisACC(m_byteInfoMap["Accel"].strType,m_byteInfoMap["Accel"].byteNum,m_byteInfoMap["Accel"].bytePos,accel);
-    }
-    if(m_byteInfoMap.contains("Decel"))
-    {
-        CoreGlobal::BaseAxisOperate::SetAxisDCC(m_byteInfoMap["Decel"].strType,m_byteInfoMap["Decel"].byteNum,m_byteInfoMap["Decel"].bytePos,dccel);
-    }
-    if(m_bytePos == -1) return;
-    if(m_bitInfo.contains("Run"))
-    {
-        CoreGlobal::BaseAxisOperate::SetAxisRun(m_bitInfo["Run"].bit,m_bytePos);
-    }
-    return;*/
+    APS_jog_mode_switch(m_axisId, 1 ); //打开点动模式。
+    APS_set_axis_param(m_axisId,PRA_JG_MODE,0); //连续模式
+    APS_set_axis_param(m_axisId,PRA_JG_DIR,1);
+    APS_set_axis_param(m_axisId,PRA_JG_ACC,10000);
+    APS_set_axis_param(m_axisId,PRA_JG_VM,1000);
+    //APS_set_axis_param(m_axisId,PRA_JG_STOP,10000);
+    checkIsServoON();
+    APS_jog_start(m_axisId,1);// jog_start
 }
 
 void AxisInfoUI::RunQuickFixPos()
 {
-//    int Trapos = dsb->value() * 1000;
-
-//    uint Traspeed = cbb->currentText().toUInt()/200.0 *ConfigData::GetInstance()->iSpeed;
-//    if(!ConfigData::GetInstance()->xmlMap.hwConfigXml.hwConfigXmlOutputMap.hwSerOutputMap.contains(m_axisName))
-//        return;
-//    uint accel = ConfigData::GetInstance()->iAccel;
-//    uint dccel = ConfigData::GetInstance()->iDccel;
-//    int imodel = ConfigData::GetInstance()->xmlMap.hwConfigXml.hwConfigXmlOutputMap.hwSerOutputMap[m_axisName].modelType.toInt();
-//    if(m_byteInfoMap.contains("Model"))
-//    {
-//        CoreGlobal::BaseAxisOperate::ChangeAxisModel(m_byteInfoMap["Model"].strType,m_byteInfoMap["Model"].byteNum,m_byteInfoMap["Model"].bytePos,imodel);
-//    }
-//    if(m_byteInfoMap.contains("Trapos"))
-//    {
-//        CoreGlobal::BaseAxisOperate::SetAxisPos(m_byteInfoMap["Trapos"].strType,m_byteInfoMap["Trapos"].byteNum,m_byteInfoMap["Trapos"].bytePos,Trapos);
-//    }
-//    if(m_byteInfoMap.contains("Traspeed"))
-//    {
-//        CoreGlobal::BaseAxisOperate::SetAxisSpeed(m_byteInfoMap["Traspeed"].strType,m_byteInfoMap["Traspeed"].byteNum,m_byteInfoMap["Traspeed"].bytePos,Traspeed);
-//    }
-//    if(m_byteInfoMap.contains("Accel"))
-//    {
-//        CoreGlobal::BaseAxisOperate::SetAxisACC(m_byteInfoMap["Accel"].strType,m_byteInfoMap["Accel"].byteNum,m_byteInfoMap["Accel"].bytePos,accel);
-//    }
-//    if(m_byteInfoMap.contains("Decel"))
-//    {
-//        CoreGlobal::BaseAxisOperate::SetAxisDCC(m_byteInfoMap["Decel"].strType,m_byteInfoMap["Decel"].byteNum,m_byteInfoMap["Decel"].bytePos,dccel);
-//    }
-//    if(m_bytePos == -1) return;
-//    if(m_bitInfo.contains("Run"))
-//    {
-//        CoreGlobal::BaseAxisOperate::SetAxisRun(m_bitInfo["Run"].bit,m_bytePos);
-//    }
+    APS_set_axis_param(m_axisId, PRA_ACC, 1000000 ); //设置加速度
+    APS_set_axis_param(m_axisId, PRA_DEC, 1000000 ); //设置减速度
+    int Trapos = dsb->value();
+    //执行一个绝对运动。
+    if( !( ( APS_motion_io_status( m_axisId ) >> MIO_SVON ) & 1 ) )
+    {
+        APS_set_servo_on( m_axisId, 1 );
+        QThread::msleep( 500 ); // Wait stable.
+    }
+    APS_absolute_move( m_axisId, Trapos, 10000 );
+    int msts = 0;
+    do{
+        QThread::msleep(20);
+        msts = ( APS_motion_status(m_axisId) >> MTS_NSTP) & 1;// Get motion status
+    }while( !msts );
 }
 
 void AxisInfoUI::RunStop()
 {
-//    if(m_bytePos == -1) return;
-//    if(m_bitInfo.contains("Stop"))
-//    {
-//        CoreGlobal::BaseAxisOperate::SetAxisRun(m_bitInfo["Stop"].bit,m_bytePos);
-//    }
+    APS_jog_start(m_axisId,0);// jog_start
+    APS_jog_mode_switch(m_axisId, 0 ); //关闭点动模式。
+}
+
+void AxisInfoUI::EmgStop()
+{
+    APS_emg_stop(m_axisId);
 }
 void AxisInfoUI::TimerStatus(bool isStop)
 {
@@ -303,27 +273,18 @@ void AxisInfoUI::TimerStatus(bool isStop)
 }
 void AxisInfoUI::timerUpInputData()
 {
-//    if(m_stausBitInfo.contains("Fault"))
-//    {
-//        if(CoreGlobal::BaseAxisOperate::CheckAxisFault(m_stausBitInfo["Fault"].bit,2,m_stausBytePos))
-//        {
-//            if(m_byteInfoMap.contains("Errorcode"))
-//            {
-//                int ierror = CoreGlobal::BaseAxisOperate::GetAxisErrorCode(m_byteInfoMap["Errorcode"].strType,m_byteInfoMap["Errorcode"].byteNum,m_byteInfoMap["Errorcode"].bytePos);
-                //btn[0]->setText(QString("%1").arg(ierror));
-               // btn[0]->getIconPath(":/images/error");
-//            }
-//        }
-//        else
-//        {
-//            if(m_byteInfoMap.contains("Curpos"))
-//            {
-//                int iCurpos = CoreGlobal::BaseAxisOperate::GetAxisErrorCode(m_byteInfoMap["Curpos"].strType,m_byteInfoMap["Curpos"].byteNum,m_byteInfoMap["Curpos"].bytePos);
-//                curPos->setText(QString("%1").arg(iCurpos));
-//            }
-            //todo errorBtn is Ok
-            btn[0]->getIconPath(":/images/ok");
-            btn[0]->setText(QString(""));
-//        }
-//    }
+    int msts = 0;
+    msts = APS_motion_status( m_axisId );// Get motion status
+    int isErr = ( msts >> MTS_ASTP ) & 1; // Get abnormal stop bit
+    if(isErr == 1 )
+    {
+        btn[0]->getIconPath(":/images/error");
+    }
+    else
+    {
+        btn[0]->getIconPath(":/images/ok");
+    }
+    long int position = 0;
+    APS_get_position(m_axisId,&position);
+    curPos->setText(QString("%1").arg(position));
 }

@@ -10,12 +10,17 @@
 #include <QComboBox>
 #include <QDoubleSpinBox>
 #include <QTimer>
+#include <QDebug>
+#include <QThread>
+#include "APS168.h"
+#include "APS_define.h"
+#include "ErrorCodeDef.h"
 
 class AxisInfoUI : public QWidget
 {
     Q_OBJECT
 public:
-    explicit AxisInfoUI(QWidget *parent = 0);
+    explicit AxisInfoUI(int axisID,QWidget *parent = 0);
 public:
     void SetAxisName(const QString strName);
     void SetAxisRanage(const double dstart,const double dend);
@@ -37,9 +42,11 @@ private:
     int m_stausBytePos;
     QString m_axisName;
     QTimer *timer;
+    int m_axisId;
 
 private:
     void CreatAsixUI();
+    void checkIsServoON();
 signals:
 
 public slots:
@@ -50,6 +57,7 @@ public slots:
     void RunRight();
     void RunQuickFixPos();
     void RunStop();
+    void EmgStop();
     void timerUpInputData();
 };
 

@@ -9,25 +9,23 @@ MainWindow::MainWindow(QWidget *parent)
 
     initMainUI();
     initLWidget();
-    AxisInfoUI *axis_x = new AxisInfoUI(m_MainWidget);
-    axis_x->SetAxisName("X");
-    axis_x->move(10,10);
 
-    AxisInfoUI *axis_y = new AxisInfoUI(m_MainWidget);
-    axis_y->SetAxisName("Y");
-    axis_y->move(430,10);
-
-
-    AxisInfoUI *axis_z = new AxisInfoUI(m_MainWidget);
-    axis_z->SetAxisName("Z");
-    axis_z->move(860,10);
-
-
+//    QStringList list;
+//    list<<"di1";
+//    IoMonitor *m = new IoMonitor(3,list,m_MainWidget);
+//    m->move(10,200);
 }
 
 MainWindow::~MainWindow()
 {
+    APS_close(); //关闭系统中所有的板卡
     delete ui;
+}
+
+void MainWindow::childrenFormHide()
+{
+    p_ioForm->hide();
+    p_axisCheck->hide();
 }
 
 void MainWindow::initMainUI()
@@ -80,7 +78,15 @@ void MainWindow::initMainUI()
     m_MainWidget = new QWidget(this);
     m_MainWidget->move(ShareData::GetInstance()->m_width/7+3,ShareData::GetInstance()->m_heitht/10);
     m_MainWidget->resize(ShareData::GetInstance()->m_width/6*5-3,ShareData::GetInstance()->m_heitht);
-    m_MainWidget->setStyleSheet("background-color:rgb(130,130,130)");
+   // m_MainWidget->setStyleSheet("background-color:rgb(130,130,130)");
+
+    p_ioForm = new IoForm(m_MainWidget);
+    p_ioForm->setObjectName("p_ioForm");
+   // p_ioForm->setStyleSheet("#p_ioForm{background-color:rgb(130,130,130)}");
+    p_ioForm->hide();
+
+    p_axisCheck = new AxisCheck(m_MainWidget);
+    p_axisCheck->hide();
 
 }
 
@@ -132,6 +138,7 @@ void MainWindow::initLWidget()
 
 void MainWindow::onTreeviewClicked(const QModelIndex &index)
 {
+    childrenFormHide();
     QString row_name = index.data().toString();
     if(row_name == "登录管理" /*&& level < 1*/)
     {
@@ -139,9 +146,13 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
         //        m_pmonitorui->show();
         //p_mUserManagerWg->show();
     }
-    else if(row_name == "生成任务")
+    else if(row_name == "IO监视")
     {
-        //m_testorders->show();
+       p_ioForm->show();
+    }
+    else if(row_name == "参数设置")
+    {
+        p_axisCheck->show();
     }
 }
 

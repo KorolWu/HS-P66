@@ -10,6 +10,13 @@
 #include <QMainWindow>
 #include "sharedata.h"
 #include "Form/axisinfoui.h"
+#include "Form/ioform.h"
+#include "Form/axischeck.h"
+#include "APS168.h"
+#include "type_def.h"
+#include "APS_Define.h"
+#include "ErrorCodeDef.h"
+#include <Form/iomonitor.h>
 #include <QStandardItemModel>
 #include <QPushButton>
 QT_BEGIN_NAMESPACE
@@ -42,6 +49,9 @@ private:
     QStandardItem *p_loginroleItem;
     QStandardItem *p_elevator;
     QStandardItem *p_runer;
+    IoForm *p_ioForm;
+    AxisCheck *p_axisCheck;
+    void childrenFormHide();
     void initMainUI();
     void initLWidget();
     void onTreeviewClicked(const QModelIndex &index);

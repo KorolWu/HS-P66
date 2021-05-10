@@ -16,23 +16,33 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Form/axischeck.cpp \
     Form/axisfrom.cpp \
     Form/axisinfoui.cpp \
+    Form/ioform.cpp \
+    Form/iomonitor.cpp \
     Form/pushbutton.cpp \
     main.cpp \
     mainwindow.cpp \
+    motioncontrol.cpp \
     sharedata.cpp
 
 HEADERS += \
+    DataStruct.h \
+    Form/axischeck.h \
     Form/axisfrom.h \
     Form/axisinfoui.h \
+    Form/ioform.h \
+    Form/iomonitor.h \
     Form/pushbutton.h \
     mainwindow.h \
+    motioncontrol.h \
     sharedata.h
 
 FORMS += \
     mainwindow.ui
-
+INCLUDEPATH += $$PWD/ADLINK
+LIBS += -L$$PWD/ADLINK/ -lAPS168
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
