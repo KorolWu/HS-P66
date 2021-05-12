@@ -54,5 +54,12 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+
+win32:CONFIG(release, debug|release): LIBS += -LC:/openCv/opencv/build/x64/vc14/lib/ -lopencv_world452
+else:win32:CONFIG(debug, debug|release): LIBS += -LC:/openCv/opencv/build/x64/vc14/lib/ -lopencv_world452d
+else:unix: LIBS += -LC:/openCv/opencv/build/x64/vc14/lib/ -lopencv_world452
+
+INCLUDEPATH += C:/openCv/opencv/build/include
+DEPENDPATH += C:/openCv/opencv/build/include
 RESOURCES += \
     resource.qrc

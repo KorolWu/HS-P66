@@ -12,6 +12,7 @@
 #include "Form/axisinfoui.h"
 #include "Form/ioform.h"
 #include "Form/axischeck.h"
+#include "Form/visionfrom.h"
 #include "ADLINK/APS168.h"
 #include "ADLINK/type_def.h"
 #include "ADLINK/APS_Define.h"
@@ -51,6 +52,7 @@ private:
     QStandardItem *p_runer;
     IoForm *p_ioForm;
     AxisCheck *p_axisCheck;
+    VisionFrom *p_visionForm;
     void childrenFormHide();
     void initMainUI();
     void initLWidget();

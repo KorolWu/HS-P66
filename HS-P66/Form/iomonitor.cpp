@@ -58,9 +58,9 @@ void IoMonitor::initUi()
         m_btn[i]->setText(m_outAlisaList[i]);
         m_btn[i]->setObjectName(QString("%1").arg(i));
         connect(m_btn[i],&QPushButton::clicked,this,&IoMonitor::onDoClicked);
-        m_btn[i]->setStyleSheet("QPushButton{background-color:rgb(210,210,190);color:grb(200,200,200);border-radius: 5px;}"\
-                                    "QPushButton:hover{background-color:rgb(100,100,100);}"\
-                                    "QPushButton:pressedbackground-color:rgb(190,190,190);}");
+        m_btn[i]->setStyleSheet("QPushButton{background-color:rgb(210,210,190);color:grb(200,200,200);border-radius: 5px;}\
+                                    QPushButton:hover{background-color:rgb(100,100,100);}\
+                                    QPushButton:pressed{background-color:rgb(190,190,190);}");
         v->addWidget(m_do_light[i]);
         v->addWidget(m_btn[i]);
         v->setAlignment(Qt::AlignVCenter);

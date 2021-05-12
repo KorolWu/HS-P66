@@ -26,6 +26,8 @@ void MainWindow::childrenFormHide()
 {
     p_ioForm->hide();
     p_axisCheck->hide();
+    p_visionForm->hide();
+
 }
 
 void MainWindow::initMainUI()
@@ -87,6 +89,9 @@ void MainWindow::initMainUI()
 
     p_axisCheck = new AxisCheck(m_MainWidget);
     p_axisCheck->hide();
+
+    p_visionForm = new VisionFrom(m_MainWidget);
+    p_visionForm->hide();
 
 }
 
@@ -153,6 +158,10 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     else if(row_name == "参数设置")
     {
         p_axisCheck->show();
+    }
+    else if (row_name == "CCD_1")
+    {
+        p_visionForm->show();
     }
 }
 
