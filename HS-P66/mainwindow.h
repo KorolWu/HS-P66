@@ -12,10 +12,10 @@
 #include "Form/axisinfoui.h"
 #include "Form/ioform.h"
 #include "Form/axischeck.h"
-#include "APS168.h"
-#include "type_def.h"
-#include "APS_Define.h"
-#include "ErrorCodeDef.h"
+#include "ADLINK/APS168.h"
+#include "ADLINK/type_def.h"
+#include "ADLINK/APS_Define.h"
+#include "ADLINK/ErrorCodeDef.h"
 #include <Form/iomonitor.h>
 #include <QStandardItemModel>
 #include <QPushButton>

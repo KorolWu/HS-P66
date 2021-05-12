@@ -22,6 +22,8 @@ SOURCES += \
     Form/ioform.cpp \
     Form/iomonitor.cpp \
     Form/pushbutton.cpp \
+    Form/visionfrom.cpp \
+    Units/c_systemlogmng.cpp \
     main.cpp \
     mainwindow.cpp \
     motioncontrol.cpp \
@@ -35,14 +37,18 @@ HEADERS += \
     Form/ioform.h \
     Form/iomonitor.h \
     Form/pushbutton.h \
+    Form/visionfrom.h \
+    Units/c_systemlogmng.h \
+    Units/myIniconfig.h \
     mainwindow.h \
     motioncontrol.h \
     sharedata.h
 
 FORMS += \
     mainwindow.ui
-INCLUDEPATH += $$PWD/ADLINK
-LIBS += -L$$PWD/ADLINK/ -lAPS168
+#INCLUDEPATH += $$PWD/ADLINK
+#LIBS += -L$$PWD/ADLINK/ -lAPS168x64
+LIBS += -L$$PWD/ -lAPS168x64
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

@@ -74,7 +74,13 @@ void IoMonitor::updateIo()
     long result = 0;
     APS_read_d_input(m_carNum,0,&result);
     DIInfostru d;
-    d.InputValue = 4032;
+    d.InputValue = result;
+    if(ShareData::GetInstance()->m_DI_Status.contains(m_carNum))
+    {
+        ShareData::GetInstance()->m_DI_Status[m_carNum] = d;
+    }
+    else
+        ShareData::GetInstance()->m_DI_Status.insert(m_carNum,d);
     d.bit8 == 0 ? m_io_light[0]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_io_light[0]->setStyleSheet("border-image:url(:/src/Image/green.png)");
     d.bit9 == 0 ? m_io_light[1]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_io_light[1]->setStyleSheet("border-image:url(:/src/Image/green.png)");
     d.bit10 == 0 ? m_io_light[2]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_io_light[2]->setStyleSheet("border-image:url(:/src/Image/green.png)");
@@ -93,12 +99,25 @@ void IoMonitor::updateIo()
     d.bit23 == 0 ? m_io_light[15]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_io_light[15]->setStyleSheet("border-image:url(:/src/Image/green.png)");
 
 }
-
+///
+/// \brief IoMonitor::onDoClicked
+/// on -> off
+/// 0ff -> on
+///
 void IoMonitor::onDoClicked()
 {
    QString objName = sender()->objectName();
    int doNum = objName.toInt();
-   int value = (1 << doNum);
-   APS_write_d_output(m_carNum,0,value);
-   qDebug()<<value;
+   I32 currentData;
+   APS_read_d_output(m_carNum,0,&currentData);
+   MotionControl d;
+   if((currentData >> doNum) != 0) //on
+   {
+        d.outPutDo(m_carNum,doNum,1);
+   }
+   else //off
+   {
+        d.outPutDo(m_carNum,doNum,1);
+   }
+//   qDebug()<<value;
 }

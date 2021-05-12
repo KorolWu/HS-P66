@@ -163,12 +163,12 @@ void AxisInfoUI::RunORG()
     do{
         QThread::msleep(100);
         msts = APS_motion_status( m_axisId );// Get motion status
-        msts = ( msts >> MTS_NSTP ) & 1; // Get motion done bit
-    }while( msts == 1 );
+        msts = ( msts >> MTS_HMV ) & 1; // Get motion done bit
+    }while( msts != 0 );
     // 4. Check home move success or not
     msts = APS_motion_status( m_axisId ); // Get motion status
     msts = ( msts >> MTS_ASTP ) & 1; // Get abnormal stop bit
-    if( msts == 1 )
+    if( msts != 0 )
     {
         // Error handling ...
         I32 stop_code;
@@ -218,6 +218,7 @@ void AxisInfoUI::RunLeft()
     APS_set_axis_param(m_axisId,PRA_JG_VM,1000);
     //APS_set_axis_param(m_axisId,PRA_JG_STOP,10000);
     checkIsServoON();
+    APS_jog_start(m_axisId,0);// jog_start
     APS_jog_start(m_axisId,1);// jog_start
 }
 
@@ -230,6 +231,7 @@ void AxisInfoUI::RunRight()
     APS_set_axis_param(m_axisId,PRA_JG_VM,1000);
     //APS_set_axis_param(m_axisId,PRA_JG_STOP,10000);
     checkIsServoON();
+    APS_jog_start(m_axisId,0);// jog_start
     APS_jog_start(m_axisId,1);// jog_start
 }
 
@@ -239,7 +241,7 @@ void AxisInfoUI::RunQuickFixPos()
     APS_set_axis_param(m_axisId, PRA_DEC, 1000000 ); //设置减速度
     int Trapos = dsb->value();
     //执行一个绝对运动。
-    if( !( ( APS_motion_io_status( m_axisId ) >> MIO_SVON ) & 1 ) )
+    if( 0 == ((APS_motion_io_status( m_axisId ) >> MIO_SVON ) & 1 ))
     {
         APS_set_servo_on( m_axisId, 1 );
         QThread::msleep( 500 ); // Wait stable.
@@ -254,6 +256,7 @@ void AxisInfoUI::RunQuickFixPos()
 
 void AxisInfoUI::RunStop()
 {
+    APS_jog_start(m_axisId,1);// jog_start
     APS_jog_start(m_axisId,0);// jog_start
     APS_jog_mode_switch(m_axisId, 0 ); //关闭点动模式。
 }

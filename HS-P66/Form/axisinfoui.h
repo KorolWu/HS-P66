@@ -13,7 +13,8 @@
 #include <QDebug>
 #include <QThread>
 #include "APS168.h"
-#include "APS_define.h"
+#include "type_def.h"
+#include "APS_Define.h"
 #include "ErrorCodeDef.h"
 
 class AxisInfoUI : public QWidget

@@ -10,11 +10,13 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include "DataStruct.h"
-#include "APS168.h"
-#include "type_def.h"
-#include "APS_Define.h"
-#include "ErrorCodeDef.h"
+#include "sharedata.h"
+#include "ADLINK/APS168.h"
+#include "ADLINK/type_def.h"
+#include "ADLINK/APS_Define.h"
+#include "ADLINK/ErrorCodeDef.h"
 #include <QDebug>
+#include "motioncontrol.h"
 
 ///
 /// \brief The IoMonitor class
