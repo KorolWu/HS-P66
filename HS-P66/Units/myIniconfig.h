@@ -1,4 +1,4 @@
-#ifndef MYINICONFIG_H
+﻿#ifndef MYINICONFIG_H
 #define MYINICONFIG_H
 #include <QSettings>
 #include <QStandardPaths>
@@ -17,7 +17,7 @@ public:
     ~MyIniConfig()
     {
         delete m_psetting;
-        m_psetting = 0;
+        m_psetting = nullptr;
     }
     void Config(QString qstrfilename = "")
     {

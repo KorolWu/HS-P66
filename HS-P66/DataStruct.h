@@ -7,11 +7,19 @@
 #include <QObject>
 #include <QDebug>
 
+
+typedef struct _AxisStrcut
+{
+    int vMax;
+    int acc;
+    int dcc;
+    int homeVmax;
+}AxisStruct;
 //传感器状态信息
 typedef union
 {
     struct {
-        int32_t
+        uint32_t
         bit0:1,
             bit1:1,
             bit2:1,
@@ -30,8 +38,8 @@ typedef union
             bit15:1,
             bit16:16;
     };
-    int32_t OutputValue = 0;
-}DoInfostru;//小车货传感器货物信息
+    uint32_t OutputValue = 0;
+}DoInfostru;
 
 
 //传感器状态信息
@@ -39,7 +47,7 @@ typedef union
 {
     struct {
         uint32_t
-            bit0:1,
+        bit0:1,
             bit1:1,
             bit2:1,
             bit3:1,
@@ -71,7 +79,7 @@ typedef union
             bit29:1,
             bit30:1,
             bit31:1;
-           // bit32:16;
+        // bit32:16;
     };
     uint32_t InputValue = 0;
 }DIInfostru;//小车货传感器货物信息

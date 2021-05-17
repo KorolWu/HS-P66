@@ -19,8 +19,11 @@ SOURCES += \
     Form/axischeck.cpp \
     Form/axisfrom.cpp \
     Form/axisinfoui.cpp \
+    Form/axisparameterset.cpp \
     Form/ioform.cpp \
     Form/iomonitor.cpp \
+    Form/mainwidget.cpp \
+    Form/parameterfrom.cpp \
     Form/pushbutton.cpp \
     Form/visionfrom.cpp \
     Units/c_systemlogmng.cpp \
@@ -34,8 +37,11 @@ HEADERS += \
     Form/axischeck.h \
     Form/axisfrom.h \
     Form/axisinfoui.h \
+    Form/axisparameterset.h \
     Form/ioform.h \
     Form/iomonitor.h \
+    Form/mainwidget.h \
+    Form/parameterfrom.h \
     Form/pushbutton.h \
     Form/visionfrom.h \
     Units/c_systemlogmng.h \
