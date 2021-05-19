@@ -29,33 +29,34 @@ void PushButton::enterEvent(QEvent *)
         update();
     }
 }
-void PushButton::mousePressEvent(QMouseEvent *event)
-{
-    //若点击鼠标左键
-    if(event->button() == Qt::LeftButton)
-    {
-        mouse_press = true;
-        if(m_uc >= 2)
-        {
-            status = PRESS;
-            update();
-        }
-    }
-}
-void PushButton::mouseReleaseEvent(QMouseEvent *event)
-{
-    //若点击鼠标左键响应
-    if(mouse_press&&this->rect().contains(event->pos()))
-    {
-        mouse_press = false;
-        if(m_uc >=3)
-        {
-            status = HOVER;
-            update();
-        }
-        emit clicked();
-    }
-}
+//void PushButton::mousePressEvent(QMouseEvent *event)
+//{
+//    //若点击鼠标左键
+//    if(event->button() == Qt::LeftButton)
+//    {
+//        mouse_press = true;
+//        if(m_uc >= 2)
+//        {
+//            status = PRESS;
+//            update();
+//        }
+
+//    }
+//}
+//void PushButton::mouseReleaseEvent(QMouseEvent *event)
+//{
+//    //若点击鼠标左键响应
+//    if(mouse_press&&this->rect().contains(event->pos()))
+//    {
+//        mouse_press = false;
+//        if(m_uc >=3)
+//        {
+//            status = HOVER;
+//            update();
+//        }
+//        emit clicked();
+//    }
+//}
 void PushButton::leaveEvent(QEvent *)
 {
     status = NORMAL;

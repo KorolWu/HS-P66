@@ -51,7 +51,7 @@ AxisInfoUI::AxisInfoUI(int axisID, QWidget *parent) : QWidget(parent)
     dsb->setFont(font);
     dsb->setDecimals(3);
     CreatAsixUI();
-    wg->setFixedSize(410,200);
+    wg->setFixedSize(395,200);
     connect(btn[1],&QPushButton::clicked,this,&AxisInfoUI::RunORG);
     connect(btn[2],&QPushButton::clicked,this,&AxisInfoUI::RunSon);
     connect(btn[3],&QPushButton::clicked,this,&AxisInfoUI::RunReSet);
@@ -61,7 +61,7 @@ AxisInfoUI::AxisInfoUI(int axisID, QWidget *parent) : QWidget(parent)
     connect(btn[5],&QPushButton::released,this,&AxisInfoUI::RunStop);
     connect(btn[6],&QPushButton::clicked,this,&AxisInfoUI::RunQuickFixPos);
     connect(btn[7],&QPushButton::clicked,this,&AxisInfoUI::EmgStop);
-    return;
+    TimerStatus(false);
 }
 void AxisInfoUI::CreatAsixUI()
 {
@@ -138,72 +138,98 @@ void AxisInfoUI::SetTraPos(double d)
 
 void AxisInfoUI::RunORG()
 {
-    //This example shows how home move operates
-    I32 return_code;
-    I32 msts;
-    // 1. Select home mode and config home parameters
-    APS_set_axis_param( m_axisId, PRA_HOME_MODE, 0 ); //Set home mode
-    APS_set_axis_param( m_axisId, PRA_HOME_DIR, 1 ); //Set home direction
-    APS_set_axis_param( m_axisId, PRA_HOME_CURVE, 0 ); // Set acceleration pattern (T-curve)
-    APS_set_axis_param( m_axisId, PRA_HOME_ACC, 1000000 ); // Set homing acceleration rate
-    APS_set_axis_param( m_axisId, PRA_HOME_VM, 100000 ); // Set homing maximum velocity.
-    APS_set_axis_param( m_axisId, PRA_HOME_VO, 50000 ); // Set homing
-    APS_set_axis_param( m_axisId, PRA_HOME_EZA, 0 ); // Set homing
-    APS_set_axis_param( m_axisId, PRA_HOME_SHIFT, 0 ); // Set homing
-    APS_set_axis_param( m_axisId, PRA_HOME_POS, 0 ); // Set homing
-    // 2. Start home move
-    return_code = APS_home_move(m_axisId); //Start homing
-    if( return_code != ERR_NoError )
+    MotionControl m;
+    int vMax = 10000;
+    int acc = 1000;
+    if(ShareData::GetInstance()->m_axisMap.contains(m_axisId))
     {
-        /* Error handling */
-        qDebug()<<"home move failed";
-        return;
+        acc = ShareData::GetInstance()->m_axisMap[m_axisId].acc;
+        vMax = ShareData::GetInstance()->m_axisMap[m_axisId].homeVmax;
     }
-    // 3. Wait for home move do ne,
-    do{
-        QThread::msleep(100);
-        msts = APS_motion_status( m_axisId );// Get motion status
-        msts = ( msts >> MTS_HMV ) & 1; // Get motion done bit
-    }while( msts != 0 );
-    // 4. Check home move success or not
-    msts = APS_motion_status( m_axisId ); // Get motion status
-    msts = ( msts >> MTS_ASTP ) & 1; // Get abnormal stop bit
-    if( msts != 0 )
-    {
-        // Error handling ...
-        I32 stop_code;
-        APS_get_stop_code( m_axisId, &stop_code );
-        qDebug()<<"home move abnormal stop";
-    }else
-    {
-        // Homing success.
-        qDebug()<<"home move success";
-    }
+
+    m.goHome(m_axisId,vMax,0,acc,1,0);
+    //    //This example shows how home move operates
+    //    I32 return_code;
+    //    I32 msts;
+    //    // 1. Select home mode and config home parameters
+    //    APS_set_axis_param( m_axisId, PRA_HOME_MODE, 0 ); //Set home mode
+    //    APS_set_axis_param( m_axisId, PRA_HOME_DIR, 1 ); //Set home direction
+    //    APS_set_axis_param( m_axisId, PRA_HOME_CURVE, 0 ); // Set acceleration pattern (T-curve)
+    //    APS_set_axis_param( m_axisId, PRA_HOME_ACC, 1000 ); // Set homing acceleration rate
+    //    APS_set_axis_param( m_axisId, PRA_HOME_VM, 5000 ); // Set homing maximum velocity.
+    //    APS_set_axis_param( m_axisId, PRA_HOME_VO, 200 ); // Set homing
+    //    APS_set_axis_param( m_axisId, PRA_HOME_EZA, 0 ); // Set homing
+    //    APS_set_axis_param( m_axisId, PRA_HOME_SHIFT, 0 ); // Set homing
+    //    APS_set_axis_param( m_axisId, PRA_HOME_POS, 0 ); // Set homing
+    //    // 2. Start home move
+    //    return_code = APS_home_move(m_axisId); //Start homing
+    //    if( return_code != ERR_NoError )
+    //    {
+    //        /* Error handling */
+    //        qDebug()<<"home move failed";
+    //        return;
+    //    }
+    //    // 3. Wait for home move do ne,
+    //    do{
+    //        QThread::msleep(100);
+    //        msts = APS_motion_status( m_axisId );// Get motion status
+    //        msts = ( msts >> MTS_HMV ) & 1; // Get motion done bit
+    //    }while( msts != 0 );
+    //    // 4. Check home move success or not
+    //    msts = APS_motion_status( m_axisId ); // Get motion status
+    //    msts = ( msts >> MTS_ASTP ) & 1; // Get abnormal stop bit
+    //    if( msts != 0 )
+    //    {
+    //        // Error handling ...
+    //        I32 stop_code;
+    //        APS_get_stop_code( m_axisId, &stop_code );
+    //        qDebug()<<"home move abnormal stop";
+    //    }else
+    //    {
+    //        // Homing success.
+    //        qDebug()<<"home move success";
+    //    }
 }
 
 void AxisInfoUI::RunSon()
 {
     //Check servo on or not
-    if( !( ( APS_motion_io_status( m_axisId ) >> MIO_SVON ) & 1 ) )
+    I32 ret = APS_motion_io_status(m_axisId);
+    if( 1 != ((ret >> MIO_SVON ) & 1) )
     {
-       int ret = APS_set_servo_on( m_axisId, 1 );
-        if(ret)
+        ret = APS_set_servo_on( m_axisId, 1 );
+        if(ret != ERR_NoError)
         {
-            btn[2]->setText("S_OFF");
-            qDebug()<<"Servo on fail\n";
+            qDebug()<<"Servo on fail rec = "<<ret;
         }
         else
-            btn[2]->setText("");
+        {
+            qDebug()<<"servo on rec = "<<ret;
+            btn[2]->getIconPath(":/src/Image/son_off.png");
+        }
         QThread::msleep( 500 ); // Wait stable.
     }
     else
-        return;
+    {
+        ret = APS_set_servo_on( m_axisId, 0 );
+        if(ret != ERR_NoError)
+        {
+            qDebug()<<"Servo_off fail rec = "<<ret;
+        }
+        else
+        {
+            qDebug()<<"else servo on rec = "<<ret;
+            btn[2]->getIconPath(":/src/Image/son");
+        }
+        QThread::msleep( 500 ); // Wait stable.
+    }
+
 }
 
 void AxisInfoUI::RunReSet()
 {
     int rse = APS_reset_sscnet_servo_alarm(m_axisId);
-    if(rse = ERR_NoError)
+    if(rse == ERR_NoError)
     {
         btn[0]->getIconPath(":/images/ok");
     }
@@ -214,8 +240,20 @@ void AxisInfoUI::RunLeft()
     APS_jog_mode_switch(m_axisId, 1 ); //打开点动模式。
     APS_set_axis_param(m_axisId,PRA_JG_MODE,0);
     APS_set_axis_param(m_axisId,PRA_JG_DIR,0);
-    APS_set_axis_param(m_axisId,PRA_JG_ACC,10000);
-    APS_set_axis_param(m_axisId,PRA_JG_VM,1000);
+    if(ShareData::GetInstance()->m_axisMap.contains(m_axisId))
+    {
+        qDebug()<<"<<vmax="<<ShareData::GetInstance()->m_axisMap[m_axisId].vMax<<"0.? = "<<GetTraSpeed()*0.01;
+        qDebug()<<"<<vmax="<<ShareData::GetInstance()->m_axisMap[m_axisId].acc<<"0.? = "<<GetTraSpeed()*0.01;
+        qDebug()<<"<<vmax="<<ShareData::GetInstance()->m_axisMap[m_axisId].dcc<<"0.? = "<<GetTraSpeed()*0.01;
+        APS_set_axis_param(m_axisId,PRA_JG_ACC,ShareData::GetInstance()->m_axisMap[m_axisId].acc);
+        APS_set_axis_param(m_axisId,PRA_JG_DEC,ShareData::GetInstance()->m_axisMap[m_axisId].dcc);
+        APS_set_axis_param(m_axisId,PRA_JG_VM,ShareData::GetInstance()->m_axisMap[m_axisId].vMax*(GetTraSpeed()*0.01));
+    }
+    else
+    {
+        APS_set_axis_param(m_axisId,PRA_JG_ACC,10000);
+        APS_set_axis_param(m_axisId,PRA_JG_VM,1000);
+    }
     //APS_set_axis_param(m_axisId,PRA_JG_STOP,10000);
     checkIsServoON();
     APS_jog_start(m_axisId,0);// jog_start
@@ -227,18 +265,31 @@ void AxisInfoUI::RunRight()
     APS_jog_mode_switch(m_axisId, 1 ); //打开点动模式。
     APS_set_axis_param(m_axisId,PRA_JG_MODE,0); //连续模式
     APS_set_axis_param(m_axisId,PRA_JG_DIR,1);
-    APS_set_axis_param(m_axisId,PRA_JG_ACC,10000);
-    APS_set_axis_param(m_axisId,PRA_JG_VM,1000);
+    if(ShareData::GetInstance()->m_axisMap.contains(m_axisId))
+    {
+        qDebug()<<"<<vmax="<<ShareData::GetInstance()->m_axisMap[m_axisId].vMax<<"0.? = "<<GetTraSpeed()*0.01;
+        qDebug()<<"<<vmax="<<ShareData::GetInstance()->m_axisMap[m_axisId].acc<<"0.? = "<<GetTraSpeed()*0.01;
+        qDebug()<<"<<vmax="<<ShareData::GetInstance()->m_axisMap[m_axisId].dcc<<"0.? = "<<GetTraSpeed()*0.01;
+        APS_set_axis_param(m_axisId,PRA_JG_ACC,ShareData::GetInstance()->m_axisMap[m_axisId].acc);
+        APS_set_axis_param(m_axisId,PRA_JG_DEC,ShareData::GetInstance()->m_axisMap[m_axisId].dcc);
+        APS_set_axis_param(m_axisId,PRA_JG_VM,ShareData::GetInstance()->m_axisMap[m_axisId].vMax*(GetTraSpeed()*0.01));
+    }
+    else
+    {
+        APS_set_axis_param(m_axisId,PRA_JG_ACC,10000);
+        APS_set_axis_param(m_axisId,PRA_JG_VM,1000);
+    }
     //APS_set_axis_param(m_axisId,PRA_JG_STOP,10000);
     checkIsServoON();
     APS_jog_start(m_axisId,0);// jog_start
     APS_jog_start(m_axisId,1);// jog_start
+    qDebug()<<"run right";
 }
 
 void AxisInfoUI::RunQuickFixPos()
 {
-    APS_set_axis_param(m_axisId, PRA_ACC, 1000000 ); //设置加速度
-    APS_set_axis_param(m_axisId, PRA_DEC, 1000000 ); //设置减速度
+    APS_set_axis_param(m_axisId, PRA_ACC, 10000 ); //设置加速度
+    APS_set_axis_param(m_axisId, PRA_DEC, 10000 ); //设置减速度
     int Trapos = dsb->value();
     //执行一个绝对运动。
     if( 0 == ((APS_motion_io_status( m_axisId ) >> MIO_SVON ) & 1 ))
@@ -281,11 +332,13 @@ void AxisInfoUI::timerUpInputData()
     int isErr = ( msts >> MTS_ASTP ) & 1; // Get abnormal stop bit
     if(isErr == 1 )
     {
-        btn[0]->getIconPath(":/images/error");
+        btn[0]->getIconPath(":/src/Image/err.png");
+
     }
     else
     {
-        btn[0]->getIconPath(":/images/ok");
+        btn[0]->getIconPath(":src/Image/ok.png");
+
     }
     long int position = 0;
     APS_get_position(m_axisId,&position);

@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     initParameter();
     initMainUI();
     initLWidget();
-    QString fileName = QCoreApplication::applicationDirPath() + "/Config.xml";
+    QString fileName = "E:\\HS-P66\\ADLINK\\ADLINKBoard.xml";
     ShareData::GetInstance()->m_DriverIsInitialization  = initAdlinkDriver(fileName);
     ShareData::GetInstance()->m_DriverIsInitialization ? appendLog("板卡初始化成功") : appendLog("板卡初始化失败！");
 
@@ -20,20 +20,27 @@ MainWindow::~MainWindow()
     APS_close(); //关闭系统中所有的板卡
     delete ui;
 }
+
+void MainWindow::start()
+{
+//    MotionControl control;
+//    control.testTimeOut(2000);
+}
 ///
 /// \brief MainWindow::initParameter
 /// 从ini 文件里面读取各轴的速度参数
 ///
 void MainWindow::initParameter()
 {
-    getIniParameter(0);
-    getIniParameter(1);
-    getIniParameter(2);
-    getIniParameter(3);
-    getIniParameter(4);
-    getIniParameter(5);
-    getIniParameter(6);
-    getIniParameter(7);
+    for (int i = 0;i < 18; i++ ) {
+        int axisId = 0;
+        if(i >7)
+            axisId = i + 6;
+        else
+            axisId = i;
+        getIniParameter(axisId);
+
+    }
     qDebug()<<ShareData::GetInstance()->m_axisMap.size();
 }
 
@@ -89,6 +96,7 @@ void MainWindow::initMainUI()
     m_start->resize(ShareData::GetInstance()->m_width/20,ShareData::GetInstance()->m_heitht/17);
     m_start->move(ShareData::GetInstance()->m_width/10*9+offect,15);
     m_start->setIcon(QIcon(":/src/Image/start"));
+    connect(m_start,&QPushButton::clicked,this,&MainWindow::start);
 
     m_reset = new QPushButton("复位",this);
     m_reset->resize(ShareData::GetInstance()->m_width/20,ShareData::GetInstance()->m_heitht/17);
@@ -104,13 +112,13 @@ void MainWindow::initMainUI()
     m_home->resize(ShareData::GetInstance()->m_width/20,ShareData::GetInstance()->m_heitht/17);
     m_home->move(ShareData::GetInstance()->m_width/10*6+offect+230,15);
     m_home->setIcon(QIcon(":/src/Image/home"));
-    this->setStyleSheet("QPushButton{background-color:rgb(190,190,190);border-radius: 5px;}"\
+    this->setStyleSheet("QPushButton{background-color:rgb(190,190,190);border-radius: 5px;font:18px;}"\
                         "QPushButton:hover{background-color:rgb(210,210,210);}"\
                         "QPushButton:pressed{background-color:rgb(160,160,160);}");
 
     m_MainWidget = new QWidget(this);
     m_MainWidget->move(ShareData::GetInstance()->m_width/7+3,ShareData::GetInstance()->m_heitht/10);
-    m_MainWidget->resize(ShareData::GetInstance()->m_width/6*5-3,ShareData::GetInstance()->m_heitht-10);
+    m_MainWidget->resize(ShareData::GetInstance()->m_width/6*5+25,ShareData::GetInstance()->m_heitht-10);
     m_pLogText = new QTextEdit(m_MainWidget);
     m_pLogText->move(3,m_MainWidget->height()/5*4);
     m_pLogText->resize(m_MainWidget->width()-15,m_MainWidget->height()/5-15);
@@ -210,7 +218,9 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
 int MainWindow::initAdlinkDriver(const QString &fileName)
 {
     MotionControl control;
-    if(!control.initBoard())
+    int initResult = control.initBoard();
+    qDebug()<<"init reuslt "<<initResult;
+    if(initResult != 1)
         return -1;
     return control.loadBoardParameter(fileName);
 }

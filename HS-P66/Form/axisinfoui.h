@@ -5,13 +5,15 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include "pushbutton.h"
 #include <QLineEdit>
 #include <QComboBox>
 #include <QDoubleSpinBox>
 #include <QTimer>
 #include <QDebug>
+#include "sharedata.h"
+#include "motioncontrol.h"
 #include <QThread>
+#include "pushbutton.h"
 #include "ADLINK/APS168.h"
 #include "ADLINK/type_def.h"
 #include "ADLINK/APS_Define.h"

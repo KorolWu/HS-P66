@@ -32,5 +32,7 @@
         <file>Image/log.png</file>
         <file>Image/gray.png</file>
         <file>Image/green.png</file>
+        <file>Image/err.png</file>
+        <file>Image/son_off.png</file>
     </qresource>
 </RCC>

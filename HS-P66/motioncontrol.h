@@ -28,16 +28,17 @@ private:
     I32 m_carName = 88;
 public:
     MotionControl();
+    int initBoard();
     I32 getCarName();
     bool isInitialed();
+    void delay_msc(int msc);
+    void testTimeOut(int msc);
+    bool loadBoardParameter(QString fileName);
     bool outPutDo(int carNum, long bit, int value);
-    int initBoard();
     int getIoStatus(const int &carId,const int di_bit);
     bool airActionOn(int carNum, int output, int mov);
     bool airActionOff(int carNum, int output, int org);
     bool absolutMove(int axisId, int trapos, int v = 10000);
-    void delay_msc(int msc);
-    bool loadBoardParameter(QString fileName);
     bool waitNormalStop(int axis_id,int timeout = 30000);
     bool goHome(const int axisId, int maxV, int mode = 0, int acc = 100000, int dir = 1, int curve = 0);
 };

@@ -32,7 +32,7 @@ public:
 
            m_psetting = new QSettings(m_qstrFileName, QSettings::IniFormat);
            m_psetting->setIniCodec("UTF-8");
-           qDebug() << m_qstrFileName;
+          // qDebug() << m_qstrFileName;
     }
     void Set(QString nodename, QString strkeyname, QVariant qvarvalue)
     {

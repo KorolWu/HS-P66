@@ -43,7 +43,7 @@ int MotionControl::initBoard()
     I32 ret            = 0;
     I32 board_ID       = -1;
     I32 card_name;
-    if(isInitialed() == false)
+    if(isInitialed() == true)
     {
         return result;
     }
@@ -70,7 +70,10 @@ int MotionControl::initBoard()
         return result;
     }
     else
+    {
+        qDebug()<<"init err Code:"<<ret;
         return ret;
+    }
 }
 
 int MotionControl::getIoStatus(const int &carId, const int di_bit)
@@ -161,12 +164,32 @@ void MotionControl::delay_msc(int msc)
     loop.exec();
 }
 
+void MotionControl::testTimeOut(int msc)
+{
+    struct timeval s,e;
+    double timeUseWait = 0;
+    gettimeofday(&s,nullptr);
+    while (true) {
+        gettimeofday(&e,nullptr);
+        delay_msc(10);
+        timeUseWait = 1000 *(e.tv_sec - s.tv_sec) + 0.001*(e.tv_usec - s.tv_usec);
+        if(timeUseWait >= msc)
+        {
+            qDebug()<<"time is up";
+            return;
+        }
+    }
+}
+
 bool MotionControl::loadBoardParameter(QString fileName)
 {
     QByteArray buff = fileName.toLatin1();
     int ret = APS_load_param_from_file(buff.data());
-    if(ret < 0)
+    if(ret  != ERR_NoError)
+    {
+        qDebug()<<"load Board Parameter ErrCode:"<<ret;
         return false;
+    }
     return true;
 
 }

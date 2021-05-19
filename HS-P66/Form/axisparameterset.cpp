@@ -38,7 +38,7 @@ void AxisParameterSet::initUI()
     m_groupBox = new QGroupBox(this);
     m_groupBox->setTitle(axisId2axisName(m_axisId));
     //    m_groupBox->setMinimumHeight(100);
-    m_groupBox->resize(m_width-10,100);
+    m_groupBox->resize(m_width-10,80);
     m_hbox = new QHBoxLayout();
     QLabel *max_v = new QLabel("MaxV: ");
     m_vMax = new QSpinBox();
@@ -64,7 +64,7 @@ void AxisParameterSet::initUI()
     m_hbox->addWidget(max_hove_v);
     m_hbox->addWidget(m_hVmax);
     m_groupBox->setLayout(m_hbox);
-    this->setStyleSheet("QLabel{font: 24px;}QSpinBox{Padding-right:20px;Border:2px solid gray;font:20px; Min-width:90px;Min-height:25px;border-radius:5px;}QGroupBox{border: 1px solid white;border-radius:8px;margin-top:6px;}QGroupBox:title{color:rgb(24,24,58);subcontrol-origin: margin;left: 10px;}QGroupBox{font: 28px;}");
+    this->setStyleSheet("QLabel{font: 20px;}QSpinBox{Padding-right:20px;Border:2px solid white;font:20px; Min-width:90px;Min-height:25px;border-radius:5px;}QGroupBox{border: 2px solid white;border-radius:8px;margin-top:6px;}QGroupBox:title{color:rgb(24,24,58);subcontrol-origin: margin;left: 10px;}QGroupBox{font: 22px;}");
 
 }
 
@@ -74,7 +74,39 @@ QString AxisParameterSet::axisId2axisName(int id)
     case 0:
         return "上载台Y";
     case 1:
-        return "上载台旋转Y2";
+        return "上载台旋转X2";
+    case 2:
+        return "上载台旋转X1";
+    case 3:
+        return "上载台旋转Y";
+    case 4:
+        return "上载台内卡边";
+    case 5:
+        return "上载台外卡边";
+    case 6:
+        return "左CCD";
+    case 7:
+        return "右CCD";
+    case 14:
+        return "喷头X";
+    case 15:
+        return "喷头Z";
+    case 16:
+        return "进料Z";
+    case 17:
+        return "出料Z";
+    case 18:
+        return "进料Y1";
+    case 19:
+        return "进料Y2";
+    case 20:
+        return "进料X";
+    case 21:
+        return "出料X";
+    case 22:
+        return "出料Y1";
+    case 23:
+        return "出料Y2";
     default:
         return "UnKnow";
     }

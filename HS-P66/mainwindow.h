@@ -35,6 +35,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void start();
 private:
     Ui::MainWindow *ui;
     QLabel *m_hsLog;

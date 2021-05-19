@@ -24,8 +24,8 @@ public:
    void getIconPath(QString icon_path);//得到图片的路径名字，并且设置按钮为图片的大小
    void enterEvent(QEvent *);//进入事件
    void leaveEvent(QEvent *);//离开事件
-   void mousePressEvent(QMouseEvent *event);  //鼠标按下事件
-   void mouseReleaseEvent(QMouseEvent *event); //鼠标释放事件
+//   void mousePressEvent(QMouseEvent *event);  //鼠标按下事件
+//   void mouseReleaseEvent(QMouseEvent *event); //鼠标释放事件
    void paintEvent(QPaintEvent *);//按钮绘图事件
    void setStatusImageNum(uchar uc);
    void SetTextAlignment(Qt::AlignmentFlag alignment){m_aligment = alignment;}
