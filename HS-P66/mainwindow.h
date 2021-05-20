@@ -10,16 +10,20 @@
 #include <QMainWindow>
 #include <QTextEdit>
 #include <QDateTime>
+#include <QDir>
 #include "sharedata.h"
 #include "Form/axisinfoui.h"
 #include "Form/ioform.h"
 #include "Form/axischeck.h"
 #include "Form/visionfrom.h"
 #include "Form/parameterfrom.h"
-#include "ADLINK/APS168.h"
-#include "ADLINK/type_def.h"
-#include "ADLINK/APS_Define.h"
-#include "ADLINK/ErrorCodeDef.h"
+#include "APS168.h"
+#include "type_def.h"
+#include "APS_Define.h"
+#include "ErrorCodeDef.h"
+#include "QsLog.h"
+#include "QsLogDest.h"
+#include "QsLogLevel.h"
 #include <Form/iomonitor.h>
 #include <QStandardItemModel>
 #include <QPushButton>
@@ -37,6 +41,7 @@ public:
 
 public slots:
     void start();
+    void appendLog(const QString &message, int level);
 private:
     Ui::MainWindow *ui;
     QLabel *m_hsLog;
@@ -67,8 +72,9 @@ private:
     void childrenFormHide();
     void initMainUI();
     void initLWidget();
+    void initLogInstance();
     void onTreeviewClicked(const QModelIndex &index);
     int initAdlinkDriver(const QString &fileName);
-    void appendLog(const QString log);
+
 };
 #endif // MAINWINDOW_H

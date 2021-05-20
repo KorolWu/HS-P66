@@ -1,0 +1,56 @@
+INFO  2021-05-20T08:39:54.635 3-info msg 
+WARN  2021-05-20T08:39:54.635 4-warn msg 
+ERROR 2021-05-20T08:39:54.635 5-error msg 
+ERROR 2021-05-20T08:39:54.635 5-error Qlog 日志记录模块启动 
+FATAL 2021-05-20T08:39:54.635 6-fatal msg 
+INFO  2021-05-20T08:39:54.651 The program starts normally 
+INFO  2021-05-20T08:39:54.651 板卡初始化成功 
+INFO  2021-05-20T08:40:49.286 3-info msg 
+WARN  2021-05-20T08:40:49.286 4-warn msg 
+ERROR 2021-05-20T08:40:49.286 5-error msg 
+ERROR 2021-05-20T08:40:49.286 5-error Qlog 日志记录模块启动 
+FATAL 2021-05-20T08:40:49.286 6-fatal msg 
+INFO  2021-05-20T08:40:49.302 The program starts normally 
+INFO  2021-05-20T08:40:49.302 板卡初始化成功 
+INFO  2021-05-20T08:41:36.799 3-info msg 
+WARN  2021-05-20T08:41:36.799 4-warn msg 
+ERROR 2021-05-20T08:41:36.799 5-error msg 
+ERROR 2021-05-20T08:41:36.799 5-error Qlog 日志记录模块启动 
+FATAL 2021-05-20T08:41:36.799 6-fatal msg 
+INFO  2021-05-20T08:41:36.814 The program starts normally 
+INFO  2021-05-20T08:41:36.814 板卡初始化成功 
+INFO  2021-05-20T09:16:03.690 3-info msg 
+WARN  2021-05-20T09:16:03.690 4-warn msg 
+ERROR 2021-05-20T09:16:03.690 5-error msg 
+ERROR 2021-05-20T09:16:03.691 5-error Qlog 日志记录模块启动 
+FATAL 2021-05-20T09:16:03.691 6-fatal msg 
+INFO  2021-05-20T09:16:03.705 The program starts normally 
+INFO  2021-05-20T09:16:03.705 板卡初始化成功 
+INFO  2021-05-20T09:46:46.411 3-info msg 
+WARN  2021-05-20T09:46:46.412 4-warn msg 
+ERROR 2021-05-20T09:46:46.412 5-error msg 
+ERROR 2021-05-20T09:46:46.412 5-error Qlog 日志记录模块启动 
+FATAL 2021-05-20T09:46:46.412 6-fatal msg 
+INFO  2021-05-20T09:46:46.426 The program starts normally 
+INFO  2021-05-20T09:46:46.427 板卡初始化成功 
+INFO  2021-05-20T09:48:58.734 3-info msg 
+WARN  2021-05-20T09:48:58.734 4-warn msg 
+ERROR 2021-05-20T09:48:58.735 5-error msg 
+ERROR 2021-05-20T09:48:58.735 5-error Qlog 日志记录模块启动 
+FATAL 2021-05-20T09:48:58.735 6-fatal msg 
+INFO  2021-05-20T09:48:58.749 The program starts normally 
+ERROR 2021-05-20T09:48:58.749 板卡初始化失败！ 
+INFO  2021-05-20T09:49:58.420 3-info msg 
+WARN  2021-05-20T09:49:58.420 4-warn msg 
+ERROR 2021-05-20T09:49:58.420 5-error msg 
+ERROR 2021-05-20T09:49:58.420 5-error Qlog 日志记录模块启动 
+FATAL 2021-05-20T09:49:58.420 6-fatal msg 
+INFO  2021-05-20T09:49:58.435 The program starts normally 
+ERROR 2021-05-20T09:49:58.435 板卡初始化失败！ 
+INFO  2021-05-20T09:51:19.048 3-info msg 
+WARN  2021-05-20T09:51:19.048 4-warn msg 
+ERROR 2021-05-20T09:51:19.048 5-error msg 
+ERROR 2021-05-20T09:51:19.048 5-error Qlog 日志记录模块启动 
+FATAL 2021-05-20T09:51:19.048 6-fatal msg 
+INFO  2021-05-20T09:51:19.063 The program starts normally 
+ERROR 2021-05-20T09:51:19.063 板卡初始化失败！ 

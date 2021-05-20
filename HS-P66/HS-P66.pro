@@ -53,8 +53,10 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 #INCLUDEPATH += $$PWD/ADLINK
-#LIBS += -L$$PWD/ADLINK/ -lAPS168x64
-LIBS += -L$$PWD/ -lAPS168x64
+INCLUDEPATH += $$PWD/SDK/include
+LIBS += -L$$PWD/SDK/lib/ -lAPS168x64
+LIBS += -L$$PWD/SDK/lib -lQsLog2
+#LIBS += -L$$PWD/ -lAPS168x64
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

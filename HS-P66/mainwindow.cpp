@@ -1,6 +1,7 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #pragma execution_character_set("utf-8")
+using namespace QsLogging;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -8,11 +9,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     initParameter();
     initMainUI();
+    initLogInstance();
     initLWidget();
     QString fileName = "E:\\HS-P66\\ADLINK\\ADLINKBoard.xml";
     ShareData::GetInstance()->m_DriverIsInitialization  = initAdlinkDriver(fileName);
-    ShareData::GetInstance()->m_DriverIsInitialization ? appendLog("板卡初始化成功") : appendLog("板卡初始化失败！");
-
+    QLOG_INFO() << "The program starts normally";
+    if(ShareData::GetInstance()->m_DriverIsInitialization)
+    {
+        QLOG_INFO() << "板卡初始化成功";
+    }
+    else
+        QLOG_ERROR()<<"板卡初始化失败！";
 }
 
 MainWindow::~MainWindow()
@@ -120,7 +127,7 @@ void MainWindow::initMainUI()
     m_MainWidget->move(ShareData::GetInstance()->m_width/7+3,ShareData::GetInstance()->m_heitht/10);
     m_MainWidget->resize(ShareData::GetInstance()->m_width/6*5+25,ShareData::GetInstance()->m_heitht-10);
     m_pLogText = new QTextEdit(m_MainWidget);
-    m_pLogText->move(3,m_MainWidget->height()/5*4);
+    m_pLogText->move(3,m_MainWidget->height()/5*3+100);
     m_pLogText->resize(m_MainWidget->width()-15,m_MainWidget->height()/5-15);
     m_pLogText->setStyleSheet("font-family:Times; font:17px;background:transparent;border-width: 1px;border-color:rgb(150,150,150); border-style: solid;border-radius:10px;");
 
@@ -192,6 +199,37 @@ void MainWindow::initLWidget()
     p_treeStandarModel->appendRow(p_standarItem);
 }
 
+void MainWindow::initLogInstance()
+{
+    Logger& logger = Logger::instance();
+    logger.setLoggingLevel(QsLogging::TraceLevel);
+
+//    // 添加文件为目的地
+    const QString sLogPath(QDir(QApplication::applicationDirPath()).filePath("log.txt"));
+    DestinationPtr fileDestination(DestinationFactory::MakeFileDestination(
+                                       sLogPath, EnableLogRotation, MaxSizeBytes(512*1024), MaxOldLogCount(5)));
+    logger.addDestination(fileDestination);
+
+
+    // 添加stdout为目的地
+//       DestinationPtr debugDestination(DestinationFactory::MakeDebugOutputDestination());
+//       logger.addDestination(debugDestination);
+
+
+       //添加到textEdit
+       DestinationPtr objectDestination(DestinationFactory::MakeFunctorDestination(this, SLOT(appendLog(QString,int))));
+       logger.addDestination(objectDestination);
+
+    // 打印日志
+//    QLOG_TRACE() << "1-trace msg";
+//    QLOG_DEBUG() << "2-debug msg";
+    QLOG_INFO() << "3-info msg";
+    QLOG_WARN() << "4-warn msg";
+    QLOG_ERROR() << "5-error msg";
+     QLOG_ERROR() << "5-error Qlog 日志记录模块启动";
+    QLOG_FATAL()  << "6-fatal msg";
+}
+
 void MainWindow::onTreeviewClicked(const QModelIndex &index)
 {
     childrenFormHide();
@@ -221,12 +259,12 @@ int MainWindow::initAdlinkDriver(const QString &fileName)
     int initResult = control.initBoard();
     qDebug()<<"init reuslt "<<initResult;
     if(initResult != 1)
-        return -1;
+        return 0;
     return control.loadBoardParameter(fileName);
 }
 
-void MainWindow::appendLog(const QString log)
+void MainWindow::appendLog(const QString &message, int level)
 {
-    m_pLogText->append(QString(">%1  :"+log).arg(QDateTime::currentDateTime().toString("hh:mm:ss")));
+    m_pLogText->append(message + " " + QString::number(level));
 }
 

@@ -11,10 +11,10 @@
 #include <QPushButton>
 #include "DataStruct.h"
 #include "sharedata.h"
-#include "ADLINK/APS168.h"
-#include "ADLINK/type_def.h"
-#include "ADLINK/APS_Define.h"
-#include "ADLINK/ErrorCodeDef.h"
+#include "APS168.h"
+#include "type_def.h"
+#include "APS_Define.h"
+#include "ErrorCodeDef.h"
 #include <QDebug>
 #include "motioncontrol.h"
 
