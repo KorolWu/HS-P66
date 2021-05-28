@@ -104,22 +104,22 @@ void IoMonitor::updateIo()
 
     DoInfostru o;
     o.OutputValue = result;
-    o.bit0 == 0 ? m_do_light[0]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[0]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit1 == 0 ? m_do_light[1]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[1]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit2 == 0 ? m_do_light[2]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[2]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit3 == 0 ? m_do_light[3]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[3]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit4== 0 ? m_do_light[4]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[4]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit5 == 0 ? m_do_light[5]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[5]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit6 == 0 ? m_do_light[6]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[6]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit7 == 0 ? m_do_light[7]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[7]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit8 == 0 ? m_do_light[8]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[8]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit9 == 0 ? m_do_light[9]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[9]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit10 == 0 ? m_do_light[10]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[10]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit11 == 0 ? m_do_light[11]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[11]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit12 == 0 ? m_do_light[12]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[12]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit13 == 0 ? m_do_light[13]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[13]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit14 == 0 ? m_do_light[14]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[14]->setStyleSheet("border-image:url(:/src/Image/green.png)");
-    o.bit15 == 0 ? m_do_light[15]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[15]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit8 == 0 ? m_do_light[0]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[0]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit9 == 0 ? m_do_light[1]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[1]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit10 == 0 ? m_do_light[2]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[2]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit11 == 0 ? m_do_light[3]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[3]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit12== 0 ? m_do_light[4]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[4]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit13 == 0 ? m_do_light[5]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[5]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit14 == 0 ? m_do_light[6]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[6]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit15 == 0 ? m_do_light[7]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[7]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit16 == 0 ? m_do_light[8]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[8]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit17 == 0 ? m_do_light[9]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[9]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit18 == 0 ? m_do_light[10]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[10]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit19 == 0 ? m_do_light[11]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[11]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit20 == 0 ? m_do_light[12]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[12]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit21 == 0 ? m_do_light[13]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[13]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit22 == 0 ? m_do_light[14]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[14]->setStyleSheet("border-image:url(:/src/Image/green.png)");
+    o.bit23 == 0 ? m_do_light[15]->setStyleSheet("border-image:url(:/src/Image/gray.png)") : m_do_light[15]->setStyleSheet("border-image:url(:/src/Image/green.png)");
 
 
 }
@@ -131,17 +131,19 @@ void IoMonitor::updateIo()
 void IoMonitor::onDoClicked()
 {
    QString objName = sender()->objectName();
-   int doNum = objName.toInt();
+   int doNum = objName.toInt()+8;
    I32 currentData;
    APS_read_d_output(m_carNum,0,&currentData);
    MotionControl d;
-   if((currentData >> doNum) != 0) //on
+   if(((currentData >> doNum) & 1) != 1) //on
    {
         d.outPutDo(m_carNum,doNum,1);
+        QLOG_ERROR()<<doNum<<"on"<<" currentData<<"<<currentData;;
    }
    else //off
    {
-        d.outPutDo(m_carNum,doNum,1);
+        d.outPutDo(m_carNum,doNum,0);
+        QLOG_ERROR()<<doNum<<"off";
    }
 //   qDebug()<<value;
 }

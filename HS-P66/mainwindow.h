@@ -15,8 +15,9 @@
 #include "Form/axisinfoui.h"
 #include "Form/ioform.h"
 #include "Form/axischeck.h"
-#include "Form/visionfrom.h"
+#include "Form/visionui.h"
 #include "Form/parameterfrom.h"
+#include "Form/xxyform.h"
 #include "APS168.h"
 #include "type_def.h"
 #include "APS_Define.h"
@@ -42,6 +43,8 @@ public:
 public slots:
     void start();
     void appendLog(const QString &message, int level);
+    void home();
+    void emgStop();
 private:
     Ui::MainWindow *ui;
     QLabel *m_hsLog;
@@ -63,7 +66,8 @@ private:
     QStandardItem *p_runer;
     IoForm *p_ioForm;
     AxisCheck *p_axisCheck;
-    VisionFrom *p_visionForm;
+    VisionUi *p_visionForm;
+    XXYForm *p_xxy;
     ParameterFrom *p_parameter;
     QTextEdit *m_pLogText;
      MyIniConfig m_ini;

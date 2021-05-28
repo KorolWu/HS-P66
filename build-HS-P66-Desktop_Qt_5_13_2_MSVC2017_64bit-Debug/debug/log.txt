@@ -54,3 +54,113 @@ ERROR 2021-05-20T09:51:19.048 5-error Qlog 日志记录模块启动
 FATAL 2021-05-20T09:51:19.048 6-fatal msg 
 INFO  2021-05-20T09:51:19.063 The program starts normally 
 ERROR 2021-05-20T09:51:19.063 板卡初始化失败！ 
+INFO  2021-05-20T11:10:11.889 3-info msg 
+WARN  2021-05-20T11:10:11.890 4-warn msg 
+ERROR 2021-05-20T11:10:11.890 5-error msg 
+ERROR 2021-05-20T11:10:11.890 5-error Qlog 日志记录模块启动 
+FATAL 2021-05-20T11:10:11.890 6-fatal msg 
+INFO  2021-05-20T11:10:11.904 The program starts normally 
+ERROR 2021-05-20T11:10:11.905 板卡初始化失败！ 
+INFO  2021-05-20T13:12:11.687 3-info msg 
+WARN  2021-05-20T13:12:11.687 4-warn msg 
+ERROR 2021-05-20T13:12:11.688 5-error msg 
+ERROR 2021-05-20T13:12:11.688 5-error Qlog 日志记录模块启动 
+FATAL 2021-05-20T13:12:11.688 6-fatal msg 
+INFO  2021-05-20T13:12:11.702 The program starts normally 
+ERROR 2021-05-20T13:12:11.702 板卡初始化失败！ 
+ERROR 2021-05-28T13:59:31.416 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T13:59:31.468 The program starts normally 
+ERROR 2021-05-28T13:59:31.468 板卡初始化失败！ 
+ERROR 2021-05-28T14:43:50.668 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T14:43:50.706 The program starts normally 
+ERROR 2021-05-28T14:43:50.706 板卡初始化失败！ 
+ERROR 2021-05-28T14:49:06.419 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T14:49:06.430 The program starts normally 
+ERROR 2021-05-28T14:49:06.430 板卡初始化失败！ 
+ERROR 2021-05-28T14:50:27.937 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T14:50:27.950 The program starts normally 
+ERROR 2021-05-28T14:50:27.950 板卡初始化失败！ 
+ERROR 2021-05-28T14:52:51.929 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T14:52:51.941 The program starts normally 
+ERROR 2021-05-28T14:52:51.941 板卡初始化失败！ 
+ERROR 2021-05-28T14:55:55.976 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T14:55:55.986 The program starts normally 
+ERROR 2021-05-28T14:55:55.986 板卡初始化失败！ 
+ERROR 2021-05-28T14:57:22.923 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T14:57:22.937 The program starts normally 
+ERROR 2021-05-28T14:57:22.937 板卡初始化失败！ 
+ERROR 2021-05-28T14:58:51.423 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T14:58:51.434 The program starts normally 
+ERROR 2021-05-28T14:58:51.434 板卡初始化失败！ 
+ERROR 2021-05-28T15:00:07.880 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:00:07.891 The program starts normally 
+ERROR 2021-05-28T15:00:07.891 板卡初始化失败！ 
+ERROR 2021-05-28T15:00:50.090 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:00:50.102 The program starts normally 
+ERROR 2021-05-28T15:00:50.102 板卡初始化失败！ 
+ERROR 2021-05-28T15:02:32.912 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:02:32.922 The program starts normally 
+ERROR 2021-05-28T15:02:32.923 板卡初始化失败！ 
+ERROR 2021-05-28T15:04:11.378 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:04:11.389 The program starts normally 
+ERROR 2021-05-28T15:04:11.389 板卡初始化失败！ 
+ERROR 2021-05-28T15:05:11.455 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:05:11.467 The program starts normally 
+ERROR 2021-05-28T15:05:11.467 板卡初始化失败！ 
+ERROR 2021-05-28T15:07:03.166 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:07:03.177 The program starts normally 
+ERROR 2021-05-28T15:07:03.177 板卡初始化失败！ 
+ERROR 2021-05-28T15:07:56.431 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:07:56.442 The program starts normally 
+ERROR 2021-05-28T15:07:56.442 板卡初始化失败！ 
+ERROR 2021-05-28T15:10:25.923 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:10:25.933 The program starts normally 
+ERROR 2021-05-28T15:10:25.934 板卡初始化失败！ 
+ERROR 2021-05-28T15:11:22.890 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:11:22.902 The program starts normally 
+ERROR 2021-05-28T15:11:22.902 板卡初始化失败！ 
+ERROR 2021-05-28T15:12:02.423 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:12:02.435 The program starts normally 
+ERROR 2021-05-28T15:12:02.435 板卡初始化失败！ 
+ERROR 2021-05-28T15:13:03.433 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:13:03.445 The program starts normally 
+ERROR 2021-05-28T15:13:03.445 板卡初始化失败！ 
+ERROR 2021-05-28T15:29:09.400 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:29:09.412 The program starts normally 
+ERROR 2021-05-28T15:29:09.412 板卡初始化失败！ 
+ERROR 2021-05-28T15:34:03.322 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:34:03.333 The program starts normally 
+ERROR 2021-05-28T15:34:03.333 板卡初始化失败！ 
+ERROR 2021-05-28T15:36:31.430 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:36:31.443 The program starts normally 
+ERROR 2021-05-28T15:36:31.443 板卡初始化失败！ 
+ERROR 2021-05-28T15:39:11.431 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:39:11.442 The program starts normally 
+ERROR 2021-05-28T15:39:11.442 板卡初始化失败！ 
+ERROR 2021-05-28T15:43:22.404 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:43:22.415 The program starts normally 
+ERROR 2021-05-28T15:43:22.415 板卡初始化失败！ 
+ERROR 2021-05-28T15:44:18.884 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:44:18.896 The program starts normally 
+ERROR 2021-05-28T15:44:18.896 板卡初始化失败！ 
+ERROR 2021-05-28T15:45:17.981 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:45:17.993 The program starts normally 
+ERROR 2021-05-28T15:45:17.993 板卡初始化失败！ 
+ERROR 2021-05-28T15:55:19.432 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T15:55:19.443 The program starts normally 
+ERROR 2021-05-28T15:55:19.443 板卡初始化失败！ 
+ERROR 2021-05-28T16:24:01.886 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T16:24:01.898 The program starts normally 
+ERROR 2021-05-28T16:24:01.899 板卡初始化失败！ 
+ERROR 2021-05-28T16:24:44.956 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T16:24:44.968 The program starts normally 
+ERROR 2021-05-28T16:24:44.968 板卡初始化失败！ 
+ERROR 2021-05-28T16:26:59.910 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T16:26:59.921 The program starts normally 
+ERROR 2021-05-28T16:26:59.921 板卡初始化失败！ 
+ERROR 2021-05-28T16:27:46.421 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T16:27:46.432 The program starts normally 
+ERROR 2021-05-28T16:27:46.432 板卡初始化失败！ 
+ERROR 2021-05-28T16:33:21.909 5-error Qlog 日志记录模块启动 
+INFO  2021-05-28T16:33:21.921 The program starts normally 
+ERROR 2021-05-28T16:33:21.921 板卡初始化失败！ 

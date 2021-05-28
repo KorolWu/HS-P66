@@ -30,8 +30,27 @@ MainWindow::~MainWindow()
 
 void MainWindow::start()
 {
-//    MotionControl control;
-//    control.testTimeOut(2000);
+    MotionControl control;
+    QMap<int,int> position;
+    QMap<int,int> position1;
+    position.insert(18,0);
+    position.insert(19,0);
+    position.insert(20,0);
+
+    position1.insert(18,-20000);
+    position1.insert(19,15000);
+    position1.insert(20,1181);
+    bool flag = true;
+    for(int i = 0; i < 25; i++)
+    {
+        if(flag)
+        {
+            control.runPosition(position);
+        }
+        else
+            control.runPosition(position1);
+        flag = !flag;
+    }
 }
 ///
 /// \brief MainWindow::initParameter
@@ -48,7 +67,10 @@ void MainWindow::initParameter()
         getIniParameter(axisId);
 
     }
-    qDebug()<<ShareData::GetInstance()->m_axisMap.size();
+    if(ShareData::GetInstance()->m_axisMap.size() != 18)
+    {
+        QLOG_ERROR()<<"读取配置文件失败，请检查文件是否存在或完整";
+    }
 }
 
 void MainWindow::getIniParameter(const int axisId)
@@ -111,11 +133,13 @@ void MainWindow::initMainUI()
     m_reset->setIcon(QIcon(":/src/Image/reset_o"));
 
     m_emg = new QPushButton("急停",this);
+    connect(m_emg,&QPushButton::clicked,this,&MainWindow::emgStop);
     m_emg->resize(ShareData::GetInstance()->m_width/20,ShareData::GetInstance()->m_heitht/17);
     m_emg->move(ShareData::GetInstance()->m_width/10*7+offect+160,15);
     m_emg->setIcon(QIcon(":/src/Image/emg"));
 
     m_home= new QPushButton("原点",this);
+    connect(m_home,&QPushButton::clicked,this,&MainWindow::home);
     m_home->resize(ShareData::GetInstance()->m_width/20,ShareData::GetInstance()->m_heitht/17);
     m_home->move(ShareData::GetInstance()->m_width/10*6+offect+230,15);
     m_home->setIcon(QIcon(":/src/Image/home"));
@@ -141,11 +165,14 @@ void MainWindow::initMainUI()
     p_axisCheck = new AxisCheck(m_MainWidget);
     p_axisCheck->hide();
 
-    p_visionForm = new VisionFrom(m_MainWidget);
+    p_visionForm = new VisionUi(m_MainWidget);
     p_visionForm->hide();
 
     p_parameter = new ParameterFrom(m_MainWidget);
     p_parameter->hide();
+
+    p_xxy = new XXYForm(m_MainWidget);
+    p_xxy->hide();
 
 }
 
@@ -204,7 +231,7 @@ void MainWindow::initLogInstance()
     Logger& logger = Logger::instance();
     logger.setLoggingLevel(QsLogging::TraceLevel);
 
-//    // 添加文件为目的地
+//  添加文件为目的地
     const QString sLogPath(QDir(QApplication::applicationDirPath()).filePath("log.txt"));
     DestinationPtr fileDestination(DestinationFactory::MakeFileDestination(
                                        sLogPath, EnableLogRotation, MaxSizeBytes(512*1024), MaxOldLogCount(5)));
@@ -223,11 +250,11 @@ void MainWindow::initLogInstance()
     // 打印日志
 //    QLOG_TRACE() << "1-trace msg";
 //    QLOG_DEBUG() << "2-debug msg";
-    QLOG_INFO() << "3-info msg";
-    QLOG_WARN() << "4-warn msg";
-    QLOG_ERROR() << "5-error msg";
+//    QLOG_INFO() << "3-info msg";
+//    QLOG_WARN() << "4-warn msg";
+//    QLOG_ERROR() << "5-error msg";
      QLOG_ERROR() << "5-error Qlog 日志记录模块启动";
-    QLOG_FATAL()  << "6-fatal msg";
+
 }
 
 void MainWindow::onTreeviewClicked(const QModelIndex &index)
@@ -251,6 +278,10 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     {
         p_visionForm->show();
     }
+    else if (row_name == "CCD_2")
+    {
+        p_xxy->show();
+    }
 }
 
 int MainWindow::initAdlinkDriver(const QString &fileName)
@@ -266,5 +297,46 @@ int MainWindow::initAdlinkDriver(const QString &fileName)
 void MainWindow::appendLog(const QString &message, int level)
 {
     m_pLogText->append(message + " " + QString::number(level));
+}
+
+///
+/// \brief MainWindow::home
+///
+void MainWindow::home()
+{
+    MotionControl control;
+    QVector<int> axisVec;
+    axisVec.append(16);
+    axisVec.append(20);
+    axisVec.append(6);
+    axisVec.append(7);
+    axisVec.append(15);
+    if(control.goHomes(axisVec))
+    {
+        QLOG_INFO()<<"回原点第一段成功";
+    }
+    else
+    {
+        QLOG_INFO()<<"回原点第一段失败";
+        return;
+    }
+     QVector<int> axisVec2;
+     axisVec2.append(4);
+     axisVec2.append(5);
+     axisVec2.append(0);//上载台Y
+    if(control.goHomes(axisVec2))
+    {
+         QLOG_INFO()<<"回原点第二段成功";
+    }
+
+}
+
+void MainWindow::emgStop()
+{
+    MotionControl control;
+    QVector<int> axisVec;
+    axisVec<<0<<1<<2<<3<<4<<5<<6<<7<<14<<15<<16<<17<<18<<19<<20<<21;
+    control.axisStop_v(axisVec);
+
 }
 

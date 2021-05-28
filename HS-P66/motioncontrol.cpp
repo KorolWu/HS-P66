@@ -157,6 +157,18 @@ bool MotionControl::absolutMove(int axisId, int trapos, int v)
 
 }
 
+bool MotionControl::relativeMove(int axisId, int interval, int v)
+{
+    //执行一个绝对运动。
+    if( ((APS_motion_io_status(axisId) >> MIO_SVON ) & 1 ) == 0 )
+    {
+        APS_set_servo_on( axisId, 1 );
+        QThread::msleep( 50 ); // Wait stable.
+    }
+    APS_relative_move(axisId,interval,v);
+    return true;
+}
+
 void MotionControl::delay_msc(int msc)
 {
     QEventLoop loop;
@@ -269,6 +281,216 @@ bool MotionControl::goHome(const int axisId,int maxV, int mode, int acc, int dir
         qDebug()<<"home move success";
         return  true;
     }
+}
+
+///
+/// \brief MotionControl::goHomes 多轴同时回原点 没有考虑励磁  当有错误发生时其他轴要不要停止
+/// \param axisVec 轴ID集合
+/// \return
+///
+bool MotionControl::goHomes(const QVector<int> &axisVec)
+{
+    int return_code = -1;
+    int msts;
+    for(int i = 0;i < axisVec.size();i++)
+    {
+        int axisId = axisVec.at(i);
+        APS_set_axis_param( axisId, PRA_HOME_MODE, 0 ); //Set home mode
+        APS_set_axis_param( axisId, PRA_HOME_DIR, 1 ); //Set home direction
+        APS_set_axis_param( axisId, PRA_HOME_CURVE, 0 ); // Set acceleration pattern (T-curve)
+        APS_set_axis_param( axisId, PRA_HOME_VO, 50000 ); // Set homing
+        APS_set_axis_param( axisId, PRA_HOME_EZA, 0 ); // Set homing
+        APS_set_axis_param( axisId, PRA_HOME_SHIFT, 0 ); // Set homing
+        APS_set_axis_param( axisId, PRA_HOME_POS, 0 ); // Set homing
+        if(ShareData::GetInstance()->m_axisMap.contains(axisId))
+        {
+            APS_set_axis_param( axisId, PRA_HOME_ACC, ShareData::GetInstance()->m_axisMap[axisId].acc); // Set homing acceleration rate
+            APS_set_axis_param( axisId, PRA_HOME_VM, ShareData::GetInstance()->m_axisMap[axisId].homeVmax ); // Set homing maximum velocity.
+        }
+        // 1. servo ON
+        if(servoOn(axisId) == false)
+        {
+            QLOG_ERROR()<<"轴 "<<axisId<<"励磁失败";
+            axisStop_v(axisVec);
+            return false;
+        }
+        // 2. Start home move
+        return_code = APS_home_move(axisId); //Start homing
+        if( return_code != ERR_NoError )
+        {
+            /* Error handling */
+            axisStop_v(axisVec);
+            QLOG_ERROR()<<"轴 "<<axisId<<"执行回原点指令是失败";
+            return false;
+        }
+    }
+    // 检测vec里面的轴 是否都回原点成功
+    QMap<int,bool> axisOrgState;
+    struct timeval ws,we;
+    double timeUseWait = 0;
+    gettimeofday(&ws,nullptr);
+    do{
+        for(int i = 0;i < axisVec.size();i++)
+        {
+            int axisId = axisVec.at(i);
+            msts = APS_motion_status( axisId );// Get motion status
+            delay_msc(100);
+            msts = ( msts >> MTS_HMV ) & 1; // Get motion done bit
+            if(msts == 0 ) //回原点动作结束
+            {
+                if(axisOrgState.contains(axisId))
+                {
+                    axisOrgState[axisId] = true;
+                    //QLOG_INFO()<<"axis"<<axisId<<"= true;"<<axisOrgState.size()<<" vec Size ="<<axisVec.size();
+                }
+                else
+                {
+                    axisOrgState.insert(axisId,true);
+                    //QLOG_INFO()<<"axis"<<axisId<<"insert Map"<<axisOrgState.size()<<" vec Size ="<<axisVec.size();
+                }
+            }
+        }
+        gettimeofday(&we,nullptr);
+        delay_msc(10);
+        timeUseWait = 1000 *(we.tv_sec - ws.tv_sec) + 0.001*(we.tv_usec - ws.tv_usec);
+        if(timeUseWait >= 60000)
+        {
+            QLOG_ERROR()<<"回原点超时";
+            axisStop_v(axisVec);
+            return false;
+        }
+       //QLOG_INFO()<<"insert Map="<<axisOrgState.size()<<" vec Size ="<<axisVec.size();
+    }while( axisVec.size() != axisOrgState.size());
+    // 检测vec里面的轴 是否都是正常停止的
+    for(int i = 0;i < axisVec.size();i++)
+    {
+        int axisId = axisVec.at(i);
+        delay_msc(100);
+        msts = APS_motion_status( axisId );// Get motion status
+        msts = ( msts >> MTS_ASTP ) & 1; // Get motion done bit
+        if(msts != 0 )
+        {
+            I32 stop_code;
+            APS_get_stop_code( axisId, &stop_code );
+            QLOG_ERROR()<<"轴"<<axisId<<"回原点失败 错误代码："<<stop_code;
+            return false;
+        }
+    }
+    return true;
+
+}
+
+///
+/// \brief MotionControl::axisStop_v 多轴停止
+/// \param axisVec 轴集合
+/// \return
+///
+bool MotionControl::axisStop_v(const QVector<int> &axisVec)
+{
+    for(int i = 0;i < axisVec.size();i ++)
+    {
+        int axisId = axisVec.at(i);
+        APS_emg_stop(axisId);
+        delay_msc(30);
+    }
+    return true;
+}
+
+///
+/// \brief MotionControl::runPosition pp模式 多轴同时运动
+/// \param posMap <axisID,position>
+/// \return true = success
+///
+bool MotionControl::runPosition(const QMap<int, int> &posMap)
+{
+    QVector<int> axisVec;
+    for(auto it = posMap.begin();it != posMap.end();it++)
+    {
+        axisVec<<it.key();
+    }
+    for(auto it = posMap.begin();it != posMap.end();it++)
+    {
+         int axisId  = it.key();
+         int trapos = it.value();
+         int v = 5000;
+         if( ((APS_motion_io_status(axisId) >> MIO_SVON ) & 1 ) == 0 )
+         {
+             APS_set_servo_on( axisId, 1 );
+             QThread::msleep( 50 ); // Wait stable.
+         }
+         if(ShareData::GetInstance()->m_axisMap.contains(axisId))
+         {
+             APS_set_axis_param(axisId, PRA_ACC, ShareData::GetInstance()->m_axisMap[axisId].acc ); //设置加速度
+             APS_set_axis_param(axisId, PRA_DEC, ShareData::GetInstance()->m_axisMap[axisId].dcc ); //设置减速度
+             v = ShareData::GetInstance()->m_axisMap[axisId].vMax;
+         }
+        I32 ret = APS_absolute_move(axisId, trapos, v);
+        if(ret != ERR_NoError)
+        {
+            //执行相对运动时出现故障
+            axisStop_v(axisVec);
+            QLOG_ERROR()<<"在多轴执行绝对运动时发生故障";
+            return false;
+        }
+    }
+    QMap<int,bool> stopState;
+    stopState.clear();
+    struct timeval ws,we;
+    double timeUseWait = 0;
+    gettimeofday(&ws,nullptr);
+    while(true)
+    {
+        int msts = 0;
+        for(auto it = posMap.begin();it != posMap.end();it++)
+        {
+            if(false == stopState.contains(it.key()))
+            {
+                msts = ( APS_motion_status(it.key()) >> MTS_NSTP) & 1;// Get motion status
+                if(msts == 1)
+                {
+                    if(stopState.contains(it.key()))
+                    {
+                        stopState[it.key()] = true;
+                    }
+                    else
+                        stopState.insert(it.key(),true);
+                }
+            }
+            if(stopState.size() == posMap.size())
+                return true;
+            delay_msc(50);
+        }
+        gettimeofday(&we,nullptr);
+        delay_msc(50);
+        timeUseWait = 1000 *(we.tv_sec - ws.tv_sec) + 0.001*(we.tv_usec - ws.tv_usec);
+        if(timeUseWait >= 60000)
+        {
+            axisStop_v(axisVec);
+            QLOG_ERROR()<<"在多轴执行绝对运动时超时";
+            return false;
+        }
+    }
+
+}
+
+bool MotionControl::servoOn(int axisId)
+{
+    I32 ret = APS_motion_io_status(axisId);
+    if( 1 != ((ret >> MIO_SVON ) & 1) )
+    {
+        ret = APS_set_servo_on( axisId, 1 );
+        if(ret != ERR_NoError)
+        {
+            return false;
+        }
+        else
+        {
+           return true;
+        }
+        QThread::msleep( 100 ); // Wait stable.
+    }
+    else
+        return true;
 }
 int MotionControl::gettimeofday(struct timeval *tp, void *tzp)
 {

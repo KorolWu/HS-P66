@@ -3,6 +3,9 @@
 #include <QString>
 #include <QObject>
 #include <QMap>
+#include "QsLog.h"
+#include "QsLogDest.h"
+#include "QsLogLevel.h"
 #include "DataStruct.h"
 
 class ShareData
@@ -20,6 +23,9 @@ public:
     QMap <int,DIInfostru> m_DI_Status;
     //carNum, axisStruct
     QMap <int,AxisStruct> m_axisMap;
+
+    //axis,curPosition
+    QMap <int,long int> m_axisPositonMap;
 };
 
 #endif // SHAREDATA_H

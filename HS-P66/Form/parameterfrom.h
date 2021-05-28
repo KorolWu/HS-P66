@@ -15,7 +15,7 @@ class ParameterFrom : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ParameterFrom(QWidget *parent = nullptr);
+     ParameterFrom(QWidget *parent = nullptr);
 
 private:
     QWidget* m_pcontainer;

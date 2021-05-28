@@ -15,6 +15,8 @@
 #include <QObject>
 #include <QThread>
 #include <QDebug>
+#include <QMap>
+#include <QVector>
 
 ///
 /// \brief The MotionControl class
@@ -28,19 +30,25 @@ private:
     I32 m_carName = 88;
 public:
     MotionControl();
-    int initBoard();
-    I32 getCarName();
+    int  initBoard();
+    I32  getCarName();
     bool isInitialed();
     void delay_msc(int msc);
     void testTimeOut(int msc);
     bool loadBoardParameter(QString fileName);
     bool outPutDo(int carNum, long bit, int value);
-    int getIoStatus(const int &carId,const int di_bit);
+    int  getIoStatus(const int &carId,const int di_bit);
     bool airActionOn(int carNum, int output, int mov);
     bool airActionOff(int carNum, int output, int org);
     bool absolutMove(int axisId, int trapos, int v = 10000);
+    bool relativeMove(int axisId, int interval,int v= 10000);
     bool waitNormalStop(int axis_id,int timeout = 30000);
     bool goHome(const int axisId, int maxV, int mode = 0, int acc = 100000, int dir = 1, int curve = 0);
+    bool goHomes(const QVector<int> &axisVec);
+    bool axisStop_v(const QVector<int> &axisVec);
+    bool runPosition(const QMap<int,int> &posMap);
+    //bool emgStop();
+    bool servoOn(int axisId);
 };
 
 #endif // MOTIONCONTROL_H

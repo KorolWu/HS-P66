@@ -148,47 +148,6 @@ void AxisInfoUI::RunORG()
     }
 
     m.goHome(m_axisId,vMax,0,acc,1,0);
-    //    //This example shows how home move operates
-    //    I32 return_code;
-    //    I32 msts;
-    //    // 1. Select home mode and config home parameters
-    //    APS_set_axis_param( m_axisId, PRA_HOME_MODE, 0 ); //Set home mode
-    //    APS_set_axis_param( m_axisId, PRA_HOME_DIR, 1 ); //Set home direction
-    //    APS_set_axis_param( m_axisId, PRA_HOME_CURVE, 0 ); // Set acceleration pattern (T-curve)
-    //    APS_set_axis_param( m_axisId, PRA_HOME_ACC, 1000 ); // Set homing acceleration rate
-    //    APS_set_axis_param( m_axisId, PRA_HOME_VM, 5000 ); // Set homing maximum velocity.
-    //    APS_set_axis_param( m_axisId, PRA_HOME_VO, 200 ); // Set homing
-    //    APS_set_axis_param( m_axisId, PRA_HOME_EZA, 0 ); // Set homing
-    //    APS_set_axis_param( m_axisId, PRA_HOME_SHIFT, 0 ); // Set homing
-    //    APS_set_axis_param( m_axisId, PRA_HOME_POS, 0 ); // Set homing
-    //    // 2. Start home move
-    //    return_code = APS_home_move(m_axisId); //Start homing
-    //    if( return_code != ERR_NoError )
-    //    {
-    //        /* Error handling */
-    //        qDebug()<<"home move failed";
-    //        return;
-    //    }
-    //    // 3. Wait for home move do ne,
-    //    do{
-    //        QThread::msleep(100);
-    //        msts = APS_motion_status( m_axisId );// Get motion status
-    //        msts = ( msts >> MTS_HMV ) & 1; // Get motion done bit
-    //    }while( msts != 0 );
-    //    // 4. Check home move success or not
-    //    msts = APS_motion_status( m_axisId ); // Get motion status
-    //    msts = ( msts >> MTS_ASTP ) & 1; // Get abnormal stop bit
-    //    if( msts != 0 )
-    //    {
-    //        // Error handling ...
-    //        I32 stop_code;
-    //        APS_get_stop_code( m_axisId, &stop_code );
-    //        qDebug()<<"home move abnormal stop";
-    //    }else
-    //    {
-    //        // Homing success.
-    //        qDebug()<<"home move success";
-    //    }
 }
 
 void AxisInfoUI::RunSon()
@@ -268,8 +227,8 @@ void AxisInfoUI::RunRight()
     if(ShareData::GetInstance()->m_axisMap.contains(m_axisId))
     {
         qDebug()<<"<<vmax="<<ShareData::GetInstance()->m_axisMap[m_axisId].vMax<<"0.? = "<<GetTraSpeed()*0.01;
-        qDebug()<<"<<vmax="<<ShareData::GetInstance()->m_axisMap[m_axisId].acc<<"0.? = "<<GetTraSpeed()*0.01;
-        qDebug()<<"<<vmax="<<ShareData::GetInstance()->m_axisMap[m_axisId].dcc<<"0.? = "<<GetTraSpeed()*0.01;
+        qDebug()<<"<<acc="<<ShareData::GetInstance()->m_axisMap[m_axisId].acc;
+        qDebug()<<"<<dcc="<<ShareData::GetInstance()->m_axisMap[m_axisId].dcc;
         APS_set_axis_param(m_axisId,PRA_JG_ACC,ShareData::GetInstance()->m_axisMap[m_axisId].acc);
         APS_set_axis_param(m_axisId,PRA_JG_DEC,ShareData::GetInstance()->m_axisMap[m_axisId].dcc);
         APS_set_axis_param(m_axisId,PRA_JG_VM,ShareData::GetInstance()->m_axisMap[m_axisId].vMax*(GetTraSpeed()*0.01));
@@ -342,5 +301,9 @@ void AxisInfoUI::timerUpInputData()
     }
     long int position = 0;
     APS_get_position(m_axisId,&position);
+    if(ShareData::GetInstance()->m_axisPositonMap.contains(m_axisId))
+        ShareData::GetInstance()->m_axisPositonMap[m_axisId] = position;
+    else
+        ShareData::GetInstance()->m_axisPositonMap.insert(m_axisId,position);
     curPos->setText(QString("%1").arg(position));
 }

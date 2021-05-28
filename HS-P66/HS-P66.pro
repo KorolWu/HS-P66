@@ -26,7 +26,11 @@ SOURCES += \
     Form/parameterfrom.cpp \
     Form/pushbutton.cpp \
     Form/visionfrom.cpp \
+    Form/visionui.cpp \
+    Form/xxyform.cpp \
+    Units/XXYConverter.cpp \
     Units/c_systemlogmng.cpp \
+    Units/cameradevice.cpp \
     main.cpp \
     mainwindow.cpp \
     motioncontrol.cpp \
@@ -44,7 +48,11 @@ HEADERS += \
     Form/parameterfrom.h \
     Form/pushbutton.h \
     Form/visionfrom.h \
+    Form/visionui.h \
+    Form/xxyform.h \
+    Units/XXYConverter.h \
     Units/c_systemlogmng.h \
+    Units/cameradevice.h \
     Units/myIniconfig.h \
     mainwindow.h \
     motioncontrol.h \
@@ -55,7 +63,8 @@ FORMS += \
 #INCLUDEPATH += $$PWD/ADLINK
 INCLUDEPATH += $$PWD/SDK/include
 LIBS += -L$$PWD/SDK/lib/ -lAPS168x64
-LIBS += -L$$PWD/SDK/lib -lQsLog2
+LIBS += -L$$PWD/SDK/lib/ -lQsLog2
+LIBS += -L$$PWD/SDK/lib/ -lGxIAPICPPEx
 #LIBS += -L$$PWD/ -lAPS168x64
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
