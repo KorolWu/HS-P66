@@ -49,6 +49,9 @@ public:
     bool runPosition(const QMap<int,int> &posMap);
     //bool emgStop();
     bool servoOn(int axisId);
+    bool getCurrentPos(const int &axisId, I32 &currentPosition);
+    bool runJog(const int &axisId, const int &dir);
+    bool stopJog(const int &axisId);
 };
 
 #endif // MOTIONCONTROL_H

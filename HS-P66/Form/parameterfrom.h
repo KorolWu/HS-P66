@@ -39,8 +39,8 @@ private:
 //    AxisParameterSet *m_A21;
 //    AxisParameterSet *m_A22;
 //    AxisParameterSet *m_A23;
-    QPushButton *m_pSaveBtn;
-    QPushButton *m_pReadBtn;
+//    QPushButton *m_pSaveBtn;
+//    QPushButton *m_pReadBtn;
     QVBoxLayout *m_vbox;
     QVector<AxisParameterSet*> m_axisVec;
 signals:

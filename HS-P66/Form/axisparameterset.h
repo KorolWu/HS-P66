@@ -7,8 +7,10 @@
 #include <QLabel>
 #include <QDebug>
 #include "DataStruct.h"
+#include "databasemanager.h"
 #include <Units/myIniconfig.h>
 #include <QGroupBox>
+#include <QPushButton>
 #include <QHBoxLayout>
 
 class AxisParameterSet : public QWidget
@@ -29,6 +31,7 @@ private:
     QSpinBox *m_dcc;
     QSpinBox *m_acc;
     QSpinBox *m_hVmax;
+    QPushButton *m_saveBtn;
     void initUI();
     QString axisId2axisName(int id);
 public slots:

@@ -492,6 +492,45 @@ bool MotionControl::servoOn(int axisId)
     else
         return true;
 }
+
+bool MotionControl::getCurrentPos(const int &axisId, I32 &currentPosition)
+{
+    if(APS_get_position(axisId,&currentPosition) == ERR_NoError)
+        return true;
+    else
+        return false;
+}
+
+bool MotionControl::runJog(const int &axisId,const int &dir)
+{
+    APS_jog_mode_switch(axisId, 1 ); //打开点动模式。
+    APS_set_axis_param(axisId,PRA_JG_MODE,0);
+    APS_set_axis_param(axisId,PRA_JG_DIR,dir);
+    if(ShareData::GetInstance()->m_axisMap.contains(axisId))
+    {
+        APS_set_axis_param(axisId,PRA_JG_ACC,ShareData::GetInstance()->m_axisMap[axisId].acc);
+        APS_set_axis_param(axisId,PRA_JG_DEC,ShareData::GetInstance()->m_axisMap[axisId].dcc);
+        APS_set_axis_param(axisId,PRA_JG_VM,ShareData::GetInstance()->m_axisMap[axisId].vMax*0.3);
+    }
+    else
+    {
+        APS_set_axis_param(axisId,PRA_JG_ACC,10000);
+        APS_set_axis_param(axisId,PRA_JG_VM,1000);
+    }
+    //是否需要检查励磁
+    servoOn(axisId);
+    APS_jog_start(axisId,0);// jog_start
+    APS_jog_start(axisId,1);// jog_start
+    return true;
+}
+
+bool MotionControl::stopJog(const int &axisId)
+{
+    APS_jog_start(axisId,1);// jog_start
+    APS_jog_start(axisId,0);// jog_start
+    APS_jog_mode_switch(axisId, 0 ); //关闭点动模式。
+    return true;
+}
 int MotionControl::gettimeofday(struct timeval *tp, void *tzp)
 {
     Q_UNUSED(tzp)

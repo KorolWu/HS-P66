@@ -14,12 +14,21 @@ AxisParameterSet::AxisParameterSet(int axisId, QSize size, QWidget *parent) : QW
 /// 根据轴号保存该轴的加减速和回原点最大速度
 void AxisParameterSet::saveParameter()
 {
-    MyIniConfig f;
-    f.Config();
-    f.Set(QString("Axis%1").arg(m_axisId),"Vmax",m_vMax->value());
-    f.Set(QString("Axis%1").arg(m_axisId),"Acc",m_acc->value());
-    f.Set(QString("Axis%1").arg(m_axisId),"Dcc",m_dcc->value());
-    f.Set(QString("Axis%1").arg(m_axisId),"HomeVmax",m_hVmax->value());
+//    MyIniConfig f;
+//    f.Config();
+//    f.Set(QString("Axis%1").arg(m_axisId),"Vmax",m_vMax->value());
+//    f.Set(QString("Axis%1").arg(m_axisId),"Acc",m_acc->value());
+//    f.Set(QString("Axis%1").arg(m_axisId),"Dcc",m_dcc->value());
+//    f.Set(QString("Axis%1").arg(m_axisId),"HomeVmax",m_hVmax->value());
+
+    //save sqlit
+    QString axisId = QString("Axis_%1").arg(m_axisId);
+    QStringList names;
+    names<<"acc"<<"dec"<<"v_max"<<"home_vMax";
+    QStringList values;
+    values<<QString::number(m_acc->value())<<QString::number(m_dcc->value())<<QString::number(m_vMax->value())<<QString::number(m_hVmax->value());
+    QString ex = QString("axis_name = '%1'").arg(axisId);
+    DataBaseManager::GetInstance()->ExcUpdateDb("t_axisInfo",names,values,ex);
 }
 ///
 /// \brief AxisParameterSet::setParameter
@@ -29,7 +38,7 @@ void AxisParameterSet::setParameter(const AxisStruct &axisStruct)
 {
    m_vMax->setValue(axisStruct.vMax);
    m_acc->setValue(axisStruct.acc);
-    m_dcc->setValue(axisStruct.dcc);
+   m_dcc->setValue(axisStruct.dcc);
    m_hVmax->setValue(axisStruct.homeVmax);
 }
 
@@ -52,7 +61,7 @@ void AxisParameterSet::initUI()
     m_hbox->addWidget(acc);
     m_hbox->addWidget(m_acc);
     m_hbox->addStretch();
-    QLabel *dcc = new QLabel("Dcc: ");
+    QLabel *dcc = new QLabel("Dec: ");
     m_dcc = new QSpinBox();
     m_dcc->setMaximum(9000000);
     m_hbox->addWidget(dcc);
@@ -63,8 +72,15 @@ void AxisParameterSet::initUI()
     m_hVmax->setMaximum(9000000);
     m_hbox->addWidget(max_hove_v);
     m_hbox->addWidget(m_hVmax);
+    m_hbox->addStretch();
+    m_saveBtn = new QPushButton("Save");
+    m_saveBtn->setIcon(QIcon(":/src/Image/save.png"));
+    m_saveBtn->setFixedSize(66,35);
+    connect(m_saveBtn,&QPushButton::clicked,this,&AxisParameterSet::saveParameter);
+    m_hbox->addWidget(m_saveBtn);
+
     m_groupBox->setLayout(m_hbox);
-    this->setStyleSheet("QLabel{font: 20px;}QSpinBox{Padding-right:20px;Border:2px solid white;font:20px; Min-width:90px;Min-height:25px;border-radius:5px;}QGroupBox{border: 2px solid white;border-radius:8px;margin-top:6px;}QGroupBox:title{color:rgb(24,24,58);subcontrol-origin: margin;left: 10px;}QGroupBox{font: 22px;}");
+    this->setStyleSheet("QLabel{font: 18px;}QSpinBox{Padding-right:20px;Border:2px solid white;font:20px; Min-width:90px;Min-height:25px;border-radius:5px;}QGroupBox{border: 2px solid white;border-radius:8px;margin-top:6px;}QGroupBox:title{color:rgb(24,24,58);subcontrol-origin: margin;left: 10px;}QGroupBox{font: 20px;}");
 
 }
 

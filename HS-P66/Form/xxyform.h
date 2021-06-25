@@ -6,12 +6,15 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include <QSpinBox>
+#include <QDoubleSpinBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QDebug>
 #include "Units/XXYConverter.h"
+#include "sharedata.h"
+#include "motioncontrol.h"
 
 ///
 /// \brief The XXYForm class
@@ -21,13 +24,13 @@ class XXYForm : public QWidget
 public:
     XXYForm(QWidget *parent = nullptr);
 private:
-    QSpinBox *m_pAngle;
+    QDoubleSpinBox *m_pAngle;
     QSpinBox *m_pDistance;
     QPushButton *m_btn[6];
     QSpinBox *m_pX1;
     QSpinBox *m_pX2;
     QSpinBox *m_pY1;
-    QSpinBox *m_pA;
+    QDoubleSpinBox *m_pA;
     QVBoxLayout *m_pVbox;
     void initUi();
 private slots:

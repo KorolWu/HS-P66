@@ -118,6 +118,7 @@ bool VisionUi::initCameraDevice()
 
 void VisionUi::onMoveButtonClicked()
 {
+    ShareData::GetInstance()->m_isHomePosition = false;
     QString objName = sender()->objectName();
     MotionControl m;
     if(objName == "Y+")

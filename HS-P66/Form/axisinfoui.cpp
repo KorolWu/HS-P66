@@ -214,6 +214,8 @@ void AxisInfoUI::RunLeft()
         APS_set_axis_param(m_axisId,PRA_JG_VM,1000);
     }
     //APS_set_axis_param(m_axisId,PRA_JG_STOP,10000);
+    //不再满足启动条件
+    ShareData::GetInstance()->m_isHomePosition = false;
     checkIsServoON();
     APS_jog_start(m_axisId,0);// jog_start
     APS_jog_start(m_axisId,1);// jog_start
@@ -239,6 +241,8 @@ void AxisInfoUI::RunRight()
         APS_set_axis_param(m_axisId,PRA_JG_VM,1000);
     }
     //APS_set_axis_param(m_axisId,PRA_JG_STOP,10000);
+    //不再满足启动条件
+    ShareData::GetInstance()->m_isHomePosition = false;
     checkIsServoON();
     APS_jog_start(m_axisId,0);// jog_start
     APS_jog_start(m_axisId,1);// jog_start
@@ -250,6 +254,8 @@ void AxisInfoUI::RunQuickFixPos()
     APS_set_axis_param(m_axisId, PRA_ACC, 10000 ); //设置加速度
     APS_set_axis_param(m_axisId, PRA_DEC, 10000 ); //设置减速度
     int Trapos = dsb->value();
+    //不再满足启动条件
+    ShareData::GetInstance()->m_isHomePosition = false;
     //执行一个绝对运动。
     if( 0 == ((APS_motion_io_status( m_axisId ) >> MIO_SVON ) & 1 ))
     {

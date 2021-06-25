@@ -7,7 +7,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    initParameter();
+    //程序当前运行目录
+    m_path = QCoreApplication::applicationDirPath();
+   // initParameter();
+    initSqlite();
     initMainUI();
     initLogInstance();
     initLWidget();
@@ -20,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
     else
         QLOG_ERROR()<<"板卡初始化失败！";
+    QLOG_INFO()<<m_path;
 }
 
 MainWindow::~MainWindow()
@@ -30,27 +34,76 @@ MainWindow::~MainWindow()
 
 void MainWindow::start()
 {
-    MotionControl control;
-    QMap<int,int> position;
-    QMap<int,int> position1;
-    position.insert(18,0);
-    position.insert(19,0);
-    position.insert(20,0);
-
-    position1.insert(18,-20000);
-    position1.insert(19,15000);
-    position1.insert(20,1181);
-    bool flag = true;
-    for(int i = 0; i < 25; i++)
+    QString status = m_start->text();
+    if(status == "启动")
     {
-        if(flag)
+        //执行启动逻辑
+        m_start->setIcon(QIcon(":/src/Image/star2stop.png"));
+        m_start->setText("停止");
+        //开始前判断是否是起始位
+        if(ShareData::GetInstance()->m_isHomePosition)
         {
-            control.runPosition(position);
+            //启动第一节流道和第二节 正向旋转
+            beginIn(1);
+            //直到载台末端感应到了，停止两个流道
+            if(getGlass())
+            {
+               QLOG_INFO()<<"到达打印位置";
+            }
+            else
+                QLOG_INFO()<<"到达打印位置途中失败";
+
+            //载台气缸下压固定住物料
+            //去打印位置
+            //喷头到打印位置
+
+            //开始打印
+           if(printFlow())
+           {
+               QLOG_INFO()<<"打印完成";
+           }
+           delay_msc(500);
+           QMap<int,int> p;
+           MotionControl m;
+           p.insert(0,0);
+           m.runPosition(p);
+           beginIn(0);
+    //        MotionControl control;
+    //        QMap<int,int> position;
+    //        QMap<int,int> position1;
+    //        position.insert(18,0);
+    //        position.insert(19,0);
+    //        position.insert(20,0);
+
+    //        position1.insert(18,-20000);
+    //        position1.insert(19,15000);
+    //        position1.insert(20,1181);
+    //        bool flag = true;
+    //        for(int i = 0; i < 25; i++)
+    //        {
+    //            if(flag)
+    //            {
+    //                control.runPosition(position);
+    //            }
+    //            else
+    //                control.runPosition(position1);
+    //            flag = !flag;
+    //        }
         }
         else
-            control.runPosition(position1);
-        flag = !flag;
+        {
+            QLOG_ERROR()<<"不在初始位置，请先回原点";
+        }
+        m_start->setIcon(QIcon(":/src/Image/start"));
+        m_start->setText("启动");
     }
+    else
+    {
+        //执行停止逻辑
+        m_start->setIcon(QIcon(":/src/Image/start"));
+        m_start->setText("启动");
+    }
+
 }
 ///
 /// \brief MainWindow::initParameter
@@ -71,6 +124,45 @@ void MainWindow::initParameter()
     {
         QLOG_ERROR()<<"读取配置文件失败，请检查文件是否存在或完整";
     }
+}
+
+bool MainWindow::initSqlite()
+{
+  bool result =  DataBaseManager::GetInstance()->OpenDb(m_path+"\\"+"position.db");
+  QStringList names;
+  QStringList values;
+  QSqlQuery query = DataBaseManager::GetInstance()->ExcQueryDb("select * from t_axisInfo;");
+  int axisId = 99;
+  AxisStruct axisStruct;
+  while (query.next()) {
+     QString axisName = query.value("axis_name").toString();//axisName
+     QStringList list = axisName.split("_");
+     axisId = list[1].toInt();
+     axisStruct.acc = query.value("acc").toInt();
+     axisStruct.dcc = query.value("dec").toInt();
+     axisStruct.vMax = query.value("v_max").toInt();
+     axisStruct.homeVmax = query.value("home_vMax").toInt();
+     ShareData::GetInstance()->m_axisMap.insert(axisId,axisStruct);
+  }
+  query = DataBaseManager::GetInstance()->ExcQueryDb("select * from t_point;");
+  while(query.next())
+  {
+      QString pointName = query.value("point_name").toString();
+      QString pointInfo = query.value("point_info").toString();
+      QStringList list = pointInfo.split(";");
+      QMap<int,int> subPos;
+      subPos.clear();
+      foreach (QString str, list) {
+         QStringList p_list = str.split(":");
+          if(p_list.size() == 2)
+          {
+              subPos.insert(p_list[0].toInt(),p_list[1].toInt());
+          }
+      }
+      ShareData::GetInstance()->m_position.insert(pointName,subPos);
+  }
+  qDebug()<<ShareData::GetInstance()->m_position;
+   return result;
 }
 
 void MainWindow::getIniParameter(const int axisId)
@@ -94,6 +186,9 @@ void MainWindow::childrenFormHide()
     p_axisCheck->hide();
     p_visionForm->hide();
     p_parameter->hide();
+    p_xxy->hide();
+    p_positionManager->hide();
+
 
 }
 
@@ -155,7 +250,8 @@ void MainWindow::initMainUI()
     m_pLogText->resize(m_MainWidget->width()-15,m_MainWidget->height()/5-15);
     m_pLogText->setStyleSheet("font-family:Times; font:17px;background:transparent;border-width: 1px;border-color:rgb(150,150,150); border-style: solid;border-radius:10px;");
 
-   // m_MainWidget->setStyleSheet("background-color:rgb(130,130,130)");
+    p_positionManager = new PositionManager(m_MainWidget);
+    p_positionManager->hide();
 
     p_ioForm = new IoForm(m_MainWidget);
     p_ioForm->setObjectName("p_ioForm");
@@ -199,13 +295,15 @@ void MainWindow::initLWidget()
     p_ordersItem = new QStandardItem("参数设置");
     p_ordersItem->setIcon(QIcon(":/src/Image/seting.png"));
     p_loginroleItem = new  QStandardItem("IO监视");
-
     p_singlAxisControl = new QStandardItem("单轴运动");
-
+    p_xxyItem = new QStandardItem("XXY载台");
+    p_positionItem = new QStandardItem("点位管理");
 
     p_standarItem->appendRow(p_ordersItem);
     p_standarItem->appendRow(p_loginroleItem);
     p_standarItem->appendRow(p_singlAxisControl);
+    p_standarItem->appendRow(p_xxyItem);
+    p_standarItem->appendRow(p_positionItem);
 
     p_treeStandarModel->appendRow(p_standarItem);
     p_standarItem = new QStandardItem("视觉管理");
@@ -278,9 +376,13 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     {
         p_visionForm->show();
     }
-    else if (row_name == "CCD_2")
+    else if (row_name == "XXY载台")
     {
         p_xxy->show();
+    }
+    else if (row_name == "点位管理")
+    {
+        p_positionManager->show();
     }
 }
 
@@ -293,6 +395,112 @@ int MainWindow::initAdlinkDriver(const QString &fileName)
         return 0;
     return control.loadBoardParameter(fileName);
 }
+///
+/// \brief MainWindow::beginIn
+/// \return
+///
+bool MainWindow::beginIn(const int &dir)
+{
+   MotionControl m;
+   m.runJog(18,dir);
+   m.runJog(19,dir);
+   delay_msc(6000);
+   m.stopJog(18);
+   m.stopJog(19);
+   QLOG_INFO()<<"进料完成";
+   return true;
+}
+
+bool MainWindow::getGlass()
+{
+    //等待玻璃到载台上
+    MotionControl m;
+    m.outPutDo(0,8,1);
+    m.outPutDo(0,9,1);
+    delay_msc(200);
+    m.outPutDo(0,8,0);
+    m.outPutDo(0,9,0);
+    if(ShareData::GetInstance()->m_position.contains("PointS"))
+    {
+        QMap<int,int> pos = ShareData::GetInstance()->m_position["PointS"];
+       return m.runPosition(pos);
+    }
+    return false;
+}
+
+bool MainWindow::printX()
+{
+     MotionControl m;
+     QMap<int,int> pos;
+     pos.clear();
+     if(ShareData::GetInstance()->m_position.contains("BeginE"))
+     {
+         pos.clear();
+         pos = ShareData::GetInstance()->m_position["BeginE"];
+         if(!m.runPosition(pos))
+         {
+             QLOG_INFO()<<"print flow failed;";
+             return false;
+         }
+     }
+     delay_msc(500);
+    if(ShareData::GetInstance()->m_position.contains("BeginS"))
+    {
+        pos.clear();
+       pos = ShareData::GetInstance()->m_position["BeginS"];
+       if(!m.runPosition(pos))
+       {
+           QLOG_INFO()<<"print flow failed;";
+           return false;
+       }
+    }
+    return true;
+}
+
+bool MainWindow::printFlow()
+{
+    if(ShareData::GetInstance()->m_position.contains("PointS"))
+    {
+        if(false == printX())
+        {
+            QLOG_INFO()<<"打印中出现异常";
+            return false;
+        }
+        delay_msc(800);
+        int begin_y = 0;
+        QMap<int,int> pos = ShareData::GetInstance()->m_position["PointS"];
+        if(pos.contains(0))
+        {
+           begin_y = pos[0];
+           for(int i = 1 ; i < 4; i++)
+           {
+               begin_y =  begin_y + (i*10000);
+               QMap<int,int> p;
+               p.clear();
+               p.insert(0,begin_y);
+                MotionControl m;
+                m.runPosition(p);
+               delay_msc(800);
+               if(false == printX())
+               {
+                   QLOG_INFO()<<"打印中出现异常";
+                   return false;
+               }
+                delay_msc(800);
+           }
+        }
+
+    }
+    return true;
+}
+
+void MainWindow::delay_msc(int msc)
+{
+    QEventLoop loop;
+    QTimer::singleShot(msc,&loop,SLOT(quit()));
+    loop.exec();
+}
+
 
 void MainWindow::appendLog(const QString &message, int level)
 {
@@ -304,16 +512,30 @@ void MainWindow::appendLog(const QString &message, int level)
 ///
 void MainWindow::home()
 {
+    //需要判断里面时候有料，如果有料不可以启动回原点流程
+
     MotionControl control;
     QVector<int> axisVec;
-    axisVec.append(16);
-    axisVec.append(20);
-    axisVec.append(6);
-    axisVec.append(7);
-    axisVec.append(15);
+    axisVec.append(16);//进料z
+    axisVec.append(20);//进料x
+    axisVec.append(6);//外侧相机
+    axisVec.append(7);//内侧相机
+    axisVec.append(15);//喷头z
+    axisVec.append(1);//喷头z 600避让位
+    axisVec.append(2);//喷头z -600避让位
+    axisVec.append(3);//喷头z
     if(control.goHomes(axisVec))
     {
-        QLOG_INFO()<<"回原点第一段成功";
+        QMap<int,int> pos;
+        pos.insert(1,6000);
+        pos.insert(2,-6000);
+        if(control.runPosition(pos))
+           QLOG_INFO()<<"回原点第一段成功";
+        else
+        {
+            QLOG_INFO()<<"回原点第一段失败";
+            return;
+        }
     }
     else
     {
@@ -321,14 +543,20 @@ void MainWindow::home()
         return;
     }
      QVector<int> axisVec2;
-     axisVec2.append(4);
-     axisVec2.append(5);
+
+     axisVec2.append(14);//喷头x
      axisVec2.append(0);//上载台Y
     if(control.goHomes(axisVec2))
     {
          QLOG_INFO()<<"回原点第二段成功";
     }
-
+    else
+    {
+        QLOG_INFO()<<"回原点第二段失败";
+        return;
+    }
+    ShareData::GetInstance()->m_isHomePosition = true;
+    m_home->setEnabled(false);
 }
 
 void MainWindow::emgStop()
