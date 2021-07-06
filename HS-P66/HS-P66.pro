@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -23,7 +23,10 @@ SOURCES += \
     Form/ioform.cpp \
     Form/iomonitor.cpp \
     Form/mainwidget.cpp \
+    Form/nozzlefrom.cpp \
     Form/parameterfrom.cpp \
+    Form/positionfrom.cpp \
+    Form/positionmanager.cpp \
     Form/pushbutton.cpp \
     Form/visionfrom.cpp \
     Form/visionui.cpp \
@@ -31,6 +34,7 @@ SOURCES += \
     Units/XXYConverter.cpp \
     Units/c_systemlogmng.cpp \
     Units/cameradevice.cpp \
+    Units/imageprocess.cpp \
     main.cpp \
     mainwindow.cpp \
     motioncontrol.cpp \
@@ -45,7 +49,10 @@ HEADERS += \
     Form/ioform.h \
     Form/iomonitor.h \
     Form/mainwidget.h \
+    Form/nozzlefrom.h \
     Form/parameterfrom.h \
+    Form/positionfrom.h \
+    Form/positionmanager.h \
     Form/pushbutton.h \
     Form/visionfrom.h \
     Form/visionui.h \
@@ -53,6 +60,7 @@ HEADERS += \
     Units/XXYConverter.h \
     Units/c_systemlogmng.h \
     Units/cameradevice.h \
+    Units/imageprocess.h \
     Units/myIniconfig.h \
     mainwindow.h \
     motioncontrol.h \
@@ -65,6 +73,7 @@ INCLUDEPATH += $$PWD/SDK/include
 LIBS += -L$$PWD/SDK/lib/ -lAPS168x64
 LIBS += -L$$PWD/SDK/lib/ -lQsLog2
 LIBS += -L$$PWD/SDK/lib/ -lGxIAPICPPEx
+LIBS += -L$$PWD/SDK/lib/ -lDataBaseManager
 #LIBS += -L$$PWD/ -lAPS168x64
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -72,11 +81,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 
-win32:CONFIG(release, debug|release): LIBS += -LC:/openCv/opencv/build/x64/vc14/lib/ -lopencv_world452
-else:win32:CONFIG(debug, debug|release): LIBS += -LC:/openCv/opencv/build/x64/vc14/lib/ -lopencv_world452d
-else:unix: LIBS += -LC:/openCv/opencv/build/x64/vc14/lib/ -lopencv_world452
+win32:CONFIG(release, debug|release): LIBS += -LD:/Korol/qt+openCv/opencv/build/x64/vc14/lib/ -lopencv_world452
+else:win32:CONFIG(debug, debug|release): LIBS += -LD:/Korol/qt+openCv/opencv/build/x64/vc14/lib/ -lopencv_world452d
+else:unix: LIBS += -LD:/Korol/qt+openCv/opencv/build/x64/vc14/lib/ -lopencv_world452
 
-INCLUDEPATH += C:/openCv/opencv/build/include
-DEPENDPATH += C:/openCv/opencv/build/include
+INCLUDEPATH += D:/Korol/qt+openCv/opencv/build/include
+DEPENDPATH += D:/Korol/qt+openCv/opencv/build/include
 RESOURCES += \
     resource.qrc

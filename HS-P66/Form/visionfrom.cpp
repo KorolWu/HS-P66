@@ -82,6 +82,11 @@ void VisionFrom::initUI()
     m_closeBtn->move(410,m_height/2+72+interval);
     connect(m_closeBtn,&QPushButton::clicked,this,&VisionFrom::closeCamera);
 
+    m_pCheckerBoardBtn = new QPushButton("棋盘格",m_pGroupBox);
+    m_pCheckerBoardBtn->resize(60,33);
+    m_pCheckerBoardBtn->move(485,m_height/2+72+interval);
+    connect(m_pCheckerBoardBtn,&QPushButton::clicked,this,&VisionFrom::onCheckerBoardClicked);
+
     QLabel *b = new QLabel("曝光：",m_pGroupBox);
     b->move(20,m_height/2+72+interval);
     m_pExpossureEdit = new QSpinBox(m_pGroupBox);
@@ -163,6 +168,8 @@ void VisionFrom::resiveImageData(unsigned char *data)
     m_vision_label->setPixmap(pixmap);
     frame.create(m_matHeight,m_matWidth,CV_8UC1);
     memcpy(frame.data,data,m_matHeight*m_matWidth);
+    //新图像采集标记
+    m_trigger = true;
 }
 
 void VisionFrom::setExpossure()
@@ -194,10 +201,168 @@ void VisionFrom::onTrigger()
     m_pDevice->OnceSnap();
 }
 
+void VisionFrom::onCheckerBoardClicked()
+{
+    Mat image,img_gray;
+    int rowCount = 8;
+    int colCount = 11;
+    int BOARDSIZE[2]{rowCount,colCount};//棋盘格每行每列角点个数
+    vector<vector<Point3f>> objpoints_img;//保存棋盘格上角点的三维坐标
+    vector<Point3f> obj_world_pts;//三维世界坐标
+    vector<vector<Point2f>> images_points;//保存所有角点
+    vector<Point2f> img_corner_points;//保存每张图检测到的角点
+    vector<String> images_path;//创建容器存放读取图像路径
+
+    //frame = imread("C:\\Users\\jian.shen\\Documents\\chessboard.png");
+    if(frame.empty())
+        return;
+   qDebug()<<"channels = "<<frame.channels();
+    //转世界坐标系
+        for (int i = 0; i < BOARDSIZE[1]; i++)
+        {
+            for (int j = 0; j < BOARDSIZE[0]; j++)
+            {
+                obj_world_pts.push_back(Point3f(j, i, 0));
+            }
+        }
+
+
+            //cvtColor(frame, img_gray, COLOR_BGR2GRAY);
+            //检测角点
+            bool found_success = findChessboardCorners(frame, Size(BOARDSIZE[0], BOARDSIZE[1]),
+                img_corner_points,CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_FAST_CHECK | CALIB_CB_NORMALIZE_IMAGE);
+
+            //显示角点
+            if (found_success)
+            {
+                 //迭代终止条件
+                 TermCriteria criteria(TermCriteria::EPS + TermCriteria::COUNT, 30, 0.001);
+
+                 //进一步提取亚像素角点
+                 cornerSubPix(frame, img_corner_points, Size(11, 11),
+                     Size(-1, -1), criteria);
+                 cvtColor(frame,frame,COLOR_GRAY2BGR);
+
+                 //绘制角点
+                 drawChessboardCorners(frame, Size(BOARDSIZE[0], BOARDSIZE[1]),img_corner_points,
+                     found_success);
+
+                 objpoints_img.push_back(obj_world_pts);//从世界坐标系到相机坐标系
+                 images_points.push_back(img_corner_points);
+            }
+            double y_t = 0;
+            int count =0;
+            for(int i = 0;i < img_corner_points.size();i++)
+            {
+
+                if((i+1)%rowCount != 0)
+                {
+                   // y_t += qAbs;
+                    //求出两个角点之间的距离
+                    double x = img_corner_points.at(i).x - img_corner_points.at(i+1).x;
+                    double y = img_corner_points.at(i).y - img_corner_points.at(i+1).y;
+
+                    double linePix = sqrt((x*x)+(y*y));
+                    y_t += linePix;
+                    qDebug()<<"linePix:"<<linePix;
+                    count ++;
+                }
+//                qDebug()<<"x:"<<img_corner_points.at(i).x<<"y:"<<img_corner_points.at(i).y;
+            }
+              qDebug()<<"y_t = "<<y_t<< "counts ="<<count<< "count1="<<(rowCount-1)*colCount;
+            //棋盘格单位长度
+            double c = 0.5;
+            if(y_t != 0)
+            {
+                double pix2mm = c/(y_t/((rowCount-1)*colCount*1.0));
+                qDebug()<<"pix2mm"<<pix2mm;
+                CheckerboardResuleSave("Camera_1",pix2mm);//这里应该是驱动指针的userName
+            }
+          imshow("output", frame);
+
+
+}
+
+///
+/// \brief VisionFrom::CheckerboardResuleSave 将棋盘格校准后的pix2mm结果保存在数据库
+/// \param cameraName 相机的名称
+/// \param pix2mm 转换后每像素对应的毫米值
+/// \return  true = save successful
+///
+bool VisionFrom::CheckerboardResuleSave(const QString &cameraName,const double &pix2mm)
+{
+    qDebug()<<"in";
+    QString sql = QString("update t_visionParameter set pix2mm = '%1' where camera_name = '%2'").arg(pix2mm).arg(cameraName);
+    QSqlDatabase dataBase = DataBaseManager::GetInstance()->GetDataBase();
+    qDebug()<<"2";
+    QSqlQuery query(dataBase);
+
+            bool result = query.exec(sql);
+            qDebug()<<sql << "result "<<result;
+            return result;
+
+}
+
+///
+/// \brief VisionFrom::saveVisionParmeter 保存矩阵变换后的abcdef
+/// \param a
+/// \param b
+/// \param c
+/// \param d
+/// \param e
+/// \param f
+/// \param pix2mm
+/// \return
+///
+bool VisionFrom::saveVisionParmeter(const double &a, const double &b, const double &c, const double &d, const double &e, const double &f, const double &pix2mm)
+{
+    QStringList names,values;
+    names<<"camera_name"<<"A"<<"B"<<"C"<<"E"<<"F"<<"G";
+    QString cameraName = QString::fromStdString(m_pDevice->userName);
+    values <<cameraName<<QString::number(a)<<QString::number(b)<<QString::number(c)<<QString::number(d)<<QString::number(e)<<QString::number(f);
+    if(false ==DataBaseManager::GetInstance()->ExcInsertDb("t_visionParmeter",names,values))
+    {
+        names.clear();
+         names<<"A"<<"B"<<"C"<<"E"<<"F"<<"G";
+         values<<QString::number(a)<<QString::number(b)<<QString::number(c)<<QString::number(d)<<QString::number(e)<<QString::number(f);
+        values.clear();
+        QString expression = QString("camera_name = '%1'").arg(cameraName);
+        return DataBaseManager::GetInstance()->ExcUpdateDb("t_visionParmeter",names,values,expression);
+    }
+    return true;
+}
+
+/// \brief VisionFrom::trigger 外部触发图像采集并处理图像
+/// \param point 返回mark点的位置
+/// \return false = 处理失败；
+///
+bool VisionFrom::trigger(QPoint &point, QString &msg)
+{
+    //触发前标志位
+    m_trigger = false;
+    //触发图像采集
+    onTrigger();
+
+//    while(true)
+//    {
+
+//    }
+    if(m_trigger == false)
+    {
+        msg = "Can`t get the image;";
+        return false;
+    }
+    ImageProcess ImProcess;
+    return ImProcess.getMarkPoint(frame,point);
+
+
+}
+
 void VisionFrom::save()
 {
     Mat src,gray;
-    cv::resize(frame,src,Size( m_vision_label->width(),m_vision_label->height()));
+    src = frame;
+    //cv::resize(frame,src,Size( m_vision_label->width(),m_vision_label->height()));
     //cvtColor(src,gray,COLOR_BGR2GRAY);
 
     std::vector<cv::Vec3f> cricles;
@@ -210,6 +375,10 @@ void VisionFrom::save()
         {
              cv::circle(src,cv::Point(cricles[i][0],cricles[i][1]),cricles[i][2],cv::Scalar(0,0,255),2);
              //qDebug()<<"redio :"<<cricles[i][2];
+             //测试pix2mm的精度
+             //qDebug()<<cricles[i][2]*ShareData::GetInstance()->m_visionMap["Camera_1"].pix2mm;
+             if(i!=0)
+             qDebug()<<sqrt(((cricles[i][0]-cricles[i-1][0])*(cricles[i][0]-cricles[i-1][0]))+((cricles[i][1]-cricles[i-1][1])*(cricles[i][1]-cricles[i-1][1])))*ShareData::GetInstance()->m_visionMap["Camera_1"].pix2mm;
         }
         Point2f p_c(cricles[0][0],cricles[0][1]);
         point_camera.push_back(p_c);

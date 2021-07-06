@@ -98,4 +98,25 @@ typedef union
     };
     uint32_t InputValue = 0;
 }DIInfostru;//小车货传感器货物信息
+typedef struct _VisionStu
+{
+    double A;  //像素到脉冲的矩阵变换的参数abcdef
+    double B;
+    double C;
+    double D;
+    double E;
+    double F;
+    double pix2mm; //每个像素点对应的毫米
+}VisionStu;
+typedef struct _NozzleStu
+{
+    QString name;
+    int dpiTimes;
+    int startP;
+    int endP;
+    QString filePath;//图形地址
+    QString WavePath;//波形地址
+    int flashJetStatus;//0:单次闪喷1:连续闪喷2:持续闪喷
+    int cycle;//闪喷周期
+}NozzleStu;
 #endif // DATASTRUCT_H

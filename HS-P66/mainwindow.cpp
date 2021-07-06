@@ -54,9 +54,12 @@ void MainWindow::start()
                 QLOG_INFO()<<"到达打印位置途中失败";
 
             //载台气缸下压固定住物料
+            //拍照得到补偿值
+            //判断补偿值的可靠性，并作出响应
+
             //去打印位置
             //喷头到打印位置
-
+            //p_visionForm->m_pVision_R->onTrigger();
             //开始打印
            if(printFlow())
            {
@@ -161,7 +164,38 @@ bool MainWindow::initSqlite()
       }
       ShareData::GetInstance()->m_position.insert(pointName,subPos);
   }
+  //读取相机准换信息
+   query = DataBaseManager::GetInstance()->ExcQueryDb("select * from t_visionParameter;");
+   VisionStu visionStruct;
+   while(query.next())
+   {
+       QString cameraName = query.value("camera_name").toString();
+       visionStruct.A = query.value("A").toDouble();
+       visionStruct.B = query.value("B").toDouble();
+       visionStruct.C = query.value("C").toDouble();
+       visionStruct.D = query.value("D").toDouble();
+       visionStruct.E = query.value("E").toDouble();
+       visionStruct.F = query.value("F").toDouble();
+       visionStruct.pix2mm = query.value("pix2mm").toDouble();
+       ShareData::GetInstance()->m_visionMap.insert(cameraName,visionStruct);
+   }
   qDebug()<<ShareData::GetInstance()->m_position;
+
+  //读取喷头设置信息
+  query = DataBaseManager::GetInstance()->ExcQueryDb("select * from t_nozzle;");
+
+  NozzleStu nozzleStruct;
+  while(query.next())
+  {
+       ShareData::GetInstance()->m_nozzleStu.name = query.value("nozzleName").toString();
+       ShareData::GetInstance()->m_nozzleStu.dpiTimes = query.value("dpitimes").toInt();
+       ShareData::GetInstance()->m_nozzleStu.startP = query.value("startPin").toInt();
+       ShareData::GetInstance()->m_nozzleStu.endP = query.value("endPin").toInt();
+       ShareData::GetInstance()->m_nozzleStu.filePath = query.value("imagePath").toString();
+       ShareData::GetInstance()->m_nozzleStu.WavePath = query.value("wavePath").toString();
+       ShareData::GetInstance()->m_nozzleStu.flashJetStatus = query.value("flashStatus").toInt();
+       ShareData::GetInstance()->m_nozzleStu.cycle = query.value("cycle").toInt();
+  }
    return result;
 }
 
@@ -188,14 +222,14 @@ void MainWindow::childrenFormHide()
     p_parameter->hide();
     p_xxy->hide();
     p_positionManager->hide();
-
+    m_pNozzle->hide();
 
 }
 
 void MainWindow::initMainUI()
 {
-    QScreen *screen = QGuiApplication::primaryScreen ();
-    QRect screenRect =  screen->availableVirtualGeometry();
+    //QScreen *screen = QGuiApplication::primaryScreen ();
+    QRect screenRect(0,0,1800,1000); //=  screen->availableVirtualGeometry();
     ShareData::GetInstance()->m_width = screenRect.width()-2;
     ShareData::GetInstance()->m_heitht = screenRect.height()-40;
     this->resize(ShareData::GetInstance()->m_width,ShareData::GetInstance()->m_heitht);
@@ -270,6 +304,9 @@ void MainWindow::initMainUI()
     p_xxy = new XXYForm(m_MainWidget);
     p_xxy->hide();
 
+    m_pNozzle = new NozzleFrom(m_MainWidget);
+    m_pNozzle->setParameter(ShareData::GetInstance()->m_nozzleStu);
+    m_pNozzle->hide();
 }
 
 void MainWindow::initLWidget()
@@ -319,7 +356,7 @@ void MainWindow::initLWidget()
     p_standarItem->appendRow(p_runer);
     p_treeStandarModel->appendRow(p_standarItem);
 
-    p_standarItem = new QStandardItem("日志管理");
+    p_standarItem = new QStandardItem("喷头管理");
     p_standarItem->setIcon(QIcon(":/src/Image/log.png"));
     p_treeStandarModel->appendRow(p_standarItem);
 }
@@ -383,6 +420,10 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     else if (row_name == "点位管理")
     {
         p_positionManager->show();
+    }
+    else if (row_name == "喷头管理")
+    {
+        m_pNozzle->show();
     }
 }
 

@@ -31,6 +31,12 @@ public:
     QMap <int,long int> m_axisPositonMap;
     //用来保存所有的点位，<点位名称，点位信息>
     QMap<QString,QMap<int,int>> m_position;
+
+    //用来保存相机对应的信息<相机名称，相机信息>
+    QMap<QString,VisionStu>m_visionMap;
+
+    //用来保存喷头的设置信息
+    NozzleStu m_nozzleStu;
 };
 
 #endif // SHAREDATA_H

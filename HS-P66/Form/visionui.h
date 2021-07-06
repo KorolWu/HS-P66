@@ -20,6 +20,8 @@ class VisionUi : public QWidget
 public:
     VisionUi(QWidget *parent = nullptr);
     void init();
+    VisionFrom* m_pVision_L;
+    VisionFrom* m_pVision_R;
 private:
     bool initCameraDevice();
     CameraDevice* m_pDeviceProcess[2];
@@ -27,8 +29,6 @@ private:
     QMap <QString,CameraDevice* > m_mapDeviceInformation;      ///< 用于存储设备处理类
     int m_width;
     int m_height;
-    VisionFrom* m_pVision_L;
-    VisionFrom* m_pVision_R;
     QPushButton *m_pMoveBtn[6];
 private slots:
     void onMoveButtonClicked();

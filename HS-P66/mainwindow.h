@@ -18,6 +18,7 @@
 #include "Form/axischeck.h"
 #include "Form/visionui.h"
 #include "Form/parameterfrom.h"
+#include "Form/nozzlefrom.h"
 #include "databasemanager.h"
 #include "Form/xxyform.h"
 #include "APS168.h"
@@ -78,6 +79,7 @@ private:
     XXYForm *p_xxy;
     PositionManager *p_positionManager;
     ParameterFrom *p_parameter;
+    NozzleFrom *m_pNozzle;
     QTextEdit *m_pLogText;
      MyIniConfig m_ini;
      QString m_path;
