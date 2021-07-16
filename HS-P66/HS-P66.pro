@@ -35,6 +35,7 @@ SOURCES += \
     Units/c_systemlogmng.cpp \
     Units/cameradevice.cpp \
     Units/imageprocess.cpp \
+    logicalflow.cpp \
     main.cpp \
     mainwindow.cpp \
     motioncontrol.cpp \
@@ -62,6 +63,7 @@ HEADERS += \
     Units/cameradevice.h \
     Units/imageprocess.h \
     Units/myIniconfig.h \
+    logicalflow.h \
     mainwindow.h \
     motioncontrol.h \
     sharedata.h

@@ -17,6 +17,8 @@ ParameterFrom::ParameterFrom(QWidget *parent) : QWidget(parent)
     m_vbox = new QVBoxLayout();
     for(int i = 0; i < 8; i++)
     {
+        if(i== 4 || i == 5 || i== 6 || i == 7)
+            continue;
         m_axisParameter[i] = new AxisParameterSet(i,QSize(this->width()-35,this->height()));
         if(ShareData::GetInstance()->m_axisMap.contains(i))
         {
@@ -29,6 +31,8 @@ ParameterFrom::ParameterFrom(QWidget *parent) : QWidget(parent)
 
     for(int i = 0; i < 10; i++)
     {
+        if(i+14 == 17 || i+14 == 21 || i+14 == 22|| i+14 == 23)
+            continue;
         m_axisParameter2[i] = new AxisParameterSet(i+14,QSize(this->width()-35,this->height()));
         if(ShareData::GetInstance()->m_axisMap.contains(i+14))
         {

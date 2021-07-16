@@ -30,6 +30,7 @@ private:
     int m_width;
     int m_height;
     QPushButton *m_pMoveBtn[6];
+    QDoubleSpinBox *m_pinterval;
 private slots:
     void onMoveButtonClicked();
 

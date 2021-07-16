@@ -1,166 +1,557 @@
-INFO  2021-05-20T08:39:54.635 3-info msg 
-WARN  2021-05-20T08:39:54.635 4-warn msg 
-ERROR 2021-05-20T08:39:54.635 5-error msg 
-ERROR 2021-05-20T08:39:54.635 5-error Qlog 日志记录模块启动 
-FATAL 2021-05-20T08:39:54.635 6-fatal msg 
-INFO  2021-05-20T08:39:54.651 The program starts normally 
-INFO  2021-05-20T08:39:54.651 板卡初始化成功 
-INFO  2021-05-20T08:40:49.286 3-info msg 
-WARN  2021-05-20T08:40:49.286 4-warn msg 
-ERROR 2021-05-20T08:40:49.286 5-error msg 
-ERROR 2021-05-20T08:40:49.286 5-error Qlog 日志记录模块启动 
-FATAL 2021-05-20T08:40:49.286 6-fatal msg 
-INFO  2021-05-20T08:40:49.302 The program starts normally 
-INFO  2021-05-20T08:40:49.302 板卡初始化成功 
-INFO  2021-05-20T08:41:36.799 3-info msg 
-WARN  2021-05-20T08:41:36.799 4-warn msg 
-ERROR 2021-05-20T08:41:36.799 5-error msg 
-ERROR 2021-05-20T08:41:36.799 5-error Qlog 日志记录模块启动 
-FATAL 2021-05-20T08:41:36.799 6-fatal msg 
-INFO  2021-05-20T08:41:36.814 The program starts normally 
-INFO  2021-05-20T08:41:36.814 板卡初始化成功 
-INFO  2021-05-20T09:16:03.690 3-info msg 
-WARN  2021-05-20T09:16:03.690 4-warn msg 
-ERROR 2021-05-20T09:16:03.690 5-error msg 
-ERROR 2021-05-20T09:16:03.691 5-error Qlog 日志记录模块启动 
-FATAL 2021-05-20T09:16:03.691 6-fatal msg 
-INFO  2021-05-20T09:16:03.705 The program starts normally 
-INFO  2021-05-20T09:16:03.705 板卡初始化成功 
-INFO  2021-05-20T09:46:46.411 3-info msg 
-WARN  2021-05-20T09:46:46.412 4-warn msg 
-ERROR 2021-05-20T09:46:46.412 5-error msg 
-ERROR 2021-05-20T09:46:46.412 5-error Qlog 日志记录模块启动 
-FATAL 2021-05-20T09:46:46.412 6-fatal msg 
-INFO  2021-05-20T09:46:46.426 The program starts normally 
-INFO  2021-05-20T09:46:46.427 板卡初始化成功 
-INFO  2021-05-20T09:48:58.734 3-info msg 
-WARN  2021-05-20T09:48:58.734 4-warn msg 
-ERROR 2021-05-20T09:48:58.735 5-error msg 
-ERROR 2021-05-20T09:48:58.735 5-error Qlog 日志记录模块启动 
-FATAL 2021-05-20T09:48:58.735 6-fatal msg 
-INFO  2021-05-20T09:48:58.749 The program starts normally 
-ERROR 2021-05-20T09:48:58.749 板卡初始化失败！ 
-INFO  2021-05-20T09:49:58.420 3-info msg 
-WARN  2021-05-20T09:49:58.420 4-warn msg 
-ERROR 2021-05-20T09:49:58.420 5-error msg 
-ERROR 2021-05-20T09:49:58.420 5-error Qlog 日志记录模块启动 
-FATAL 2021-05-20T09:49:58.420 6-fatal msg 
-INFO  2021-05-20T09:49:58.435 The program starts normally 
-ERROR 2021-05-20T09:49:58.435 板卡初始化失败！ 
-INFO  2021-05-20T09:51:19.048 3-info msg 
-WARN  2021-05-20T09:51:19.048 4-warn msg 
-ERROR 2021-05-20T09:51:19.048 5-error msg 
-ERROR 2021-05-20T09:51:19.048 5-error Qlog 日志记录模块启动 
-FATAL 2021-05-20T09:51:19.048 6-fatal msg 
-INFO  2021-05-20T09:51:19.063 The program starts normally 
-ERROR 2021-05-20T09:51:19.063 板卡初始化失败！ 
-INFO  2021-05-20T11:10:11.889 3-info msg 
-WARN  2021-05-20T11:10:11.890 4-warn msg 
-ERROR 2021-05-20T11:10:11.890 5-error msg 
-ERROR 2021-05-20T11:10:11.890 5-error Qlog 日志记录模块启动 
-FATAL 2021-05-20T11:10:11.890 6-fatal msg 
-INFO  2021-05-20T11:10:11.904 The program starts normally 
-ERROR 2021-05-20T11:10:11.905 板卡初始化失败！ 
-INFO  2021-05-20T13:12:11.687 3-info msg 
-WARN  2021-05-20T13:12:11.687 4-warn msg 
-ERROR 2021-05-20T13:12:11.688 5-error msg 
-ERROR 2021-05-20T13:12:11.688 5-error Qlog 日志记录模块启动 
-FATAL 2021-05-20T13:12:11.688 6-fatal msg 
-INFO  2021-05-20T13:12:11.702 The program starts normally 
-ERROR 2021-05-20T13:12:11.702 板卡初始化失败！ 
-ERROR 2021-05-28T13:59:31.416 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T13:59:31.468 The program starts normally 
-ERROR 2021-05-28T13:59:31.468 板卡初始化失败！ 
-ERROR 2021-05-28T14:43:50.668 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T14:43:50.706 The program starts normally 
-ERROR 2021-05-28T14:43:50.706 板卡初始化失败！ 
-ERROR 2021-05-28T14:49:06.419 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T14:49:06.430 The program starts normally 
-ERROR 2021-05-28T14:49:06.430 板卡初始化失败！ 
-ERROR 2021-05-28T14:50:27.937 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T14:50:27.950 The program starts normally 
-ERROR 2021-05-28T14:50:27.950 板卡初始化失败！ 
-ERROR 2021-05-28T14:52:51.929 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T14:52:51.941 The program starts normally 
-ERROR 2021-05-28T14:52:51.941 板卡初始化失败！ 
-ERROR 2021-05-28T14:55:55.976 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T14:55:55.986 The program starts normally 
-ERROR 2021-05-28T14:55:55.986 板卡初始化失败！ 
-ERROR 2021-05-28T14:57:22.923 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T14:57:22.937 The program starts normally 
-ERROR 2021-05-28T14:57:22.937 板卡初始化失败！ 
-ERROR 2021-05-28T14:58:51.423 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T14:58:51.434 The program starts normally 
-ERROR 2021-05-28T14:58:51.434 板卡初始化失败！ 
-ERROR 2021-05-28T15:00:07.880 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:00:07.891 The program starts normally 
-ERROR 2021-05-28T15:00:07.891 板卡初始化失败！ 
-ERROR 2021-05-28T15:00:50.090 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:00:50.102 The program starts normally 
-ERROR 2021-05-28T15:00:50.102 板卡初始化失败！ 
-ERROR 2021-05-28T15:02:32.912 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:02:32.922 The program starts normally 
-ERROR 2021-05-28T15:02:32.923 板卡初始化失败！ 
-ERROR 2021-05-28T15:04:11.378 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:04:11.389 The program starts normally 
-ERROR 2021-05-28T15:04:11.389 板卡初始化失败！ 
-ERROR 2021-05-28T15:05:11.455 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:05:11.467 The program starts normally 
-ERROR 2021-05-28T15:05:11.467 板卡初始化失败！ 
-ERROR 2021-05-28T15:07:03.166 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:07:03.177 The program starts normally 
-ERROR 2021-05-28T15:07:03.177 板卡初始化失败！ 
-ERROR 2021-05-28T15:07:56.431 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:07:56.442 The program starts normally 
-ERROR 2021-05-28T15:07:56.442 板卡初始化失败！ 
-ERROR 2021-05-28T15:10:25.923 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:10:25.933 The program starts normally 
-ERROR 2021-05-28T15:10:25.934 板卡初始化失败！ 
-ERROR 2021-05-28T15:11:22.890 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:11:22.902 The program starts normally 
-ERROR 2021-05-28T15:11:22.902 板卡初始化失败！ 
-ERROR 2021-05-28T15:12:02.423 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:12:02.435 The program starts normally 
-ERROR 2021-05-28T15:12:02.435 板卡初始化失败！ 
-ERROR 2021-05-28T15:13:03.433 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:13:03.445 The program starts normally 
-ERROR 2021-05-28T15:13:03.445 板卡初始化失败！ 
-ERROR 2021-05-28T15:29:09.400 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:29:09.412 The program starts normally 
-ERROR 2021-05-28T15:29:09.412 板卡初始化失败！ 
-ERROR 2021-05-28T15:34:03.322 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:34:03.333 The program starts normally 
-ERROR 2021-05-28T15:34:03.333 板卡初始化失败！ 
-ERROR 2021-05-28T15:36:31.430 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:36:31.443 The program starts normally 
-ERROR 2021-05-28T15:36:31.443 板卡初始化失败！ 
-ERROR 2021-05-28T15:39:11.431 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:39:11.442 The program starts normally 
-ERROR 2021-05-28T15:39:11.442 板卡初始化失败！ 
-ERROR 2021-05-28T15:43:22.404 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:43:22.415 The program starts normally 
-ERROR 2021-05-28T15:43:22.415 板卡初始化失败！ 
-ERROR 2021-05-28T15:44:18.884 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:44:18.896 The program starts normally 
-ERROR 2021-05-28T15:44:18.896 板卡初始化失败！ 
-ERROR 2021-05-28T15:45:17.981 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:45:17.993 The program starts normally 
-ERROR 2021-05-28T15:45:17.993 板卡初始化失败！ 
-ERROR 2021-05-28T15:55:19.432 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T15:55:19.443 The program starts normally 
-ERROR 2021-05-28T15:55:19.443 板卡初始化失败！ 
-ERROR 2021-05-28T16:24:01.886 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T16:24:01.898 The program starts normally 
-ERROR 2021-05-28T16:24:01.899 板卡初始化失败！ 
-ERROR 2021-05-28T16:24:44.956 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T16:24:44.968 The program starts normally 
-ERROR 2021-05-28T16:24:44.968 板卡初始化失败！ 
-ERROR 2021-05-28T16:26:59.910 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T16:26:59.921 The program starts normally 
-ERROR 2021-05-28T16:26:59.921 板卡初始化失败！ 
-ERROR 2021-05-28T16:27:46.421 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T16:27:46.432 The program starts normally 
-ERROR 2021-05-28T16:27:46.432 板卡初始化失败！ 
-ERROR 2021-05-28T16:33:21.909 5-error Qlog 日志记录模块启动 
-INFO  2021-05-28T16:33:21.921 The program starts normally 
-ERROR 2021-05-28T16:33:21.921 板卡初始化失败！ 
+ERROR 2021-06-25T15:58:25.516 5-error Qlog 日志记录模块启动 
+INFO  2021-06-25T15:58:25.532 The program starts normally 
+ERROR 2021-06-25T15:58:25.532 板卡初始化失败！ 
+INFO  2021-06-25T15:58:25.532 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-25T16:02:22.923 5-error Qlog 日志记录模块启动 
+INFO  2021-06-25T16:02:23.015 The program starts normally 
+ERROR 2021-06-25T16:02:23.015 板卡初始化失败！ 
+INFO  2021-06-25T16:02:23.015 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-25T16:13:18.163 不在初始位置，请先回原点 
+ERROR 2021-06-28T09:21:36.937 5-error Qlog 日志记录模块启动 
+INFO  2021-06-28T09:21:36.960 The program starts normally 
+ERROR 2021-06-28T09:21:36.960 板卡初始化失败！ 
+INFO  2021-06-28T09:21:36.960 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-28T12:55:55.014 5-error Qlog 日志记录模块启动 
+INFO  2021-06-28T12:55:55.024 The program starts normally 
+ERROR 2021-06-28T12:55:55.025 板卡初始化失败！ 
+INFO  2021-06-28T12:55:55.025 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T13:53:29.980 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T13:53:30.005 The program starts normally 
+ERROR 2021-06-29T13:53:30.005 板卡初始化失败！ 
+INFO  2021-06-29T13:53:30.005 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T14:12:12.815 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T14:12:12.828 The program starts normally 
+ERROR 2021-06-29T14:12:12.828 板卡初始化失败！ 
+INFO  2021-06-29T14:12:12.828 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T14:16:23.760 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T14:16:23.772 The program starts normally 
+ERROR 2021-06-29T14:16:23.772 板卡初始化失败！ 
+INFO  2021-06-29T14:16:23.772 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T14:26:25.809 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T14:26:25.820 The program starts normally 
+ERROR 2021-06-29T14:26:25.820 板卡初始化失败！ 
+INFO  2021-06-29T14:26:25.821 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T15:27:02.563 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T15:27:02.576 The program starts normally 
+ERROR 2021-06-29T15:27:02.576 板卡初始化失败！ 
+INFO  2021-06-29T15:27:02.576 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T15:28:04.183 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T15:28:04.195 The program starts normally 
+ERROR 2021-06-29T15:28:04.195 板卡初始化失败！ 
+INFO  2021-06-29T15:28:04.195 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T15:28:48.974 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T15:28:48.987 The program starts normally 
+ERROR 2021-06-29T15:28:48.988 板卡初始化失败！ 
+INFO  2021-06-29T15:28:48.988 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T15:30:36.496 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T15:30:36.511 The program starts normally 
+ERROR 2021-06-29T15:30:36.511 板卡初始化失败！ 
+INFO  2021-06-29T15:30:36.511 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T15:31:59.384 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T15:31:59.396 The program starts normally 
+ERROR 2021-06-29T15:31:59.397 板卡初始化失败！ 
+INFO  2021-06-29T15:31:59.397 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T15:37:25.200 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T15:37:25.216 The program starts normally 
+ERROR 2021-06-29T15:37:25.216 板卡初始化失败！ 
+INFO  2021-06-29T15:37:25.216 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T15:45:19.419 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T15:45:19.433 The program starts normally 
+ERROR 2021-06-29T15:45:19.433 板卡初始化失败！ 
+INFO  2021-06-29T15:45:19.433 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T15:46:18.452 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T15:46:18.464 The program starts normally 
+ERROR 2021-06-29T15:46:18.465 板卡初始化失败！ 
+INFO  2021-06-29T15:46:18.465 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:17:33.420 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:17:33.433 The program starts normally 
+ERROR 2021-06-29T16:17:33.433 板卡初始化失败！ 
+INFO  2021-06-29T16:17:33.433 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:18:20.353 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:18:20.366 The program starts normally 
+ERROR 2021-06-29T16:18:20.366 板卡初始化失败！ 
+INFO  2021-06-29T16:18:20.366 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:19:55.774 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:19:55.786 The program starts normally 
+ERROR 2021-06-29T16:19:55.786 板卡初始化失败！ 
+INFO  2021-06-29T16:19:55.786 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:21:08.210 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:21:08.223 The program starts normally 
+ERROR 2021-06-29T16:21:08.223 板卡初始化失败！ 
+INFO  2021-06-29T16:21:08.223 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:23:52.014 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:23:52.026 The program starts normally 
+ERROR 2021-06-29T16:23:52.026 板卡初始化失败！ 
+INFO  2021-06-29T16:23:52.026 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:29:48.868 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:29:48.880 The program starts normally 
+ERROR 2021-06-29T16:29:48.880 板卡初始化失败！ 
+INFO  2021-06-29T16:29:48.880 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:32:41.121 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:32:41.133 The program starts normally 
+ERROR 2021-06-29T16:32:41.133 板卡初始化失败！ 
+INFO  2021-06-29T16:32:41.133 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:45:20.949 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:45:20.961 The program starts normally 
+ERROR 2021-06-29T16:45:20.961 板卡初始化失败！ 
+INFO  2021-06-29T16:45:20.961 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:49:02.754 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:49:02.767 The program starts normally 
+ERROR 2021-06-29T16:49:02.767 板卡初始化失败！ 
+INFO  2021-06-29T16:49:02.767 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:50:04.387 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:50:04.404 The program starts normally 
+ERROR 2021-06-29T16:50:04.405 板卡初始化失败！ 
+INFO  2021-06-29T16:50:04.405 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:51:00.683 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:51:00.701 The program starts normally 
+ERROR 2021-06-29T16:51:00.701 板卡初始化失败！ 
+INFO  2021-06-29T16:51:00.702 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:54:52.079 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:54:52.097 The program starts normally 
+ERROR 2021-06-29T16:54:52.097 板卡初始化失败！ 
+INFO  2021-06-29T16:54:52.098 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:56:02.755 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:56:02.767 The program starts normally 
+ERROR 2021-06-29T16:56:02.767 板卡初始化失败！ 
+INFO  2021-06-29T16:56:02.767 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:57:48.253 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:57:48.266 The program starts normally 
+ERROR 2021-06-29T16:57:48.266 板卡初始化失败！ 
+INFO  2021-06-29T16:57:48.266 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-29T16:58:53.387 5-error Qlog 日志记录模块启动 
+INFO  2021-06-29T16:58:53.400 The program starts normally 
+ERROR 2021-06-29T16:58:53.400 板卡初始化失败！ 
+INFO  2021-06-29T16:58:53.401 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-30T08:54:05.566 5-error Qlog 日志记录模块启动 
+INFO  2021-06-30T08:54:05.597 The program starts normally 
+ERROR 2021-06-30T08:54:05.597 板卡初始化失败！ 
+INFO  2021-06-30T08:54:05.597 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-30T08:55:46.625 5-error Qlog 日志记录模块启动 
+INFO  2021-06-30T08:55:46.637 The program starts normally 
+ERROR 2021-06-30T08:55:46.638 板卡初始化失败！ 
+INFO  2021-06-30T08:55:46.638 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-30T08:56:20.249 5-error Qlog 日志记录模块启动 
+INFO  2021-06-30T08:56:20.260 The program starts normally 
+ERROR 2021-06-30T08:56:20.260 板卡初始化失败！ 
+INFO  2021-06-30T08:56:20.261 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-30T08:56:49.633 5-error Qlog 日志记录模块启动 
+INFO  2021-06-30T08:56:49.645 The program starts normally 
+ERROR 2021-06-30T08:56:49.645 板卡初始化失败！ 
+INFO  2021-06-30T08:56:49.645 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-30T08:57:54.222 5-error Qlog 日志记录模块启动 
+INFO  2021-06-30T08:57:54.234 The program starts normally 
+ERROR 2021-06-30T08:57:54.234 板卡初始化失败！ 
+INFO  2021-06-30T08:57:54.234 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-30T08:59:22.451 5-error Qlog 日志记录模块启动 
+INFO  2021-06-30T08:59:22.463 The program starts normally 
+ERROR 2021-06-30T08:59:22.463 板卡初始化失败！ 
+INFO  2021-06-30T08:59:22.463 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-30T09:01:37.679 5-error Qlog 日志记录模块启动 
+INFO  2021-06-30T09:01:37.690 The program starts normally 
+ERROR 2021-06-30T09:01:37.691 板卡初始化失败！ 
+INFO  2021-06-30T09:01:37.691 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-30T09:02:25.056 5-error Qlog 日志记录模块启动 
+INFO  2021-06-30T09:02:25.067 The program starts normally 
+ERROR 2021-06-30T09:02:25.067 板卡初始化失败！ 
+INFO  2021-06-30T09:02:25.067 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-06-30T09:04:05.562 5-error Qlog 日志记录模块启动 
+INFO  2021-06-30T09:04:05.573 The program starts normally 
+ERROR 2021-06-30T09:04:05.574 板卡初始化失败！ 
+INFO  2021-06-30T09:04:05.574 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-01T16:25:04.010 5-error Qlog 日志记录模块启动 
+INFO  2021-07-01T16:25:04.033 The program starts normally 
+ERROR 2021-07-01T16:25:04.033 板卡初始化失败！ 
+INFO  2021-07-01T16:25:04.034 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-01T16:38:56.991 5-error Qlog 日志记录模块启动 
+INFO  2021-07-01T16:38:57.020 The program starts normally 
+ERROR 2021-07-01T16:38:57.020 板卡初始化失败！ 
+INFO  2021-07-01T16:38:57.020 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-01T16:39:33.637 5-error Qlog 日志记录模块启动 
+INFO  2021-07-01T16:39:33.648 The program starts normally 
+ERROR 2021-07-01T16:39:33.648 板卡初始化失败！ 
+INFO  2021-07-01T16:39:33.648 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-01T16:43:11.501 5-error Qlog 日志记录模块启动 
+INFO  2021-07-01T16:43:11.512 The program starts normally 
+ERROR 2021-07-01T16:43:11.513 板卡初始化失败！ 
+INFO  2021-07-01T16:43:11.513 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-01T16:45:43.535 5-error Qlog 日志记录模块启动 
+INFO  2021-07-01T16:45:43.546 The program starts normally 
+ERROR 2021-07-01T16:45:43.546 板卡初始化失败！ 
+INFO  2021-07-01T16:45:43.547 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-01T16:46:28.581 5-error Qlog 日志记录模块启动 
+INFO  2021-07-01T16:46:28.596 The program starts normally 
+ERROR 2021-07-01T16:46:28.596 板卡初始化失败！ 
+INFO  2021-07-01T16:46:28.596 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-01T16:48:23.543 5-error Qlog 日志记录模块启动 
+INFO  2021-07-01T16:48:23.556 The program starts normally 
+ERROR 2021-07-01T16:48:23.556 板卡初始化失败！ 
+INFO  2021-07-01T16:48:23.557 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-01T16:53:05.179 5-error Qlog 日志记录模块启动 
+INFO  2021-07-01T16:53:05.190 The program starts normally 
+ERROR 2021-07-01T16:53:05.190 板卡初始化失败！ 
+INFO  2021-07-01T16:53:05.190 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-01T16:54:31.933 5-error Qlog 日志记录模块启动 
+INFO  2021-07-01T16:54:31.943 The program starts normally 
+ERROR 2021-07-01T16:54:31.943 板卡初始化失败！ 
+INFO  2021-07-01T16:54:31.944 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-01T16:56:06.461 5-error Qlog 日志记录模块启动 
+INFO  2021-07-01T16:56:06.471 The program starts normally 
+ERROR 2021-07-01T16:56:06.471 板卡初始化失败！ 
+INFO  2021-07-01T16:56:06.472 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-01T16:57:17.228 5-error Qlog 日志记录模块启动 
+INFO  2021-07-01T16:57:17.239 The program starts normally 
+ERROR 2021-07-01T16:57:17.240 板卡初始化失败！ 
+INFO  2021-07-01T16:57:17.240 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-01T17:02:03.126 5-error Qlog 日志记录模块启动 
+INFO  2021-07-01T17:02:03.139 The program starts normally 
+ERROR 2021-07-01T17:02:03.139 板卡初始化失败！ 
+INFO  2021-07-01T17:02:03.139 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T07:16:25.421 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T07:16:25.490 The program starts normally 
+ERROR 2021-07-02T07:16:25.491 板卡初始化失败！ 
+INFO  2021-07-02T07:16:25.491 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T07:18:45.403 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T07:18:45.413 The program starts normally 
+ERROR 2021-07-02T07:18:45.413 板卡初始化失败！ 
+INFO  2021-07-02T07:18:45.413 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T07:22:48.559 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T07:22:48.569 The program starts normally 
+ERROR 2021-07-02T07:22:48.569 板卡初始化失败！ 
+INFO  2021-07-02T07:22:48.569 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T07:24:59.266 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T07:24:59.275 The program starts normally 
+ERROR 2021-07-02T07:24:59.275 板卡初始化失败！ 
+INFO  2021-07-02T07:24:59.275 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T08:42:01.459 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T08:42:01.469 The program starts normally 
+ERROR 2021-07-02T08:42:01.469 板卡初始化失败！ 
+INFO  2021-07-02T08:42:01.470 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T09:15:41.634 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T09:15:41.650 The program starts normally 
+ERROR 2021-07-02T09:15:41.650 板卡初始化失败！ 
+INFO  2021-07-02T09:15:41.650 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T09:32:26.369 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T09:32:26.379 The program starts normally 
+ERROR 2021-07-02T09:32:26.379 板卡初始化失败！ 
+INFO  2021-07-02T09:32:26.379 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T09:33:53.471 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T09:33:53.480 The program starts normally 
+ERROR 2021-07-02T09:33:53.480 板卡初始化失败！ 
+INFO  2021-07-02T09:33:53.480 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T09:42:09.688 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T09:42:09.698 The program starts normally 
+ERROR 2021-07-02T09:42:09.698 板卡初始化失败！ 
+INFO  2021-07-02T09:42:09.698 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T09:43:21.460 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T09:43:21.470 The program starts normally 
+ERROR 2021-07-02T09:43:21.470 板卡初始化失败！ 
+INFO  2021-07-02T09:43:21.470 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T09:52:36.079 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T09:52:36.089 The program starts normally 
+ERROR 2021-07-02T09:52:36.090 板卡初始化失败！ 
+INFO  2021-07-02T09:52:36.090 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T09:57:39.450 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T09:57:39.460 The program starts normally 
+ERROR 2021-07-02T09:57:39.460 板卡初始化失败！ 
+INFO  2021-07-02T09:57:39.460 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T09:58:00.025 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T09:58:00.036 The program starts normally 
+ERROR 2021-07-02T09:58:00.036 板卡初始化失败！ 
+INFO  2021-07-02T09:58:00.037 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T10:02:55.105 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T10:02:55.115 The program starts normally 
+ERROR 2021-07-02T10:02:55.116 板卡初始化失败！ 
+INFO  2021-07-02T10:02:55.116 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T10:06:58.129 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T10:06:58.140 The program starts normally 
+ERROR 2021-07-02T10:06:58.140 板卡初始化失败！ 
+INFO  2021-07-02T10:06:58.140 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T10:07:50.373 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T10:07:50.387 The program starts normally 
+ERROR 2021-07-02T10:07:50.388 板卡初始化失败！ 
+INFO  2021-07-02T10:07:50.388 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T10:20:02.101 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T10:20:02.129 The program starts normally 
+ERROR 2021-07-02T10:20:02.130 板卡初始化失败！ 
+INFO  2021-07-02T10:20:02.130 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T10:37:47.949 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T10:37:47.960 The program starts normally 
+ERROR 2021-07-02T10:37:47.960 板卡初始化失败！ 
+INFO  2021-07-02T10:37:47.960 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T10:38:37.891 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T10:38:37.901 The program starts normally 
+ERROR 2021-07-02T10:38:37.901 板卡初始化失败！ 
+INFO  2021-07-02T10:38:37.901 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T10:57:23.785 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T10:57:23.795 The program starts normally 
+ERROR 2021-07-02T10:57:23.795 板卡初始化失败！ 
+INFO  2021-07-02T10:57:23.795 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T11:14:36.791 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T11:14:36.805 The program starts normally 
+ERROR 2021-07-02T11:14:36.805 板卡初始化失败！ 
+INFO  2021-07-02T11:14:36.805 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T12:59:11.150 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T12:59:11.165 The program starts normally 
+ERROR 2021-07-02T12:59:11.165 板卡初始化失败！ 
+INFO  2021-07-02T12:59:11.166 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T13:00:34.698 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T13:00:34.708 The program starts normally 
+ERROR 2021-07-02T13:00:34.708 板卡初始化失败！ 
+INFO  2021-07-02T13:00:34.708 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-02T13:01:11.911 5-error Qlog 日志记录模块启动 
+INFO  2021-07-02T13:01:11.922 The program starts normally 
+ERROR 2021-07-02T13:01:11.922 板卡初始化失败！ 
+INFO  2021-07-02T13:01:11.922 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-05T10:50:09.653 5-error Qlog 日志记录模块启动 
+INFO  2021-07-05T10:50:09.671 The program starts normally 
+ERROR 2021-07-05T10:50:09.671 板卡初始化失败！ 
+INFO  2021-07-05T10:50:09.671 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-05T15:14:54.218 5-error Qlog 日志记录模块启动 
+INFO  2021-07-05T15:14:54.234 The program starts normally 
+ERROR 2021-07-05T15:14:54.234 板卡初始化失败！ 
+INFO  2021-07-05T15:14:54.234 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-05T15:15:44.427 5-error Qlog 日志记录模块启动 
+INFO  2021-07-05T15:15:44.438 The program starts normally 
+ERROR 2021-07-05T15:15:44.438 板卡初始化失败！ 
+INFO  2021-07-05T15:15:44.438 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-05T15:17:12.899 5-error Qlog 日志记录模块启动 
+INFO  2021-07-05T15:17:12.911 The program starts normally 
+ERROR 2021-07-05T15:17:12.911 板卡初始化失败！ 
+INFO  2021-07-05T15:17:12.911 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-05T15:21:51.174 5-error Qlog 日志记录模块启动 
+INFO  2021-07-05T15:21:51.184 The program starts normally 
+ERROR 2021-07-05T15:21:51.185 板卡初始化失败！ 
+INFO  2021-07-05T15:21:51.185 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-05T15:23:06.250 5-error Qlog 日志记录模块启动 
+INFO  2021-07-05T15:23:06.263 The program starts normally 
+ERROR 2021-07-05T15:23:06.263 板卡初始化失败！ 
+INFO  2021-07-05T15:23:06.263 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-05T15:25:09.960 5-error Qlog 日志记录模块启动 
+INFO  2021-07-05T15:25:09.973 The program starts normally 
+ERROR 2021-07-05T15:25:09.973 板卡初始化失败！ 
+INFO  2021-07-05T15:25:09.973 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:19:52.606 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:19:52.626 The program starts normally 
+ERROR 2021-07-06T10:19:52.626 板卡初始化失败！ 
+INFO  2021-07-06T10:19:52.626 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:20:55.718 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:20:55.731 The program starts normally 
+ERROR 2021-07-06T10:20:55.731 板卡初始化失败！ 
+INFO  2021-07-06T10:20:55.731 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:24:04.917 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:24:04.927 The program starts normally 
+ERROR 2021-07-06T10:24:04.927 板卡初始化失败！ 
+INFO  2021-07-06T10:24:04.927 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:26:18.318 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:26:18.331 The program starts normally 
+ERROR 2021-07-06T10:26:18.331 板卡初始化失败！ 
+INFO  2021-07-06T10:26:18.331 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:27:43.746 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:27:43.757 The program starts normally 
+ERROR 2021-07-06T10:27:43.757 板卡初始化失败！ 
+INFO  2021-07-06T10:27:43.757 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:31:33.956 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:31:33.969 The program starts normally 
+ERROR 2021-07-06T10:31:33.969 板卡初始化失败！ 
+INFO  2021-07-06T10:31:33.969 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:32:35.668 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:32:35.678 The program starts normally 
+ERROR 2021-07-06T10:32:35.678 板卡初始化失败！ 
+INFO  2021-07-06T10:32:35.678 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:33:32.309 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:33:32.323 The program starts normally 
+ERROR 2021-07-06T10:33:32.323 板卡初始化失败！ 
+INFO  2021-07-06T10:33:32.323 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:35:00.962 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:35:00.973 The program starts normally 
+ERROR 2021-07-06T10:35:00.973 板卡初始化失败！ 
+INFO  2021-07-06T10:35:00.973 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:36:38.787 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:36:38.798 The program starts normally 
+ERROR 2021-07-06T10:36:38.798 板卡初始化失败！ 
+INFO  2021-07-06T10:36:38.799 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:37:23.626 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:37:23.637 The program starts normally 
+ERROR 2021-07-06T10:37:23.637 板卡初始化失败！ 
+INFO  2021-07-06T10:37:23.637 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:41:26.189 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:41:26.200 The program starts normally 
+ERROR 2021-07-06T10:41:26.200 板卡初始化失败！ 
+INFO  2021-07-06T10:41:26.200 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:42:23.446 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:42:23.456 The program starts normally 
+ERROR 2021-07-06T10:42:23.456 板卡初始化失败！ 
+INFO  2021-07-06T10:42:23.456 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:43:25.036 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:43:25.046 The program starts normally 
+ERROR 2021-07-06T10:43:25.047 板卡初始化失败！ 
+INFO  2021-07-06T10:43:25.047 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:44:52.364 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:44:52.374 The program starts normally 
+ERROR 2021-07-06T10:44:52.374 板卡初始化失败！ 
+INFO  2021-07-06T10:44:52.375 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:45:45.797 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:45:45.808 The program starts normally 
+ERROR 2021-07-06T10:45:45.808 板卡初始化失败！ 
+INFO  2021-07-06T10:45:45.808 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:47:48.756 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:47:48.766 The program starts normally 
+ERROR 2021-07-06T10:47:48.766 板卡初始化失败！ 
+INFO  2021-07-06T10:47:48.767 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:48:33.530 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:48:33.540 The program starts normally 
+ERROR 2021-07-06T10:48:33.540 板卡初始化失败！ 
+INFO  2021-07-06T10:48:33.541 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T10:49:29.947 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T10:49:29.957 The program starts normally 
+ERROR 2021-07-06T10:49:29.957 板卡初始化失败！ 
+INFO  2021-07-06T10:49:29.957 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T11:03:40.376 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T11:03:40.386 The program starts normally 
+ERROR 2021-07-06T11:03:40.386 板卡初始化失败！ 
+INFO  2021-07-06T11:03:40.386 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T11:04:32.305 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T11:04:32.318 The program starts normally 
+ERROR 2021-07-06T11:04:32.319 板卡初始化失败！ 
+INFO  2021-07-06T11:04:32.319 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T11:06:38.672 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T11:06:38.682 The program starts normally 
+ERROR 2021-07-06T11:06:38.682 板卡初始化失败！ 
+INFO  2021-07-06T11:06:38.682 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T11:07:38.432 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T11:07:38.442 The program starts normally 
+ERROR 2021-07-06T11:07:38.442 板卡初始化失败！ 
+INFO  2021-07-06T11:07:38.442 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T11:08:14.076 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T11:08:14.087 The program starts normally 
+ERROR 2021-07-06T11:08:14.087 板卡初始化失败！ 
+INFO  2021-07-06T11:08:14.087 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T11:09:08.334 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T11:09:08.346 The program starts normally 
+ERROR 2021-07-06T11:09:08.346 板卡初始化失败！ 
+INFO  2021-07-06T11:09:08.346 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T11:10:42.628 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T11:10:42.638 The program starts normally 
+ERROR 2021-07-06T11:10:42.638 板卡初始化失败！ 
+INFO  2021-07-06T11:10:42.638 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T11:12:17.169 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T11:12:17.179 The program starts normally 
+ERROR 2021-07-06T11:12:17.180 板卡初始化失败！ 
+INFO  2021-07-06T11:12:17.180 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T12:49:53.759 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T12:49:53.777 The program starts normally 
+ERROR 2021-07-06T12:49:53.777 板卡初始化失败！ 
+INFO  2021-07-06T12:49:53.777 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T15:17:56.635 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T15:17:56.653 The program starts normally 
+ERROR 2021-07-06T15:17:56.653 板卡初始化失败！ 
+INFO  2021-07-06T15:17:56.653 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T15:19:00.987 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T15:19:00.997 The program starts normally 
+ERROR 2021-07-06T15:19:00.997 板卡初始化失败！ 
+INFO  2021-07-06T15:19:00.997 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T15:25:09.028 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T15:25:09.039 The program starts normally 
+ERROR 2021-07-06T15:25:09.039 板卡初始化失败！ 
+INFO  2021-07-06T15:25:09.039 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T15:27:20.538 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T15:27:20.557 The program starts normally 
+ERROR 2021-07-06T15:27:20.557 板卡初始化失败！ 
+INFO  2021-07-06T15:27:20.557 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T15:30:04.031 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T15:30:04.043 The program starts normally 
+ERROR 2021-07-06T15:30:04.043 板卡初始化失败！ 
+INFO  2021-07-06T15:30:04.043 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-06T16:50:05.062 5-error Qlog 日志记录模块启动 
+INFO  2021-07-06T16:50:05.078 The program starts normally 
+ERROR 2021-07-06T16:50:05.078 板卡初始化失败！ 
+INFO  2021-07-06T16:50:05.078 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-07T08:07:43.223 5-error Qlog 日志记录模块启动 
+INFO  2021-07-07T08:07:43.241 The program starts normally 
+ERROR 2021-07-07T08:07:43.241 板卡初始化失败！ 
+INFO  2021-07-07T08:07:43.241 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-07T08:11:10.373 5-error Qlog 日志记录模块启动 
+INFO  2021-07-07T08:11:10.385 The program starts normally 
+ERROR 2021-07-07T08:11:10.385 板卡初始化失败！ 
+INFO  2021-07-07T08:11:10.385 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-07T08:15:18.476 5-error Qlog 日志记录模块启动 
+INFO  2021-07-07T08:15:18.487 The program starts normally 
+ERROR 2021-07-07T08:15:18.487 板卡初始化失败！ 
+INFO  2021-07-07T08:15:18.488 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-07T08:20:51.942 5-error Qlog 日志记录模块启动 
+INFO  2021-07-07T08:20:51.952 The program starts normally 
+ERROR 2021-07-07T08:20:51.952 板卡初始化失败！ 
+INFO  2021-07-07T08:20:51.952 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-07T08:21:47.566 5-error Qlog 日志记录模块启动 
+INFO  2021-07-07T08:21:47.577 The program starts normally 
+ERROR 2021-07-07T08:21:47.577 板卡初始化失败！ 
+INFO  2021-07-07T08:21:47.578 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-08T11:22:37.937 5-error Qlog 日志记录模块启动 
+INFO  2021-07-08T11:22:37.971 The program starts normally 
+ERROR 2021-07-08T11:22:37.971 板卡初始化失败！ 
+INFO  2021-07-08T11:22:37.971 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-14T14:12:13.684 5-error Qlog 日志记录模块启动 
+INFO  2021-07-14T14:12:13.728 The program starts normally 
+ERROR 2021-07-14T14:12:13.728 板卡初始化失败！ 
+INFO  2021-07-14T14:12:13.729 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-14T14:14:45.506 5-error Qlog 日志记录模块启动 
+INFO  2021-07-14T14:14:45.521 The program starts normally 
+ERROR 2021-07-14T14:14:45.521 板卡初始化失败！ 
+INFO  2021-07-14T14:14:45.521 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-14T14:17:16.738 5-error Qlog 日志记录模块启动 
+INFO  2021-07-14T14:17:16.750 The program starts normally 
+ERROR 2021-07-14T14:17:16.750 板卡初始化失败！ 
+INFO  2021-07-14T14:17:16.750 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-14T14:18:52.431 5-error Qlog 日志记录模块启动 
+INFO  2021-07-14T14:18:52.443 The program starts normally 
+ERROR 2021-07-14T14:18:52.444 板卡初始化失败！ 
+INFO  2021-07-14T14:18:52.444 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-14T14:21:07.631 5-error Qlog 日志记录模块启动 
+INFO  2021-07-14T14:21:07.645 The program starts normally 
+ERROR 2021-07-14T14:21:07.645 板卡初始化失败！ 
+INFO  2021-07-14T14:21:07.645 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-15T14:14:08.879 5-error Qlog 日志记录模块启动 
+INFO  2021-07-15T14:14:08.911 The program starts normally 
+ERROR 2021-07-15T14:14:08.911 板卡初始化失败！ 
+INFO  2021-07-15T14:14:08.911 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-15T15:37:47.267 5-error Qlog 日志记录模块启动 
+INFO  2021-07-15T15:37:47.292 The program starts normally 
+ERROR 2021-07-15T15:37:47.292 板卡初始化失败！ 
+INFO  2021-07-15T15:37:47.292 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-15T15:38:56.908 5-error Qlog 日志记录模块启动 
+INFO  2021-07-15T15:38:56.922 The program starts normally 
+ERROR 2021-07-15T15:38:56.922 板卡初始化失败！ 
+INFO  2021-07-15T15:38:56.922 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-15T15:43:24.933 5-error Qlog 日志记录模块启动 
+INFO  2021-07-15T15:43:24.950 The program starts normally 
+ERROR 2021-07-15T15:43:24.950 板卡初始化失败！ 
+INFO  2021-07-15T15:43:24.951 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-15T15:44:18.360 5-error Qlog 日志记录模块启动 
+INFO  2021-07-15T15:44:18.371 The program starts normally 
+ERROR 2021-07-15T15:44:18.371 板卡初始化失败！ 
+INFO  2021-07-15T15:44:18.371 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-15T16:14:54.705 5-error Qlog 日志记录模块启动 
+INFO  2021-07-15T16:14:54.716 The program starts normally 
+ERROR 2021-07-15T16:14:54.716 板卡初始化失败！ 
+INFO  2021-07-15T16:14:54.717 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-15T16:29:10.645 5-error Qlog 日志记录模块启动 
+INFO  2021-07-15T16:29:10.655 The program starts normally 
+ERROR 2021-07-15T16:29:10.656 板卡初始化失败！ 
+INFO  2021-07-15T16:29:10.656 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-15T16:34:22.577 5-error Qlog 日志记录模块启动 
+INFO  2021-07-15T16:34:22.588 The program starts normally 
+ERROR 2021-07-15T16:34:22.588 板卡初始化失败！ 
+INFO  2021-07-15T16:34:22.589 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-15T16:42:18.563 5-error Qlog 日志记录模块启动 
+INFO  2021-07-15T16:42:18.574 The program starts normally 
+ERROR 2021-07-15T16:42:18.574 板卡初始化失败！ 
+INFO  2021-07-15T16:42:18.574 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-15T16:54:02.742 5-error Qlog 日志记录模块启动 
+INFO  2021-07-15T16:54:02.762 The program starts normally 
+ERROR 2021-07-15T16:54:02.762 板卡初始化失败！ 
+INFO  2021-07-15T16:54:02.762 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 
+ERROR 2021-07-15T16:54:56.132 5-error Qlog 日志记录模块启动 
+INFO  2021-07-15T16:54:56.143 The program starts normally 
+ERROR 2021-07-15T16:54:56.143 板卡初始化失败！ 
+INFO  2021-07-15T16:54:56.143 "D:/Korol/git/HS-P66/build-HS-P66-Desktop_Qt_5_13_2_MSVC2017_64bit-Debug/debug" 

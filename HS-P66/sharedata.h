@@ -22,6 +22,8 @@ public:
     bool m_DriverIsInitialization = false;
     //是否满足开始条件，是否在初始位置
     bool m_isHomePosition = false;
+    //程序是否正在执行标志位
+    bool m_isRuning = false;
     //carNum, dIstatus
     QMap <int,DIInfostru> m_DI_Status;
     //carNum, axisStruct

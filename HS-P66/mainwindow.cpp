@@ -43,55 +43,16 @@ void MainWindow::start()
         //开始前判断是否是起始位
         if(ShareData::GetInstance()->m_isHomePosition)
         {
-            //启动第一节流道和第二节 正向旋转
-            beginIn(1);
-            //直到载台末端感应到了，停止两个流道
-            if(getGlass())
+            ShareData::GetInstance()->m_isRuning = true;
+            QString errMsg = "NoErr";
+            if(false == logical(errMsg))
             {
-               QLOG_INFO()<<"到达打印位置";
-            }
-            else
-                QLOG_INFO()<<"到达打印位置途中失败";
-
-            //载台气缸下压固定住物料
-            //拍照得到补偿值
-            //判断补偿值的可靠性，并作出响应
-
-            //去打印位置
-            //喷头到打印位置
-            //p_visionForm->m_pVision_R->onTrigger();
-            //开始打印
-           if(printFlow())
-           {
-               QLOG_INFO()<<"打印完成";
-           }
-           delay_msc(500);
-           QMap<int,int> p;
-           MotionControl m;
-           p.insert(0,0);
-           m.runPosition(p);
-           beginIn(0);
-    //        MotionControl control;
-    //        QMap<int,int> position;
-    //        QMap<int,int> position1;
-    //        position.insert(18,0);
-    //        position.insert(19,0);
-    //        position.insert(20,0);
-
-    //        position1.insert(18,-20000);
-    //        position1.insert(19,15000);
-    //        position1.insert(20,1181);
-    //        bool flag = true;
-    //        for(int i = 0; i < 25; i++)
-    //        {
-    //            if(flag)
-    //            {
-    //                control.runPosition(position);
-    //            }
-    //            else
-    //                control.runPosition(position1);
-    //            flag = !flag;
-    //        }
+                  QLOG_INFO()<<errMsg;
+                  m_start->setIcon(QIcon(":/src/Image/start"));
+                  m_start->setText("启动");
+                  ShareData::GetInstance()->m_isRuning = false;
+                  return;
+             }
         }
         else
         {
@@ -120,7 +81,7 @@ void MainWindow::initParameter()
             axisId = i + 6;
         else
             axisId = i;
-        getIniParameter(axisId);
+        //getIniParameter(axisId);
 
     }
     if(ShareData::GetInstance()->m_axisMap.size() != 18)
@@ -178,8 +139,9 @@ bool MainWindow::initSqlite()
        visionStruct.F = query.value("F").toDouble();
        visionStruct.pix2mm = query.value("pix2mm").toDouble();
        ShareData::GetInstance()->m_visionMap.insert(cameraName,visionStruct);
+       qDebug()<<"ABCDEF"<<visionStruct.A<<visionStruct.B<<visionStruct.C<<visionStruct.D<<visionStruct.E<<visionStruct.F;
    }
-  qDebug()<<ShareData::GetInstance()->m_position;
+  //qDebug()<<ShareData::GetInstance()->m_position;
 
   //读取喷头设置信息
   query = DataBaseManager::GetInstance()->ExcQueryDb("select * from t_nozzle;");
@@ -201,17 +163,18 @@ bool MainWindow::initSqlite()
 
 void MainWindow::getIniParameter(const int axisId)
 {
-    m_ini.Config();
-    QString node = QString("Axis%1").arg(axisId);
-    AxisStruct axisInfo;
-    axisInfo.vMax = m_ini.Get(node,"vMax").toInt();
-    axisInfo.acc = m_ini.Get(node,"Acc").toInt();
-    axisInfo.dcc = m_ini.Get(node,"Dcc").toInt();
-    axisInfo.homeVmax = m_ini.Get(node,"HomeVmax").toInt();
-    if(ShareData::GetInstance()->m_axisMap.contains(axisId))
-        ShareData::GetInstance()->m_axisMap[axisId] = axisInfo;
-    else
-        ShareData::GetInstance()->m_axisMap.insert(axisId,axisInfo);
+    Q_UNUSED(axisId)
+    //m_ini.Config();
+//    QString node = QString("Axis%1").arg(axisId);
+//    AxisStruct axisInfo;
+//    axisInfo.vMax = m_ini.Get(node,"vMax").toInt();
+//    axisInfo.acc = m_ini.Get(node,"Acc").toInt();
+//    axisInfo.dcc = m_ini.Get(node,"Dcc").toInt();
+//    axisInfo.homeVmax = m_ini.Get(node,"HomeVmax").toInt();
+//    if(ShareData::GetInstance()->m_axisMap.contains(axisId))
+//        ShareData::GetInstance()->m_axisMap[axisId] = axisInfo;
+//    else
+//        ShareData::GetInstance()->m_axisMap.insert(axisId,axisInfo);
 }
 
 void MainWindow::childrenFormHide()
@@ -228,8 +191,8 @@ void MainWindow::childrenFormHide()
 
 void MainWindow::initMainUI()
 {
-    //QScreen *screen = QGuiApplication::primaryScreen ();
-    QRect screenRect(0,0,1800,1000); //=  screen->availableVirtualGeometry();
+    QScreen *screen = QGuiApplication::primaryScreen ();
+    QRect screenRect = screen->availableVirtualGeometry();
     ShareData::GetInstance()->m_width = screenRect.width()-2;
     ShareData::GetInstance()->m_heitht = screenRect.height()-40;
     this->resize(ShareData::GetInstance()->m_width,ShareData::GetInstance()->m_heitht);
@@ -398,31 +361,37 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     QString row_name = index.data().toString();
     if(row_name == "单轴运动")
     {
-        //qDebug()<<"handle 权限管理...";
+        setChildrenBtnEnable(p_axisCheck);
         p_axisCheck->show();
     }
     else if(row_name == "IO监视")
     {
+         setChildrenBtnEnable(p_ioForm);
        p_ioForm->show();
     }
     else if(row_name == "参数设置")
     {
+        setChildrenBtnEnable(p_parameter);
         p_parameter->show();
     }
     else if (row_name == "CCD_1")
     {
+        setChildrenBtnEnable(p_visionForm);
         p_visionForm->show();
     }
     else if (row_name == "XXY载台")
     {
+        setChildrenBtnEnable(p_xxy);
         p_xxy->show();
     }
     else if (row_name == "点位管理")
     {
+        setChildrenBtnEnable(p_positionManager);
         p_positionManager->show();
     }
     else if (row_name == "喷头管理")
     {
+        setChildrenBtnEnable(m_pNozzle);
         m_pNozzle->show();
     }
 }
@@ -436,103 +405,101 @@ int MainWindow::initAdlinkDriver(const QString &fileName)
         return 0;
     return control.loadBoardParameter(fileName);
 }
-///
-/// \brief MainWindow::beginIn
-/// \return
-///
-bool MainWindow::beginIn(const int &dir)
+
+bool MainWindow::airInit()
 {
-   MotionControl m;
-   m.runJog(18,dir);
-   m.runJog(19,dir);
-   delay_msc(6000);
-   m.stopJog(18);
-   m.stopJog(19);
-   QLOG_INFO()<<"进料完成";
-   return true;
+    MotionControl m;
+    if(m.airActionOff(1,10,20)) //上升气缸原点
+    {
+        if(m.airActionOff(1,11,16)) //拍边原点
+        {
+            if(m.airActionOn(1,13,18))//阻挡动点
+            {
+                return true;
+            }
+            else
+            {
+                qDebug()<<13;
+                return false;
+            }
+
+        }
+        else
+        {
+            qDebug()<<11;
+            return false;
+        }
+
+    }
+    else
+        return false;
 }
 
-bool MainWindow::getGlass()
+
+
+bool MainWindow::runPosition(const QString &positionName)
 {
-    //等待玻璃到载台上
     MotionControl m;
-    m.outPutDo(0,8,1);
-    m.outPutDo(0,9,1);
-    delay_msc(200);
-    m.outPutDo(0,8,0);
-    m.outPutDo(0,9,0);
-    if(ShareData::GetInstance()->m_position.contains("PointS"))
+    QMap<int,int> pos;
+    pos.clear();
+    if(ShareData::GetInstance()->m_position.contains(positionName))
     {
-        QMap<int,int> pos = ShareData::GetInstance()->m_position["PointS"];
-       return m.runPosition(pos);
+        pos.clear();
+        pos = ShareData::GetInstance()->m_position[positionName];
+        if(!m.runPosition(pos))
+        {
+            QLOG_INFO()<<"位置:"<<positionName<<":移动中失败";
+            return false;
+        }
+        else
+            return true;
     }
     return false;
 }
 
-bool MainWindow::printX()
+bool MainWindow::logical(QString &msg)
 {
-     MotionControl m;
-     QMap<int,int> pos;
-     pos.clear();
-     if(ShareData::GetInstance()->m_position.contains("BeginE"))
+    m_logical.beginIn(1);//流道进料
+    if(false == m_logical.runPosition("Zdown"))
+    {
+        msg = "流道放料到载台失败";
+        return false;
+    }
+     m_logical.airVoid(true); //平台吸气
+     if(false == m_logical.airAction())
      {
-         pos.clear();
-         pos = ShareData::GetInstance()->m_position["BeginE"];
-         if(!m.runPosition(pos))
-         {
-             QLOG_INFO()<<"print flow failed;";
-             return false;
-         }
+         msg = "拍边气缸固定流程执行失败";
+         return false;
      }
-     delay_msc(500);
-    if(ShareData::GetInstance()->m_position.contains("BeginS"))
+    if(false == m_logical.getGlass())
     {
-        pos.clear();
-       pos = ShareData::GetInstance()->m_position["BeginS"];
-       if(!m.runPosition(pos))
-       {
-           QLOG_INFO()<<"print flow failed;";
-           return false;
-       }
+        msg = "玻璃刚到载台时流程执行失败";
+        return false;
+    }
+    if(false == m_logical.printFlow())
+    {
+        msg = "喷头打印过程中发生错误";
+        return false;
+    }
+    delay_msc(500);
+    if(false == m_logical.glassBack())
+    {
+        msg = "打印出料时发生错误";
+        return false;
+    }
+    m_logical.airVoid(false);//破真空
+    if(false == m_logical.runPosition("Zup"))
+    {
+        msg = "将物料从载台升到流道时发生错误";
+        return false;
+    }
+    if(false == m_logical.airOn(1,13,18))
+    {
+        msg = "挡料气缸复位异常";
+        return false;
     }
     return true;
-}
 
-bool MainWindow::printFlow()
-{
-    if(ShareData::GetInstance()->m_position.contains("PointS"))
-    {
-        if(false == printX())
-        {
-            QLOG_INFO()<<"打印中出现异常";
-            return false;
-        }
-        delay_msc(800);
-        int begin_y = 0;
-        QMap<int,int> pos = ShareData::GetInstance()->m_position["PointS"];
-        if(pos.contains(0))
-        {
-           begin_y = pos[0];
-           for(int i = 1 ; i < 4; i++)
-           {
-               begin_y =  begin_y + (i*10000);
-               QMap<int,int> p;
-               p.clear();
-               p.insert(0,begin_y);
-                MotionControl m;
-                m.runPosition(p);
-               delay_msc(800);
-               if(false == printX())
-               {
-                   QLOG_INFO()<<"打印中出现异常";
-                   return false;
-               }
-                delay_msc(800);
-           }
-        }
-
-    }
-    return true;
 }
 
 void MainWindow::delay_msc(int msc)
@@ -540,6 +507,26 @@ void MainWindow::delay_msc(int msc)
     QEventLoop loop;
     QTimer::singleShot(msc,&loop,SLOT(quit()));
     loop.exec();
+}
+
+void MainWindow::enableChildrenBtn(QWidget *child,const bool enable)
+{
+    if(child != nullptr)
+    {
+        QList<QPushButton*> btnList = child->findChildren<QPushButton*>();
+        foreach(QPushButton *b,btnList)
+        {
+            b->setEnabled(enable);
+        }
+    }
+}
+
+void MainWindow::setChildrenBtnEnable(QWidget *widget)
+{
+    if(ShareData::GetInstance()->m_isRuning)
+        enableChildrenBtn(widget,false);
+    else
+        enableChildrenBtn(widget,true);
 }
 
 
@@ -553,34 +540,36 @@ void MainWindow::appendLog(const QString &message, int level)
 ///
 void MainWindow::home()
 {
+     m_home->setEnabled(false);
     //需要判断里面时候有料，如果有料不可以启动回原点流程
 
     MotionControl control;
     QVector<int> axisVec;
     axisVec.append(16);//进料z
-    axisVec.append(20);//进料x
-    axisVec.append(6);//外侧相机
-    axisVec.append(7);//内侧相机
+    //axisVec.append(20);//进料x
+//    axisVec.append(6);//外侧相机
+//    axisVec.append(7);//内侧相机
     axisVec.append(15);//喷头z
-    axisVec.append(1);//喷头z 600避让位
-    axisVec.append(2);//喷头z -600避让位
-    axisVec.append(3);//喷头z
+    axisVec.append(1);//上载台x
+    axisVec.append(2);//上载台x
+    axisVec.append(3);//上载台y
     if(control.goHomes(axisVec))
     {
-        QMap<int,int> pos;
-        pos.insert(1,6000);
-        pos.insert(2,-6000);
-        if(control.runPosition(pos))
-           QLOG_INFO()<<"回原点第一段成功";
-        else
-        {
-            QLOG_INFO()<<"回原点第一段失败";
-            return;
-        }
+//        QMap<int,int> pos;
+//        pos.insert(1,6000);
+//        pos.insert(2,-6000);
+//        if(control.runPosition(pos))
+//           QLOG_INFO()<<"回原点第一段成功";
+//        else
+//        {
+//            QLOG_INFO()<<"回原点第一段失败";
+//            return;
+//        }
     }
     else
     {
         QLOG_INFO()<<"回原点第一段失败";
+         m_home->setEnabled(true);
         return;
     }
      QVector<int> axisVec2;
@@ -594,6 +583,19 @@ void MainWindow::home()
     else
     {
         QLOG_INFO()<<"回原点第二段失败";
+        m_home->setEnabled(true);
+        return;
+    }
+    if(false == airInit())
+    {
+       QLOG_INFO()<<"气缸复位失败";
+       m_home->setEnabled(true);
+       return;
+    }
+    if(false == runPosition("Zup"))
+    {
+        QLOG_INFO()<<"进料z上升失败";
+        m_home->setEnabled(true);
         return;
     }
     ShareData::GetInstance()->m_isHomePosition = true;

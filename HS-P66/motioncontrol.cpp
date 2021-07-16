@@ -1,5 +1,5 @@
 ﻿#include "motioncontrol.h"
-
+#pragma execution_character_set("utf-8")
 MotionControl::MotionControl()
 {
 
@@ -82,7 +82,9 @@ int MotionControl::getIoStatus(const int &carId, const int di_bit)
     int rec = APS_read_d_input(carId,0, &data);
     if(rec < 0)
         return rec;
-    return (abs(data << di_bit)) & 1;
+     int a = (abs(data >> di_bit)) & 1;
+     //qDebug()<<"data"<<data<<"di_big"<<di_bit<<"a="<<a;
+     return a;
 }
 
 ///
@@ -100,10 +102,10 @@ bool MotionControl::airActionOn(const int carNum, const int output, const int mo
     gettimeofday(&s,nullptr);
     outPutDo(carNum,output,1);
     while (true) {
-        if(getIoStatus(carNum,mov) == 1)
+        if(getIoStatus(0,mov) == 1)
             return true;
         gettimeofday(&e,nullptr);
-        delay_msc(10);
+        delay_msc(50);
         timeUseWait = 1000 *(e.tv_sec - s.tv_sec) + 0.001*(e.tv_usec - s.tv_usec);
         if(timeUseWait >= 2000)
         {
@@ -125,7 +127,7 @@ bool MotionControl::airActionOff(int carNum, int output, int org)
     gettimeofday(&s,nullptr);
     outPutDo(carNum,output,0);
     while (true) {
-        if(getIoStatus(carNum,org) == 1)
+        if(getIoStatus(0,org) == 1)
             return true;
         gettimeofday(&e,nullptr);
         delay_msc(10);

@@ -33,7 +33,7 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include <QCoreApplication>
-
+#include "logicalflow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -81,8 +81,9 @@ private:
     ParameterFrom *p_parameter;
     NozzleFrom *m_pNozzle;
     QTextEdit *m_pLogText;
-     MyIniConfig m_ini;
+     //MyIniConfig m_ini;
      QString m_path;
+     LogicalFlow m_logical;
     void initParameter();
     bool initSqlite();
     void getIniParameter(const int axisId);
@@ -93,10 +94,13 @@ private:
     void onTreeviewClicked(const QModelIndex &index);
     int initAdlinkDriver(const QString &fileName);
     void delay_msc(int msc);
+    void enableChildrenBtn(QWidget *child, const bool enable);
+    void setChildrenBtnEnable(QWidget *widget);
     //flow
-    bool beginIn(const int &dir);
-    bool getGlass();
-    bool printX();
-    bool printFlow();
+
+    bool airInit(); //气缸初始位
+    bool runPosition(const QString &positionName); //去一个是示教过的位置
+
+    bool logical(QString &msg);
 };
 #endif // MAINWINDOW_H

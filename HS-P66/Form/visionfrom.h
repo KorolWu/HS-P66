@@ -6,12 +6,14 @@
 #include <QLabel>
 #include <QTimer>
 #include <QDebug>
+#include <QMessageBox>
 #include <math.h>
 #include "opencv2/opencv.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include <QPushButton>
 #include <QSpinBox>
 #include <QImage>
+#include <QPainter>
 #include <QGroupBox>
 #include "sharedata.h"
 #include "motioncontrol.h"
@@ -42,6 +44,7 @@ private:
     QPushButton *m_pTriggerBtn;
     QPushButton *m_pSaveBtn;
     QPushButton *m_pCheckerBoardBtn;
+    QPushButton *m_pCliabreationBtn;
     QSpinBox *m_pExpossureEdit;
     QPushButton *m_pExpossureBtn;
     QSpinBox *m_pGainEdit;
@@ -59,6 +62,7 @@ private:
     QMap<double,double> transformation(double x, double y);
     bool CheckerboardResuleSave(const QString &cameraName, const double &pix2mm);
     bool saveVisionParmeter(const double &a, const double &b, const double &c, const double &d, const double &e, const double &f, const double &pix2mm = 0.0);
+    VisionStu computMatrix();
 private slots:
     void resiveImageData(unsigned char *data);
     void setExpossure();
@@ -66,6 +70,9 @@ private slots:
     void save();
     void onTrigger();
     void onCheckerBoardClicked();
+    bool autoGetTransformationParameter(const int interval, VisionStu &result);
+    void delay_msc(int msc);
+    void onCliabreationClicked();
 public:
     bool trigger(QPoint &point, QString &msg);
 };

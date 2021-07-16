@@ -33,7 +33,7 @@ void VisionUi::init()
     QString title = "Move";
     QGroupBox *group = new QGroupBox(title,this);
     group->resize(m_pVision_L->width()/3*2,gw);
-    group->move(m_pVision_L->width()*2+20,475);
+    group->move(m_pVision_L->width()*2+65,475);
     for (int i = 0; i < 6 ;i++ ) {
         m_pMoveBtn[i] = new QPushButton(group);
         m_pMoveBtn[i]->resize(40,30);
@@ -55,15 +55,20 @@ void VisionUi::init()
     m_pMoveBtn[3]->setIcon(QIcon(":/src/Image/m_right.png"));
     m_pMoveBtn[3]->move(gw-38,38);
     m_pMoveBtn[3]->setObjectName("L-");
-    m_pMoveBtn[4]->setIcon(QIcon(":/src/Image/m_left.png"));
-    m_pMoveBtn[4]->setObjectName("R+");
+   // m_pMoveBtn[4]->setIcon(QIcon(":/src/Image/m_left.png"));
+    m_pMoveBtn[4]->setObjectName("ORG");
+    m_pMoveBtn[4]->setText("ORG");
     m_pMoveBtn[4]->move(8,gw/2);
-    QLabel *right = new QLabel("CCD_R",group);
-    right->move(68,gw/2+8);
-    m_pMoveBtn[5]->setIcon(QIcon(":/src/Image/m_right.png"));
+    m_pinterval = new QDoubleSpinBox(group);
+    m_pinterval->setMaximum(1); //单次只允许行走1mm
+    m_pinterval->setMinimum(0.01);
+    m_pinterval->setValue(1);
+    m_pinterval->move(68,gw/2+1);
+    //m_pMoveBtn[5]->setIcon(QIcon(":/src/Image/m_right.png"));
     m_pMoveBtn[5]->setObjectName("R-");
+    m_pMoveBtn[5]->setText("mm");
     m_pMoveBtn[5]->move(gw-38,gw/2);
-    group->setStyleSheet("QLabel{font: 20px;}QSpinBox{Padding-right:20px;Border:2px solid white;font:20px; Min-width:90px;Min-height:25px;border-radius:5px;}QGroupBox{border: 2px solid white;border-radius:8px;margin-top:6px;}QGroupBox:title{color:rgb(24,24,58);subcontrol-origin: margin;left: 10px;}QGroupBox{font: 22px;}");
+    group->setStyleSheet("QLabel{font: 20px;}QDoubleSpinBox{Padding-right:20px;Border:2px solid white;font:20px; Min-width:45px;Min-height:25px;border-radius:5px;}QSpinBox{Padding-right:20px;Border:2px solid white;font:20px; Min-width:90px;Min-height:25px;border-radius:5px;}QGroupBox{border: 2px solid white;border-radius:8px;margin-top:6px;}QGroupBox:title{color:rgb(24,24,58);subcontrol-origin: margin;left: 10px;}QGroupBox{font: 22px;}");
 
 }
 
@@ -121,28 +126,39 @@ void VisionUi::onMoveButtonClicked()
     ShareData::GetInstance()->m_isHomePosition = false;
     QString objName = sender()->objectName();
     MotionControl m;
+     int val = m_pinterval->value()*2000;
     if(objName == "Y+")
     {
-        m.relativeMove(0,500);
+        m.relativeMove(3,val);
     }
     else if(objName == "Y-")
     {
-        m.relativeMove(0,-500);
+        m.relativeMove(3,-1*val);
     }
     else if(objName == "L-")
     {
-        m.relativeMove(6,-500);
+      m.relativeMove(1,val);
+      m.relativeMove(2,-1*val);
     }
     else if(objName == "L+")
     {
-        m.relativeMove(6,1500);
+        m.relativeMove(1,-1*val);
+        m.relativeMove(2,val);
     }
     else if(objName == "R-")
     {
-        m.relativeMove(7,-1500);
+        //m.relativeMove(7,-1500);
+
     }
-    else if(objName == "R+")
+    else if(objName == "ORG")
     {
-        m.relativeMove(7,1500);
+        QVector<int> axisVec;
+        axisVec.append(1);//上载台x
+        axisVec.append(2);//上载台x
+        axisVec.append(3);//上载台y
+        if(m.goHomes(axisVec))
+        {
+
+        }
     }
 }

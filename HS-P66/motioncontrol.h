@@ -37,7 +37,7 @@ public:
     void testTimeOut(int msc);
     bool loadBoardParameter(QString fileName);
     bool outPutDo(int carNum, long bit, int value);
-    int  getIoStatus(const int &carId,const int di_bit);
+    int getIoStatus(const int &carId,const int di_bit);
     bool airActionOn(int carNum, int output, int mov);
     bool airActionOff(int carNum, int output, int org);
     bool absolutMove(int axisId, int trapos, int v = 10000);

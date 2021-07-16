@@ -33,28 +33,38 @@ void PositionManager::initUi()
     test2->move(0,210);
     vbox->addWidget(test2);
     vec.clear();
-    vec.push_back(14);
-    vec.push_back(15);
     vec.push_back(16);
-    PositionFrom *test3 = new PositionFrom("Pos3",vec);
+    PositionFrom *test3 = new PositionFrom("Zup",vec);
     test3->move(0,280);
     vbox->addWidget(test3);
-    test3->setParameter(ShareData::GetInstance()->m_position["Pos3"]);
+    test3->setParameter(ShareData::GetInstance()->m_position["Zup"]);
     //----
-    PositionFrom *test4 = new PositionFrom("Pos4",vec);
+    vec.clear();
+    vec.push_back(16);
+    PositionFrom *test4 = new PositionFrom("Zdown",vec);
     vbox->addWidget(test4);
-    test4->setParameter(ShareData::GetInstance()->m_position["Pos4"]);
-
-    PositionFrom *test5 = new PositionFrom("Pos5",vec);
+    test4->setParameter(ShareData::GetInstance()->m_position["Zdown"]);
+    vec.clear();
+    vec.push_back(15);
+    PositionFrom *test5 = new PositionFrom("NozzleUp",vec);
     vbox->addWidget(test5);
-    test5->setParameter(ShareData::GetInstance()->m_position["Pos5"]);
+    test5->setParameter(ShareData::GetInstance()->m_position["NozzleUp"]);
 
-    PositionFrom *test6 = new PositionFrom("Pos6",vec);
+    PositionFrom *test6 = new PositionFrom("NozzleDown",vec);
     vbox->addWidget(test6);
-    test6->setParameter(ShareData::GetInstance()->m_position["Pos6"]);
-    PositionFrom *test7 = new PositionFrom("Pos7",vec);
+    test6->setParameter(ShareData::GetInstance()->m_position["NozzleDown"]);
+
+    vec.clear();
+    vec.push_back(1);
+     vec.push_back(2);
+      vec.push_back(3);
+    PositionFrom *test7 = new PositionFrom("Camera_R",vec);
     vbox->addWidget(test7);
-    test7->setParameter(ShareData::GetInstance()->m_position["Pos7"]);
+    test7->setParameter(ShareData::GetInstance()->m_position["Camera_R"]);
+
+    PositionFrom *camera_l = new PositionFrom("Camera_L",vec);
+    vbox->addWidget(camera_l);
+    test7->setParameter(ShareData::GetInstance()->m_position["Camera_L"]);
     //----
     group->setLayout(vbox);
     m_pX = new AxisInfoUI(14,this);

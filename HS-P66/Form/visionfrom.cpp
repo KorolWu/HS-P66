@@ -2,7 +2,7 @@
 #pragma execution_character_set("utf-8")
 VisionFrom::VisionFrom(QWidget *parent):QWidget(parent)
 {
-    this->resize(parent->width()/3,parent->height()/5*4);
+    this->resize(parent->width()/3+50,parent->height()/5*4);
     m_width = parent->width()/3;
     m_height = parent->height()/5*4;
     initUI();
@@ -10,14 +10,7 @@ VisionFrom::VisionFrom(QWidget *parent):QWidget(parent)
     //    connect(m_timer,&QTimer::timeout,this,&VisionFrom::readFram);
 
 
-    //test
 
-    qDebug()<<transformation(90.75 , 72.75 );
-    qDebug()<<transformation(246.75 , 72.75);
-    qDebug()<<transformation(399.75 , 72.75 );
-    qDebug()<<transformation(92.25 , 177.75);
-
-    //end test
 }
 
 void VisionFrom::setDeviceObj(CameraDevice *obj)
@@ -40,6 +33,7 @@ void VisionFrom::setDeviceObj(CameraDevice *obj)
     int interval = (m_width-50)*0.7505791;
     m_vision_label->resize(m_width-50,interval);
 
+
 }
 
 void VisionFrom::setGrouboxTitle(QString title)
@@ -50,7 +44,7 @@ void VisionFrom::setGrouboxTitle(QString title)
 void VisionFrom::initUI()
 {
     m_pGroupBox = new QGroupBox(this);
-    m_pGroupBox->resize(m_width-20,m_height-150);
+    m_pGroupBox->resize(m_width+15,m_height-150);
     m_pGroupBox->move(10,10);
     m_vision_label = new QLabel(m_pGroupBox);
     m_vision_label->resize(m_width-100,m_height/2);
@@ -86,6 +80,11 @@ void VisionFrom::initUI()
     m_pCheckerBoardBtn->resize(60,33);
     m_pCheckerBoardBtn->move(485,m_height/2+72+interval);
     connect(m_pCheckerBoardBtn,&QPushButton::clicked,this,&VisionFrom::onCheckerBoardClicked);
+
+    m_pCliabreationBtn = new QPushButton("标定",m_pGroupBox);
+    m_pCliabreationBtn->resize(60,33);
+    m_pCliabreationBtn->move(485,m_height/2+130+interval);
+    connect(m_pCliabreationBtn,&QPushButton::clicked,this,&VisionFrom::onCliabreationClicked);
 
     QLabel *b = new QLabel("曝光：",m_pGroupBox);
     b->move(20,m_height/2+72+interval);
@@ -152,12 +151,12 @@ void VisionFrom::closeCamera()
 ///
 QMap<double, double> VisionFrom::transformation(double x, double y)
 {
-
-   double r_x = (-47.6486*x) + (1.95346e-13*y+ -6152.71);
-   double r_y = (-1.65433e-15*x) + (47.6228*y+ 920198);
-   QMap<double, double> p;
-   p.insert(r_x,r_y);
-   return p;
+    QString cameraName = QString::fromStdString(m_pDevice->userName);
+    double r_x = (ShareData::GetInstance()->m_visionMap[cameraName].A*x) + (ShareData::GetInstance()->m_visionMap[cameraName].B*y+ ShareData::GetInstance()->m_visionMap[cameraName].C);
+    double r_y = (ShareData::GetInstance()->m_visionMap[cameraName].D*x) + (ShareData::GetInstance()->m_visionMap[cameraName].E*y+ ShareData::GetInstance()->m_visionMap[cameraName].F);
+    QMap<double, double> p;
+    p.insert(r_x,r_y);
+    return p;
 }
 
 void VisionFrom::resiveImageData(unsigned char *data)
@@ -165,7 +164,15 @@ void VisionFrom::resiveImageData(unsigned char *data)
     QImage img(data, m_pDevice->width, m_pDevice->height, m_pDevice->width, QImage::Format_Grayscale8);
     QImage new_img = img.scaled( m_vision_label->width(),m_vision_label->height());
     QPixmap pixmap = QPixmap::fromImage(new_img);
+
+    QPainter painter(&pixmap);
+    painter.setPen(Qt::green);
+    painter.setFont(QFont("Arial", 30));
+    painter.drawLine(0,m_vision_label->height()/2,m_vision_label->width(),m_vision_label->height()/2);
+    painter.drawLine(m_vision_label->width()/2,0,m_vision_label->width()/2,m_vision_label->height());
+    painter.end();
     m_vision_label->setPixmap(pixmap);
+
     frame.create(m_matHeight,m_matWidth,CV_8UC1);
     memcpy(frame.data,data,m_matHeight*m_matWidth);
     //新图像采集标记
@@ -179,26 +186,13 @@ void VisionFrom::setExpossure()
 
 void VisionFrom::setGain()
 {
-    //m_pDevice->SetGain(m_pGainEdit->value());
-    if(point_camera.size() == point_rebot.size())
-    {
-        Mat warpMat = estimateAffinePartial2D(point_camera,point_rebot);
-        qDebug()<<"A"<< warpMat.ptr<double>(0)[0];
-        qDebug()<<"B"<< warpMat.ptr<double>(0)[1];
-        qDebug()<<"C"<< warpMat.ptr<double>(0)[2];
-
-
-        qDebug()<<"D"<< warpMat.ptr<double>(1)[0];
-        qDebug()<<"E"<< warpMat.ptr<double>(1)[1];
-        qDebug()<<"F"<< warpMat.ptr<double>(1)[2];
-    }
-    else
-        qDebug()<<"camera size != reboot size";
+    m_pDevice->SetGain(m_pGainEdit->value());
 }
 
 void VisionFrom::onTrigger()
 {
     m_pDevice->OnceSnap();
+
 }
 
 void VisionFrom::onCheckerBoardClicked()
@@ -216,71 +210,149 @@ void VisionFrom::onCheckerBoardClicked()
     //frame = imread("C:\\Users\\jian.shen\\Documents\\chessboard.png");
     if(frame.empty())
         return;
-   qDebug()<<"channels = "<<frame.channels();
+    qDebug()<<"channels = "<<frame.channels();
     //转世界坐标系
-        for (int i = 0; i < BOARDSIZE[1]; i++)
+    for (int i = 0; i < BOARDSIZE[1]; i++)
+    {
+        for (int j = 0; j < BOARDSIZE[0]; j++)
         {
-            for (int j = 0; j < BOARDSIZE[0]; j++)
+            obj_world_pts.push_back(Point3f(j, i, 0));
+        }
+    }
+
+
+    //cvtColor(frame, img_gray, COLOR_BGR2GRAY);
+    //检测角点
+    bool found_success = findChessboardCorners(frame, Size(BOARDSIZE[0], BOARDSIZE[1]),
+            img_corner_points,CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_FAST_CHECK | CALIB_CB_NORMALIZE_IMAGE);
+
+    //显示角点
+    if (found_success)
+    {
+        //迭代终止条件
+        TermCriteria criteria(TermCriteria::EPS + TermCriteria::COUNT, 30, 0.001);
+
+        //进一步提取亚像素角点
+        cornerSubPix(frame, img_corner_points, Size(11, 11),
+                     Size(-1, -1), criteria);
+        cvtColor(frame,frame,COLOR_GRAY2BGR);
+
+        //绘制角点
+        drawChessboardCorners(frame, Size(BOARDSIZE[0], BOARDSIZE[1]),img_corner_points,
+                found_success);
+
+        objpoints_img.push_back(obj_world_pts);//从世界坐标系到相机坐标系
+        images_points.push_back(img_corner_points);
+    }
+    double y_t = 0;
+    int count =0;
+    for(int i = 0;i < img_corner_points.size();i++)
+    {
+
+        if((i+1)%rowCount != 0)
+        {
+            // y_t += qAbs;
+            //求出两个角点之间的距离
+            double x = img_corner_points.at(i).x - img_corner_points.at(i+1).x;
+            double y = img_corner_points.at(i).y - img_corner_points.at(i+1).y;
+
+            double linePix = sqrt((x*x)+(y*y));
+            y_t += linePix;
+            qDebug()<<"linePix:"<<linePix;
+            count ++;
+        }
+        //                qDebug()<<"x:"<<img_corner_points.at(i).x<<"y:"<<img_corner_points.at(i).y;
+    }
+    qDebug()<<"y_t = "<<y_t<< "counts ="<<count<< "count1="<<(rowCount-1)*colCount;
+    //棋盘格单位长度
+    double c = 0.5;
+    if(y_t != 0)
+    {
+        double pix2mm = c/(y_t/((rowCount-1)*colCount*1.0));
+        qDebug()<<"pix2mm"<<pix2mm;
+        CheckerboardResuleSave("Camera_1",pix2mm);//这里应该是驱动指针的userName
+    }
+    imshow("output", frame);
+
+
+}
+
+bool VisionFrom::autoGetTransformationParameter(const int interval, VisionStu &result)
+{
+    MotionControl  m;
+    Mat src,gray;
+    src = frame;
+    m.relativeMove(3,interval*4);
+    delay_msc(500);
+    for(int it = 0; it <2; it++)
+    {
+        //删除上组数据
+        point_camera.clear();
+        point_rebot.clear();
+        VisionStu stu;
+        for(int i = 0; i< 8; i++)
+        {
+            if(i != 0)
             {
-                obj_world_pts.push_back(Point3f(j, i, 0));
+                if(it == 0)
+                    m.relativeMove(3,(-1*interval));
+                else
+                {
+                    m.relativeMove(1,-2000);
+                    m.relativeMove(2,2000);
+                }
+            }
+            delay_msc(1500);
+            cv::resize(frame,src,Size( m_vision_label->width()*2,m_vision_label->height()*2));
+            std::vector<cv::Vec3f> cricles;
+            medianBlur(src,src,3);
+            HoughCircles(src,cricles,cv::HOUGH_GRADIENT,1.5,10,160,90,10,50);
+            if(cricles.size() == 1)
+            {
+                cvtColor(src,src,COLOR_GRAY2BGR);
+                for(int i = 0;i < cricles.size();i++)
+                {
+                    cv::circle(src,cv::Point(cricles[i][0],cricles[i][1]),cricles[i][2],cv::Scalar(0,0,255),2);
+                }
+                Point2f p_c(cricles[0][0],cricles[0][1]);
+                point_camera.push_back(p_c);
+                Point2f p_r(ShareData::GetInstance()->m_axisPositonMap[1],ShareData::GetInstance()->m_axisPositonMap[3]);
+                point_rebot.push_back(p_r);
+                qDebug()<<"center:"<<cricles[0][0]<<","<<cricles[0][1]<<endl;
+                qDebug()<<"axis:"<< ShareData::GetInstance()->m_axisPositonMap[1]<<","<<ShareData::GetInstance()->m_axisPositonMap[3];
+
+            }
+            else
+            {
+                QMessageBox msgBox;
+                msgBox.setText("The Transformation failed.");
+                msgBox.exec();
+                return false;
             }
         }
+        stu = computMatrix();
+        if(it == 0)
+        {
+            //将y移动到视野中心
+            m.relativeMove(3,interval*4);
+            delay_msc(500);
+            //将x移动到初始位置
+            m.relativeMove(1,2000*4);
+            m.relativeMove(2,-2000*4);
 
+            result.D = stu.D;
+            result.E = stu.E;
+            result.F = stu.F;
+        }
+        else
+        {
+            result.A = stu.A;
+            result.B = stu.B;
+            result.C = stu.C;
+        }
 
-            //cvtColor(frame, img_gray, COLOR_BGR2GRAY);
-            //检测角点
-            bool found_success = findChessboardCorners(frame, Size(BOARDSIZE[0], BOARDSIZE[1]),
-                img_corner_points,CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_FAST_CHECK | CALIB_CB_NORMALIZE_IMAGE);
-
-            //显示角点
-            if (found_success)
-            {
-                 //迭代终止条件
-                 TermCriteria criteria(TermCriteria::EPS + TermCriteria::COUNT, 30, 0.001);
-
-                 //进一步提取亚像素角点
-                 cornerSubPix(frame, img_corner_points, Size(11, 11),
-                     Size(-1, -1), criteria);
-                 cvtColor(frame,frame,COLOR_GRAY2BGR);
-
-                 //绘制角点
-                 drawChessboardCorners(frame, Size(BOARDSIZE[0], BOARDSIZE[1]),img_corner_points,
-                     found_success);
-
-                 objpoints_img.push_back(obj_world_pts);//从世界坐标系到相机坐标系
-                 images_points.push_back(img_corner_points);
-            }
-            double y_t = 0;
-            int count =0;
-            for(int i = 0;i < img_corner_points.size();i++)
-            {
-
-                if((i+1)%rowCount != 0)
-                {
-                   // y_t += qAbs;
-                    //求出两个角点之间的距离
-                    double x = img_corner_points.at(i).x - img_corner_points.at(i+1).x;
-                    double y = img_corner_points.at(i).y - img_corner_points.at(i+1).y;
-
-                    double linePix = sqrt((x*x)+(y*y));
-                    y_t += linePix;
-                    qDebug()<<"linePix:"<<linePix;
-                    count ++;
-                }
-//                qDebug()<<"x:"<<img_corner_points.at(i).x<<"y:"<<img_corner_points.at(i).y;
-            }
-              qDebug()<<"y_t = "<<y_t<< "counts ="<<count<< "count1="<<(rowCount-1)*colCount;
-            //棋盘格单位长度
-            double c = 0.5;
-            if(y_t != 0)
-            {
-                double pix2mm = c/(y_t/((rowCount-1)*colCount*1.0));
-                qDebug()<<"pix2mm"<<pix2mm;
-                CheckerboardResuleSave("Camera_1",pix2mm);//这里应该是驱动指针的userName
-            }
-          imshow("output", frame);
-
-
+    }
+    return true;
 }
 
 ///
@@ -297,9 +369,9 @@ bool VisionFrom::CheckerboardResuleSave(const QString &cameraName,const double &
     qDebug()<<"2";
     QSqlQuery query(dataBase);
 
-            bool result = query.exec(sql);
-            qDebug()<<sql << "result "<<result;
-            return result;
+    bool result = query.exec(sql);
+    qDebug()<<sql << "result "<<result;
+    return result;
 
 }
 
@@ -317,19 +389,55 @@ bool VisionFrom::CheckerboardResuleSave(const QString &cameraName,const double &
 bool VisionFrom::saveVisionParmeter(const double &a, const double &b, const double &c, const double &d, const double &e, const double &f, const double &pix2mm)
 {
     QStringList names,values;
-    names<<"camera_name"<<"A"<<"B"<<"C"<<"E"<<"F"<<"G";
+    names<<"camera_name"<<"A"<<"B"<<"C"<<"D"<<"E"<<"F";
     QString cameraName = QString::fromStdString(m_pDevice->userName);
     values <<cameraName<<QString::number(a)<<QString::number(b)<<QString::number(c)<<QString::number(d)<<QString::number(e)<<QString::number(f);
-    if(false ==DataBaseManager::GetInstance()->ExcInsertDb("t_visionParmeter",names,values))
+    if(false ==DataBaseManager::GetInstance()->ExcInsertDb("t_visionParameter",names,values))
     {
         names.clear();
-         names<<"A"<<"B"<<"C"<<"E"<<"F"<<"G";
-         values<<QString::number(a)<<QString::number(b)<<QString::number(c)<<QString::number(d)<<QString::number(e)<<QString::number(f);
         values.clear();
+        names<<"A"<<"B"<<"C"<<"D"<<"E"<<"F";
+        values<<QString::number(a)<<QString::number(b)<<QString::number(c)<<QString::number(d)<<QString::number(e)<<QString::number(f);
         QString expression = QString("camera_name = '%1'").arg(cameraName);
-        return DataBaseManager::GetInstance()->ExcUpdateDb("t_visionParmeter",names,values,expression);
+        return DataBaseManager::GetInstance()->ExcUpdateDb("t_visionParameter",names,values,expression);
     }
     return true;
+}
+
+///
+/// \brief VisionFrom::computMatrix 计算矩阵
+/// \return
+///
+VisionStu VisionFrom::computMatrix()
+{
+    VisionStu stu;
+    if(point_camera.size() == point_rebot.size())
+    {
+        Mat warpMat = estimateAffinePartial2D(point_camera,point_rebot,noArray(),LMEDS);
+        qDebug()<<"A"<< warpMat.ptr<double>(0)[0];
+        qDebug()<<"B"<< warpMat.ptr<double>(0)[1];
+        qDebug()<<"C"<< warpMat.ptr<double>(0)[2];
+
+
+        qDebug()<<"D"<< warpMat.ptr<double>(1)[0];
+        qDebug()<<"E"<< warpMat.ptr<double>(1)[1];
+        qDebug()<<"F"<< warpMat.ptr<double>(1)[2];
+
+        stu.A = warpMat.ptr<double>(0)[0];
+        stu.B = warpMat.ptr<double>(0)[1];
+        stu.C = warpMat.ptr<double>(0)[2];
+
+
+        stu.D = warpMat.ptr<double>(1)[0];
+        stu.E = warpMat.ptr<double>(1)[1];
+        stu.F = warpMat.ptr<double>(1)[2];
+        return stu;
+    }
+    else
+    {
+        qDebug()<<"camera size != reboot size";
+        return stu;
+    }
 }
 
 /// \brief VisionFrom::trigger 外部触发图像采集并处理图像
@@ -343,10 +451,10 @@ bool VisionFrom::trigger(QPoint &point, QString &msg)
     //触发图像采集
     onTrigger();
 
-//    while(true)
-//    {
+    //    while(true)
+    //    {
 
-//    }
+    //    }
     if(m_trigger == false)
     {
         msg = "Can`t get the image;";
@@ -358,48 +466,78 @@ bool VisionFrom::trigger(QPoint &point, QString &msg)
 
 }
 
+
 void VisionFrom::save()
 {
     Mat src,gray;
     src = frame;
-    //cv::resize(frame,src,Size( m_vision_label->width(),m_vision_label->height()));
+    cv::resize(frame,src,Size( m_vision_label->width()*2,m_vision_label->height()*2));
     //cvtColor(src,gray,COLOR_BGR2GRAY);
 
     std::vector<cv::Vec3f> cricles;
     medianBlur(src,src,3);
-    HoughCircles(src,cricles,cv::HOUGH_GRADIENT,1.5,10,160,50,0,30);
+    HoughCircles(src,cricles,cv::HOUGH_GRADIENT,1.5,10,160,90,10,50);
     if(cricles.size() !=0)
     {
         cvtColor(src,src,COLOR_GRAY2BGR);
         for(int i = 0;i < cricles.size();i++)
         {
-             cv::circle(src,cv::Point(cricles[i][0],cricles[i][1]),cricles[i][2],cv::Scalar(0,0,255),2);
-             //qDebug()<<"redio :"<<cricles[i][2];
-             //测试pix2mm的精度
-             //qDebug()<<cricles[i][2]*ShareData::GetInstance()->m_visionMap["Camera_1"].pix2mm;
-             if(i!=0)
-             qDebug()<<sqrt(((cricles[i][0]-cricles[i-1][0])*(cricles[i][0]-cricles[i-1][0]))+((cricles[i][1]-cricles[i-1][1])*(cricles[i][1]-cricles[i-1][1])))*ShareData::GetInstance()->m_visionMap["Camera_1"].pix2mm;
+            cv::circle(src,cv::Point(cricles[i][0],cricles[i][1]),cricles[i][2],cv::Scalar(0,0,255),2);
+            //qDebug()<<"redio :"<<cricles[i][2];
+            //测试pix2mm的精度
+            //qDebug()<<cricles[i][2]*ShareData::GetInstance()->m_visionMap["Camera_1"].pix2mm;
+            //测试两个圆心之间的距离
+            //             if(i!=0)
+            //             qDebug()<<sqrt(((cricles[i][0]-cricles[i-1][0])*(cricles[i][0]-cricles[i-1][0]))+((cricles[i][1]-cricles[i-1][1])*(cricles[i][1]-cricles[i-1][1])))*ShareData::GetInstance()->m_visionMap["Camera_1"].pix2mm;
         }
         Point2f p_c(cricles[0][0],cricles[0][1]);
         point_camera.push_back(p_c);
-        Point2f p_r(ShareData::GetInstance()->m_axisPositonMap[7],ShareData::GetInstance()->m_axisPositonMap[0]);
+        Point2f p_r(ShareData::GetInstance()->m_axisPositonMap[1],ShareData::GetInstance()->m_axisPositonMap[3]);
         point_rebot.push_back(p_r);
         //qDebug()<<"find circle count :"<<cricles.size();
-        qDebug()<<"center:"<<cricles[0][0]<<","<<cricles[0][1]<<endl;
-        qDebug()<<"axis:"<< ShareData::GetInstance()->m_axisPositonMap[7]<<","<<ShareData::GetInstance()->m_axisPositonMap[0];
+        //qDebug()<<"center:"<<cricles[0][0]<<","<<cricles[0][1]<<endl;
+        //qDebug()<<"axis:"<< ShareData::GetInstance()->m_axisPositonMap[1]<<","<<ShareData::GetInstance()->m_axisPositonMap[3];
+
+        //测试矩阵变换后的准确性
         QMap<double, double> map = transformation(cricles[0][0] , cricles[0][1]);
         auto it = map.begin();
-        qDebug()<< "x 差值: "<<it.key() - ShareData::GetInstance()->m_axisPositonMap[7]<<"y 差值："<<it.value()-ShareData::GetInstance()->m_axisPositonMap[0];
-        int interval = 171 - cricles[0][1]  ;
-        if( -125 <= interval && interval <= 152 )
+        qDebug()<< "x 差值: "<<it.key() - ShareData::GetInstance()->m_axisPositonMap[1]<<"y 差值："<<it.value()-ShareData::GetInstance()->m_axisPositonMap[3];
+        //qDebug()<< "Mark x: "<<it.key()<<"Mark y："<<it.value();
+        int interval = 171 - cricles[0][1];
+
+        if((abs((it.key()-0)/2000) < 10) && abs((it.value()-0)/2000) < 10)
         {
             int offect = interval * 50;
 
- //           qDebug()<<"offect = "<< offect;
-
-//            MotionControl  m;
-//            m.relativeMove(0,offect);
+            MotionControl  m;
+            m.relativeMove(2,(it.key()-1016.87));
+            m.relativeMove(1,-1*(it.key()-1016.87));
+            m.relativeMove(3,-1*(it.value()-2516));
         }
     }
     imshow("src",src);
+}
+
+void VisionFrom::delay_msc(int msc)
+{
+    QEventLoop loop;
+    QTimer::singleShot(msc,&loop,SLOT(quit()));
+    loop.exec();
+}
+
+void VisionFrom::onCliabreationClicked()
+{
+    VisionStu s;
+    if(autoGetTransformationParameter(1800,s))
+    {
+        qDebug()<<s.A<<s.B<<s.C<<s.D<<s.E<<s.F;
+
+        //标定成功后保存到数据库
+        if(saveVisionParmeter(s.A,s.B,s.C,s.D,s.E,s.F))
+        {
+            QMessageBox msgBox;
+            msgBox.setText("标定成功,保存成功,请重启应用程序!");
+            msgBox.exec();
+        }
+    }
 }

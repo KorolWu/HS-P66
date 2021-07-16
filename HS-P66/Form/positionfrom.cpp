@@ -18,6 +18,7 @@ PositionFrom::PositionFrom(const QString &posName, const QVector<int> &axisVec, 
         m_paxisId->setFont(font_name);
         QSpinBox *pos = new QSpinBox();
         pos->setMaximum(999999999);
+        pos->setMinimum(-999999999);
         pos->setObjectName(QString::number(axisVec.at(i)));//spinbox objName = axis id
         m_spinBoxVec.push_back(pos);
         hbox->addWidget(m_paxisId);
@@ -61,6 +62,7 @@ void PositionFrom::onSaveBtnCliked()
         int axisId = m_spinBoxVec.at(i)->objectName().toInt();
         long int position = 0;
         int ret = APS_get_position(axisId,&position);
+        qDebug()<<"i= "<<i<<"position="<<position;
         if(ret == ERR_NoError)
         {
             m_spinBoxVec.at(i)->setValue(position);
