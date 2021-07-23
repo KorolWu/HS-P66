@@ -24,6 +24,8 @@ public:
     bool m_isHomePosition = false;
     //程序是否正在执行标志位
     bool m_isRuning = false;
+    //急停标志位 ==true停止所有的轴但不会松磁
+    bool m_stopFlag = false;
     //carNum, dIstatus
     QMap <int,DIInfostru> m_DI_Status;
     //carNum, axisStruct

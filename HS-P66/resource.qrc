@@ -42,5 +42,15 @@
         <file>Image/save.png</file>
         <file>Image/trigger.png</file>
         <file>Image/star2stop.png</file>
+        <file>Image/failed.png</file>
+        <file>Image/success.png</file>
+        <file>Image/cameraInit.png</file>
+        <file>Image/err.ico</file>
+        <file>Image/ok (1).ico</file>
+        <file>Image/axisCheck.png</file>
+        <file>Image/camera.png</file>
+        <file>Image/ioCheck.png</file>
+        <file>Image/position.png</file>
+        <file>Image/xxy.png</file>
     </qresource>
 </RCC>

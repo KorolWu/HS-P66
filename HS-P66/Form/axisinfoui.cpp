@@ -146,7 +146,6 @@ void AxisInfoUI::RunORG()
         acc = ShareData::GetInstance()->m_axisMap[m_axisId].acc;
         vMax = ShareData::GetInstance()->m_axisMap[m_axisId].homeVmax;
     }
-
     m.goHome(m_axisId,vMax,0,acc,1,0);
 }
 

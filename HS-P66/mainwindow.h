@@ -21,6 +21,7 @@
 #include "Form/nozzlefrom.h"
 #include "databasemanager.h"
 #include "Form/xxyform.h"
+#include "Form/mainwidget.h"
 #include "APS168.h"
 #include "type_def.h"
 #include "APS_Define.h"
@@ -80,7 +81,9 @@ private:
     PositionManager *p_positionManager;
     ParameterFrom *p_parameter;
     NozzleFrom *m_pNozzle;
+    MainWidget *m_pMainWidget;
     QTextEdit *m_pLogText;
+
      //MyIniConfig m_ini;
      QString m_path;
      LogicalFlow m_logical;

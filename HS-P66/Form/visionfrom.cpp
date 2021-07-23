@@ -191,7 +191,10 @@ void VisionFrom::setGain()
 
 void VisionFrom::onTrigger()
 {
-    m_pDevice->OnceSnap();
+    //m_pDevice->OnceSnap();
+    QPoint p;QString str;
+    double angle = 0;QMap<double,double> cornerPosition;
+    trigger(p,angle,str,cornerPosition);
 
 }
 
@@ -303,24 +306,36 @@ bool VisionFrom::autoGetTransformationParameter(const int interval, VisionStu &r
                 }
             }
             delay_msc(1500);
-            cv::resize(frame,src,Size( m_vision_label->width()*2,m_vision_label->height()*2));
-            std::vector<cv::Vec3f> cricles;
-            medianBlur(src,src,3);
-            HoughCircles(src,cricles,cv::HOUGH_GRADIENT,1.5,10,160,90,10,50);
-            if(cricles.size() == 1)
+            //----------------用标准圆的自动标定------------
+//            cv::resize(frame,src,Size( m_vision_label->width()*2,m_vision_label->height()*2));
+//            std::vector<cv::Vec3f> cricles;
+//            medianBlur(src,src,3);
+//            HoughCircles(src,cricles,cv::HOUGH_GRADIENT,1.5,10,160,90,10,50);
+//            if(cricles.size() == 1)
+//            {
+//                cvtColor(src,src,COLOR_GRAY2BGR);
+//                for(int i = 0;i < cricles.size();i++)
+//                {
+//                    cv::circle(src,cv::Point(cricles[i][0],cricles[i][1]),cricles[i][2],cv::Scalar(0,0,255),2);
+//                }
+//                Point2f p_c(cricles[0][0],cricles[0][1]);
+//                point_camera.push_back(p_c);
+//                Point2f p_r(ShareData::GetInstance()->m_axisPositonMap[1],ShareData::GetInstance()->m_axisPositonMap[3]);
+//                point_rebot.push_back(p_r);
+//                qDebug()<<"center:"<<cricles[0][0]<<","<<cricles[0][1]<<endl;
+//                qDebug()<<"axis:"<< ShareData::GetInstance()->m_axisPositonMap[1]<<","<<ShareData::GetInstance()->m_axisPositonMap[3];
+
+//            }
+             //----------------用标准圆的自动标定------------
+            QPoint point;
+            QString msg;double angle = 0;QMap<double,double> cornerPosition;
+            if(trigger(point,angle,msg,cornerPosition))
             {
-                cvtColor(src,src,COLOR_GRAY2BGR);
-                for(int i = 0;i < cricles.size();i++)
-                {
-                    cv::circle(src,cv::Point(cricles[i][0],cricles[i][1]),cricles[i][2],cv::Scalar(0,0,255),2);
-                }
-                Point2f p_c(cricles[0][0],cricles[0][1]);
+                Point2f p_c(point.x(),point.y());
                 point_camera.push_back(p_c);
                 Point2f p_r(ShareData::GetInstance()->m_axisPositonMap[1],ShareData::GetInstance()->m_axisPositonMap[3]);
                 point_rebot.push_back(p_r);
-                qDebug()<<"center:"<<cricles[0][0]<<","<<cricles[0][1]<<endl;
-                qDebug()<<"axis:"<< ShareData::GetInstance()->m_axisPositonMap[1]<<","<<ShareData::GetInstance()->m_axisPositonMap[3];
-
+                 delay_msc(500);
             }
             else
             {
@@ -444,78 +459,110 @@ VisionStu VisionFrom::computMatrix()
 /// \param point 返回mark点的位置
 /// \return false = 处理失败；
 ///
-bool VisionFrom::trigger(QPoint &point, QString &msg)
+bool VisionFrom::trigger(QPoint &point, double &angle, QString &msg,QMap<double,double> &cornerPosition)
 {
     //触发前标志位
     m_trigger = false;
+
     //触发图像采集
-    onTrigger();
+    //onTrigger();
+    Mat src;
+    src = frame;
+    cv::resize(frame,src,Size( m_vision_label->width()*2,m_vision_label->height()*2));
 
     //    while(true)
     //    {
 
     //    }
-    if(m_trigger == false)
-    {
-        msg = "Can`t get the image;";
-        return false;
-    }
+//    if(m_trigger == false)
+//    {
+//        msg = "Can`t get the image;";
+//        return false;
+//    }
     ImageProcess ImProcess;
-    return ImProcess.getMarkPoint(frame,point);
-
-
+    Vec4i start,end;
+    if(ImProcess.getMarkPoint(src,point,start,end))
+    {
+        double s_x = start[0];
+        double s_y = start[1];
+        double s_xEnd = start[2];
+        double s_yEnd = start[3];
+        QMap <double ,double> lineStart = transformation(s_x,s_y);
+        QMap <double ,double> lineEnd = transformation(s_xEnd,s_yEnd);
+        QMap <double ,double> corner = transformation(point.x(),point.y());
+        qDebug()<<"(x,y)"<<corner.begin().key()<<corner.begin().value();
+        cornerPosition.insert(corner.begin().key(),corner.begin().value());
+        //计算斜率
+       double k = (lineEnd.begin().value() - lineStart.begin().value())/(lineEnd.begin().key() - lineStart.begin().key());
+       double h = qAtan(k);
+       angle = h*180/3.1415926;
+       if(qAbs(angle) > 5)
+       {
+           QMap <double ,double> lineStart = transformation(end[0],end[1]);
+           QMap <double ,double> lineEnd = transformation(end[2],end[3]);
+           k = (lineEnd.begin().value() - lineStart.begin().value())/(lineEnd.begin().key() - lineStart.begin().key());
+           h = qAtan(k);
+           angle = h*180/3.1415926;
+       }
+       qDebug()<<"Angle = "<<angle;
+    }
+    else
+        return false;
 }
 
 
 void VisionFrom::save()
 {
-    Mat src,gray;
-    src = frame;
-    cv::resize(frame,src,Size( m_vision_label->width()*2,m_vision_label->height()*2));
-    //cvtColor(src,gray,COLOR_BGR2GRAY);
+//    Mat src,gray;
+//    src = frame;
+//    cv::resize(frame,src,Size( m_vision_label->width()*2,m_vision_label->height()*2));
+//    //cvtColor(src,gray,COLOR_BGR2GRAY);
 
-    std::vector<cv::Vec3f> cricles;
-    medianBlur(src,src,3);
-    HoughCircles(src,cricles,cv::HOUGH_GRADIENT,1.5,10,160,90,10,50);
-    if(cricles.size() !=0)
+//    std::vector<cv::Vec3f> cricles;
+//    medianBlur(src,src,3);
+//    HoughCircles(src,cricles,cv::HOUGH_GRADIENT,1.5,10,160,90,10,50);
+//    if(cricles.size() !=0)
+//    {
+//        cvtColor(src,src,COLOR_GRAY2BGR);
+//        for(int i = 0;i < cricles.size();i++)
+//        {
+//            cv::circle(src,cv::Point(cricles[i][0],cricles[i][1]),cricles[i][2],cv::Scalar(0,0,255),2);
+//            //qDebug()<<"redio :"<<cricles[i][2];
+//            //测试pix2mm的精度
+//            //qDebug()<<cricles[i][2]*ShareData::GetInstance()->m_visionMap["Camera_1"].pix2mm;
+//            //测试两个圆心之间的距离
+//            //             if(i!=0)
+//            //             qDebug()<<sqrt(((cricles[i][0]-cricles[i-1][0])*(cricles[i][0]-cricles[i-1][0]))+((cricles[i][1]-cricles[i-1][1])*(cricles[i][1]-cricles[i-1][1])))*ShareData::GetInstance()->m_visionMap["Camera_1"].pix2mm;
+//        }
+//        Point2f p_c(cricles[0][0],cricles[0][1]);
+//        point_camera.push_back(p_c);
+//        Point2f p_r(ShareData::GetInstance()->m_axisPositonMap[1],ShareData::GetInstance()->m_axisPositonMap[3]);
+//        point_rebot.push_back(p_r);
+//        //qDebug()<<"find circle count :"<<cricles.size();
+//        //qDebug()<<"center:"<<cricles[0][0]<<","<<cricles[0][1]<<endl;
+//        //qDebug()<<"axis:"<< ShareData::GetInstance()->m_axisPositonMap[1]<<","<<ShareData::GetInstance()->m_axisPositonMap[3];
+
+//        //测试矩阵变换后的准确性
+//        QMap<double, double> map = transformation(cricles[0][0] , cricles[0][1]);
+//        auto it = map.begin();
+//        qDebug()<< "x 差值: "<<it.key() - ShareData::GetInstance()->m_axisPositonMap[1]<<"y 差值："<<it.value()-ShareData::GetInstance()->m_axisPositonMap[3];
+//        //qDebug()<< "Mark x: "<<it.key()<<"Mark y："<<it.value();
+//        int interval = 171 - cricles[0][1];
+    QPoint point;
+    QString msg;double angle = 0;QMap<double,double> cornerPosition;
+    if(trigger(point,angle,msg,cornerPosition))
     {
-        cvtColor(src,src,COLOR_GRAY2BGR);
-        for(int i = 0;i < cricles.size();i++)
-        {
-            cv::circle(src,cv::Point(cricles[i][0],cricles[i][1]),cricles[i][2],cv::Scalar(0,0,255),2);
-            //qDebug()<<"redio :"<<cricles[i][2];
-            //测试pix2mm的精度
-            //qDebug()<<cricles[i][2]*ShareData::GetInstance()->m_visionMap["Camera_1"].pix2mm;
-            //测试两个圆心之间的距离
-            //             if(i!=0)
-            //             qDebug()<<sqrt(((cricles[i][0]-cricles[i-1][0])*(cricles[i][0]-cricles[i-1][0]))+((cricles[i][1]-cricles[i-1][1])*(cricles[i][1]-cricles[i-1][1])))*ShareData::GetInstance()->m_visionMap["Camera_1"].pix2mm;
-        }
-        Point2f p_c(cricles[0][0],cricles[0][1]);
-        point_camera.push_back(p_c);
-        Point2f p_r(ShareData::GetInstance()->m_axisPositonMap[1],ShareData::GetInstance()->m_axisPositonMap[3]);
-        point_rebot.push_back(p_r);
-        //qDebug()<<"find circle count :"<<cricles.size();
-        //qDebug()<<"center:"<<cricles[0][0]<<","<<cricles[0][1]<<endl;
-        //qDebug()<<"axis:"<< ShareData::GetInstance()->m_axisPositonMap[1]<<","<<ShareData::GetInstance()->m_axisPositonMap[3];
-
-        //测试矩阵变换后的准确性
-        QMap<double, double> map = transformation(cricles[0][0] , cricles[0][1]);
+        QMap<double, double> map = transformation(point.x(),point.y());
         auto it = map.begin();
-        qDebug()<< "x 差值: "<<it.key() - ShareData::GetInstance()->m_axisPositonMap[1]<<"y 差值："<<it.value()-ShareData::GetInstance()->m_axisPositonMap[3];
-        //qDebug()<< "Mark x: "<<it.key()<<"Mark y："<<it.value();
-        int interval = 171 - cricles[0][1];
-
         if((abs((it.key()-0)/2000) < 10) && abs((it.value()-0)/2000) < 10)
         {
-            int offect = interval * 50;
-
             MotionControl  m;
-            m.relativeMove(2,(it.key()-1016.87));
-            m.relativeMove(1,-1*(it.key()-1016.87));
-            m.relativeMove(3,-1*(it.value()-2516));
+            m.relativeMove(2,(it.key()-199));
+            m.relativeMove(1,-1*(it.key()-199));
+            m.relativeMove(3,-1*(it.value()-1295));
         }
     }
-    imshow("src",src);
+//    imshow("src",src);
 }
 
 void VisionFrom::delay_msc(int msc)

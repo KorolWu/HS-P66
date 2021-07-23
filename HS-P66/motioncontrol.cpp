@@ -245,6 +245,9 @@ bool MotionControl::goHome(const int axisId,int maxV, int mode, int acc, int dir
     I32 msts;
     // 1. Select home mode and config home parameters
     APS_set_axis_param( axisId, PRA_HOME_MODE, mode ); //Set home mode
+//    if(axisId == 14)//喷头的x
+//        APS_set_axis_param( axisId, PRA_HOME_DIR, 0); //Set home direction
+//    else
     APS_set_axis_param( axisId, PRA_HOME_DIR, dir ); //Set home direction
     APS_set_axis_param( axisId, PRA_HOME_CURVE, curve ); // Set acceleration pattern (T-curve)
     APS_set_axis_param( axisId, PRA_HOME_ACC, acc ); // Set homing acceleration rate
@@ -261,11 +264,18 @@ bool MotionControl::goHome(const int axisId,int maxV, int mode, int acc, int dir
         qDebug()<<"home move failed";
         return false;
     }
-    // 3. Wait for home move do ne,
+    // 3. Wait for home move done,
+    int checkTimes = 0;
     do{
-        delay_msc(100);
+        if(checkTimes > 150)
+        {
+             qDebug()<<"axisID:"<<axisId<<"home move timeout > 20s";
+            return false;
+        }
+        delay_msc(200);
         msts = APS_motion_status( axisId );// Get motion status
         msts = ( msts >> MTS_HMV ) & 1; // Get motion done bit
+        checkTimes ++;
     }while( msts != 0 );
     // 4. Check home move success or not
     msts = APS_motion_status( axisId ); // Get motion status
@@ -336,7 +346,7 @@ bool MotionControl::goHomes(const QVector<int> &axisVec)
         {
             int axisId = axisVec.at(i);
             msts = APS_motion_status( axisId );// Get motion status
-            delay_msc(100);
+            delay_msc(150);
             msts = ( msts >> MTS_HMV ) & 1; // Get motion done bit
             if(msts == 0 ) //回原点动作结束
             {
@@ -489,7 +499,7 @@ bool MotionControl::servoOn(int axisId)
         {
            return true;
         }
-        QThread::msleep( 100 ); // Wait stable.
+       delay_msc(150); // Wait stable.
     }
     else
         return true;

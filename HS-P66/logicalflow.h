@@ -21,8 +21,10 @@ public:
     bool runPosition(const QString &positionName); //去一个是示教过的位置
     void airVoid(const bool isVoid);//平台吸真空
     bool airOn(const int &car,const int &out, const int &checkId);
+    bool runOffect(QMap<double,double> &cornerPosition);
 private:
     void delay_msc(int msc);
+    bool ckeckEmgSignal();//检查急停信号是否按下，是返回true
 };
 
 #endif // LOGICALFLOW_H

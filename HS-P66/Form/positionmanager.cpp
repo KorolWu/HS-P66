@@ -65,6 +65,10 @@ void PositionManager::initUi()
     PositionFrom *camera_l = new PositionFrom("Camera_L",vec);
     vbox->addWidget(camera_l);
     test7->setParameter(ShareData::GetInstance()->m_position["Camera_L"]);
+
+            PositionFrom *markPosition = new PositionFrom("markPosition",vec);
+            vbox->addWidget(markPosition);
+            test7->setParameter(ShareData::GetInstance()->m_position["markPosition"]);
     //----
     group->setLayout(vbox);
     m_pX = new AxisInfoUI(14,this);

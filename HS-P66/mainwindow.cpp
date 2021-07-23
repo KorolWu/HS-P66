@@ -35,6 +35,7 @@ MainWindow::~MainWindow()
 void MainWindow::start()
 {
     QString status = m_start->text();
+   // ShareData::GetInstance()->m_stopFlag = false; //急停标志位 复位掉(急停后要回原点，应该在回原点的地方复位急停信号)
     if(status == "启动")
     {
         //执行启动逻辑
@@ -60,10 +61,12 @@ void MainWindow::start()
         }
         m_start->setIcon(QIcon(":/src/Image/start"));
         m_start->setText("启动");
+        ShareData::GetInstance()->m_isRuning = false;
     }
     else
     {
         //执行停止逻辑
+        emgStop();
         m_start->setIcon(QIcon(":/src/Image/start"));
         m_start->setText("启动");
     }
@@ -186,6 +189,7 @@ void MainWindow::childrenFormHide()
     p_xxy->hide();
     p_positionManager->hide();
     m_pNozzle->hide();
+    m_pMainWidget->hide();
 
 }
 
@@ -193,8 +197,8 @@ void MainWindow::initMainUI()
 {
     QScreen *screen = QGuiApplication::primaryScreen ();
     QRect screenRect = screen->availableVirtualGeometry();
-    ShareData::GetInstance()->m_width = screenRect.width()-2;
-    ShareData::GetInstance()->m_heitht = screenRect.height()-40;
+    ShareData::GetInstance()->m_width = 1900;//screenRect.width()-2;
+    ShareData::GetInstance()->m_heitht = 968;// screenRect.height()-40;
     this->resize(ShareData::GetInstance()->m_width,ShareData::GetInstance()->m_heitht);
     this->setWindowTitle("HS_P66");
     m_hsLog = new QLabel(this);
@@ -241,7 +245,7 @@ void MainWindow::initMainUI()
 
     m_MainWidget = new QWidget(this);
     m_MainWidget->move(ShareData::GetInstance()->m_width/7+3,ShareData::GetInstance()->m_heitht/10);
-    m_MainWidget->resize(ShareData::GetInstance()->m_width/6*5+25,ShareData::GetInstance()->m_heitht-10);
+    m_MainWidget->resize(ShareData::GetInstance()->m_width/6*5+25-200,ShareData::GetInstance()->m_heitht-10);
     m_pLogText = new QTextEdit(m_MainWidget);
     m_pLogText->move(3,m_MainWidget->height()/5*3+100);
     m_pLogText->resize(m_MainWidget->width()-15,m_MainWidget->height()/5-15);
@@ -270,12 +274,15 @@ void MainWindow::initMainUI()
     m_pNozzle = new NozzleFrom(m_MainWidget);
     m_pNozzle->setParameter(ShareData::GetInstance()->m_nozzleStu);
     m_pNozzle->hide();
+
+    m_pMainWidget = new MainWidget(m_MainWidget);
+
 }
 
 void MainWindow::initLWidget()
 {
     p_treeView = new QTreeView(m_LWidget);
-    p_treeView->setStyleSheet("QTreeView{border: 1px solid lightgray;}"
+    p_treeView->setStyleSheet("QTreeView{border: 1px solid lightgray;background-color:rgb(245,245,240)}"
                               "QTreeView::item {height: 40px;border-radius: 2px;border: 1px solid transparent;background: transparent;color: black;}"
                               "QTreeView::item:has-children {border: none;border-bottom: 1px solid lightgray;}"
                               "QTreeView::item:hover {border: 1px solid rgb(170, 190, 230);background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 rgb(230, 240, 250),"
@@ -283,11 +290,12 @@ void MainWindow::initLWidget()
                               "QTreeView::item:selected {border: 1px solid rgb(230, 240, 250);background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 rgb(230, 240, 250),"
                               "stop: 0.5 rgb(220, 235, 255), stop: 1.0 rgb(210, 230, 255));}"
                               );
+    p_treeView->header()->hide();
     connect(p_treeView,&QTreeView::clicked,this,&MainWindow::onTreeviewClicked);
     p_treeView->setFixedSize(ShareData::GetInstance()->m_width/7,ShareData::GetInstance()->m_heitht);
     p_treeStandarModel = new QStandardItemModel(p_treeView);
     p_treeView->setModel(p_treeStandarModel);
-    p_treeView->setFont(QFont("宋体",12));
+    p_treeView->setFont(QFont("宋体",14));
     //p_treeView->header()->hide();
     p_treeView->setEditTriggers(QAbstractItemView::EditTrigger::NoEditTriggers);
     p_standarItem = new QStandardItem("运动控制");
@@ -295,10 +303,13 @@ void MainWindow::initLWidget()
     p_ordersItem = new QStandardItem("参数设置");
     p_ordersItem->setIcon(QIcon(":/src/Image/seting.png"));
     p_loginroleItem = new  QStandardItem("IO监视");
+    p_loginroleItem->setIcon(QIcon(":/src/Image/ioCheck.png"));
     p_singlAxisControl = new QStandardItem("单轴运动");
+    p_singlAxisControl->setIcon(QIcon(":/src/Image/axisCheck.png"));
     p_xxyItem = new QStandardItem("XXY载台");
+        p_xxyItem->setIcon(QIcon(":/src/Image/xxy.png"));
     p_positionItem = new QStandardItem("点位管理");
-
+    p_positionItem->setIcon(QIcon(":/src/Image/position.png"));
     p_standarItem->appendRow(p_ordersItem);
     p_standarItem->appendRow(p_loginroleItem);
     p_standarItem->appendRow(p_singlAxisControl);
@@ -312,7 +323,7 @@ void MainWindow::initLWidget()
     p_agvItem->setIcon(QIcon(":/src/Image/seting.png"));
     p_standarItem->appendRow(p_agvItem);
     p_elevator = new QStandardItem("CCD_1");
-    p_elevator->setIcon(QIcon(":/resouse/Image/elevator.png"));
+    p_elevator->setIcon(QIcon(":/src/Image/camera.png"));
     p_standarItem->appendRow(p_elevator);
     p_runer = new QStandardItem("CCD_2");
     p_runer->setIcon(QIcon(":/resouse/Image/elevator.png"));
@@ -394,6 +405,10 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
         setChildrenBtnEnable(m_pNozzle);
         m_pNozzle->show();
     }
+    else if(row_name == "运动控制")
+    {
+        m_pMainWidget->show();
+    }
 }
 
 int MainWindow::initAdlinkDriver(const QString &fileName)
@@ -415,6 +430,7 @@ bool MainWindow::airInit()
         {
             if(m.airActionOn(1,13,18))//阻挡动点
             {
+                m.outPutDo(0,14,0); //平台破真空
                 return true;
             }
             else
@@ -471,6 +487,24 @@ bool MainWindow::logical(QString &msg)
          msg = "拍边气缸固定流程执行失败";
          return false;
      }
+     //去一个固定的拍照位置  这里先省略
+
+     //拍照算出此时玻璃角点的位置，以及角度
+     QPoint coner;double angle;QString errmsg;
+     QMap<double,double> cornerPosition;//角点相对于xxy平台的坐标
+     if(p_visionForm->m_pVision_R->trigger(coner,angle,errmsg,cornerPosition))
+     {
+           if(false == m_logical.runOffect(cornerPosition))
+           {
+                QLOG_INFO()<<"拍照补偿大于 1CM";
+           }
+     }
+     else
+     {
+          msg = "拍照定位失败";
+          QLOG_INFO()<<msg;
+     }
+
     if(false == m_logical.getGlass())
     {
         msg = "玻璃刚到载台时流程执行失败";
@@ -498,6 +532,8 @@ bool MainWindow::logical(QString &msg)
         msg = "挡料气缸复位异常";
         return false;
     }
+     m_logical.beginIn(0);//流道进料
+      QLOG_INFO()<<"打印完成";
     return true;
 
 }
@@ -540,9 +576,10 @@ void MainWindow::appendLog(const QString &message, int level)
 ///
 void MainWindow::home()
 {
+    ShareData::GetInstance()->m_stopFlag = false; //急停标志位 复位掉
      m_home->setEnabled(false);
     //需要判断里面时候有料，如果有料不可以启动回原点流程
-
+    QLOG_INFO()<<"回原点中，请稍后...";
     MotionControl control;
     QVector<int> axisVec;
     axisVec.append(16);//进料z
@@ -600,14 +637,18 @@ void MainWindow::home()
     }
     ShareData::GetInstance()->m_isHomePosition = true;
     m_home->setEnabled(false);
+     QLOG_INFO()<<"回原点完成。";
 }
 
 void MainWindow::emgStop()
 {
+    ShareData::GetInstance()->m_stopFlag = true;//所有轴停止标志位
+    ShareData::GetInstance()->m_isHomePosition = false;//已经不在原点了，需要从新回原点才能再次启动
     MotionControl control;
     QVector<int> axisVec;
-    axisVec<<0<<1<<2<<3<<4<<5<<6<<7<<14<<15<<16<<17<<18<<19<<20<<21;
+    axisVec<<0<<1<<2<<3<<14<<15<<16<<18<<19;
     control.axisStop_v(axisVec);
+    m_home->setEnabled(true);//回原点可见
 
 }
 

@@ -20,6 +20,7 @@ SOURCES += \
     Form/axisfrom.cpp \
     Form/axisinfoui.cpp \
     Form/axisparameterset.cpp \
+    Form/cpiewidget.cpp \
     Form/ioform.cpp \
     Form/iomonitor.cpp \
     Form/mainwidget.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
     Form/axisfrom.h \
     Form/axisinfoui.h \
     Form/axisparameterset.h \
+    Form/cpiewidget.h \
     Form/ioform.h \
     Form/iomonitor.h \
     Form/mainwidget.h \

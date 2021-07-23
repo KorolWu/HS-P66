@@ -14,8 +14,8 @@ void XXYForm::initUi()
     QLabel *angle = new QLabel("角度：",groupUp);
     angle->move(20,100);
     m_pAngle = new QDoubleSpinBox(groupUp);
-    m_pAngle->setMaximum(3);
-    m_pAngle->setMinimum(-3);
+    m_pAngle->setMaximum(1);
+    m_pAngle->setMinimum(-1);
     m_pAngle->setAlignment(Qt::AlignCenter);// 设置居中
     m_pAngle->move(93,95);
     for (int i = 0 ;i < 6;i++) {
@@ -139,21 +139,31 @@ void XXYForm::onBtnClicked()
         angle = m_pAngle->value();
         m_pA->setValue(m_pA->value()+angle);
         c.AFDegConvert(angle,m_pA->value(),&x1,&x2,&y1);
-        m.getCurrentPos(1,pos_x1);
-        m.getCurrentPos(2,pos_x2);
-        m.getCurrentPos(3,pos_x3);
-        pos_x1 += x1*2000;
-        pos_x2 += x2*2000;
-        pos_x3 += y1*2000;
-        posinfo.insert(1,pos_x1);
-        posinfo.insert(2,pos_x2);
-        posinfo.insert(3,pos_x3);
-        m.runPosition(posinfo);
+//        m.getCurrentPos(1,pos_x1);
+//        m.getCurrentPos(2,pos_x2);
+//        m.getCurrentPos(3,pos_x3);
+//        pos_x1 += x1*2000;
+//        pos_x2 += x2*2000;
+//        pos_x3 += y1*2000;
+        m.relativeMove(2,x2*2000);
+        m.relativeMove(1,x1*2000);
+        m.relativeMove(3,y1*2000);
+//        posinfo.insert(1,pos_x1);
+//        posinfo.insert(2,pos_x2);
+//        posinfo.insert(3,pos_x3);
+//        m.runPosition(posinfo);
         qDebug()<<x1<<x2<<y1;
     }
     else if(btnName == "btn_5")//home
     {
-
+        QVector<int> axisVec;
+        axisVec.append(1);//上载台x
+        axisVec.append(2);//上载台x
+        axisVec.append(3);//上载台y
+        if(m.goHomes(axisVec))
+        {
+            m_pA->setValue(0.0);
+        }
     }
 
 }

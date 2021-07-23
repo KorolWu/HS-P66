@@ -1,5 +1,6 @@
 ﻿#include "logicalflow.h"
-
+#include "QsLog.h"
+#pragma execution_character_set("utf-8")
 LogicalFlow::LogicalFlow()
 {
 
@@ -11,10 +12,12 @@ LogicalFlow::LogicalFlow()
 ///
 bool LogicalFlow::beginIn(const int &dir)
 {
+    if(false == ckeckEmgSignal())
+        return false;
     MotionControl m;
     m.runJog(18,dir);
     m.runJog(19,dir);
-    delay_msc(6000);
+    delay_msc(5000);
     m.stopJog(18);
     m.stopJog(19);
     QLOG_INFO()<<"进料完成";
@@ -27,6 +30,8 @@ bool LogicalFlow::beginIn(const int &dir)
 ///
 bool LogicalFlow::getGlass()
 {
+    if(false == ckeckEmgSignal())
+        return false;
     //等待玻璃到载台上
     MotionControl m;
     m.outPutDo(0,8,1);
@@ -37,7 +42,7 @@ bool LogicalFlow::getGlass()
     if(ShareData::GetInstance()->m_position.contains("PointS"))
     {
         QMap<int,int> pos = ShareData::GetInstance()->m_position["PointS"];
-       return m.runPosition(pos);
+        return m.runPosition(pos);
     }
     return false;
 }
@@ -48,6 +53,8 @@ bool LogicalFlow::getGlass()
 ///
 bool LogicalFlow::printX()
 {
+    if(false == ckeckEmgSignal())
+        return false;
     MotionControl m;
     QMap<int,int> pos;
     pos.clear();
@@ -61,18 +68,20 @@ bool LogicalFlow::printX()
             return false;
         }
     }
+    if(false == ckeckEmgSignal())
+        return false;
     delay_msc(500);
-   if(ShareData::GetInstance()->m_position.contains("BeginS"))
-   {
-       pos.clear();
-      pos = ShareData::GetInstance()->m_position["BeginS"];
-      if(!m.runPosition(pos))
-      {
-          QLOG_INFO()<<"print flow failed;";
-          return false;
-      }
-   }
-   return true;
+    if(ShareData::GetInstance()->m_position.contains("BeginS"))
+    {
+        pos.clear();
+        pos = ShareData::GetInstance()->m_position["BeginS"];
+        if(!m.runPosition(pos))
+        {
+            QLOG_INFO()<<"print flow failed;";
+            return false;
+        }
+    }
+    return true;
 }
 
 ///
@@ -93,23 +102,25 @@ bool LogicalFlow::printFlow()
         QMap<int,int> pos = ShareData::GetInstance()->m_position["PointS"];
         if(pos.contains(0))
         {
-           begin_y = pos[0];
-           for(int i = 1 ; i < 4; i++)
-           {
-               begin_y =  begin_y + (i*20000);
-               QMap<int,int> p;
-               p.clear();
-               p.insert(0,begin_y);
+            begin_y = pos[0];
+            for(int i = 1 ; i < 4; i++)
+            {
+                if(false == ckeckEmgSignal())
+                    return false;
+                begin_y =  begin_y + (i*20000);
+                QMap<int,int> p;
+                p.clear();
+                p.insert(0,begin_y);
                 MotionControl m;
                 m.runPosition(p);
-               delay_msc(800);
-               if(false == printX())
-               {
-                   QLOG_INFO()<<"打印中出现异常";
-                   return false;
-               }
                 delay_msc(800);
-           }
+                if(false == printX())
+                {
+                    QLOG_INFO()<<"打印中出现异常";
+                    return false;
+                }
+                delay_msc(800);
+            }
         }
 
     }
@@ -150,15 +161,19 @@ bool LogicalFlow::airAction()
     MotionControl m;
     if(m.airActionOn(1,10,21)) //上升气缸原点
     {
+        delay_msc(200);
         if(m.airActionOn(1,11,17)) //拍边原点
         {
+            delay_msc(200);
             if(m.airActionOff(1,13,19))//阻挡动点
             {
+                delay_msc(200);
                 if(m.airActionOff(1,11,16)) //拍边气缸复位
                 {
+                    delay_msc(200);
                     if(m.airActionOff(1,10,20))//上升气缸复位
                     {
-                          return true;
+                        return true;
                     }
                     else
                         return false;
@@ -177,14 +192,19 @@ bool LogicalFlow::airAction()
 }
 
 ///
-/// \brief LogicalFlow::glassBack 打印完成后将玻璃送到流道口，默认位置在Y=0
+/// \brief LogicalFlow::glassBack 打印完成后将玻璃送到流道口，默认位置在Y=0 xxy载台复位，默认在xxy=0
 /// \return
 ///
 bool LogicalFlow::glassBack()
 {
+    if(false == ckeckEmgSignal())
+        return false;
     MotionControl m;
     QMap<int,int> p;
     p.insert(0,0);
+    p.insert(1,0);
+    p.insert(2,0);
+    p.insert(3,0);
     return m.runPosition(p);//回到接料的位置
 }
 
@@ -195,6 +215,8 @@ bool LogicalFlow::glassBack()
 ///
 bool LogicalFlow::runPosition(const QString &positionName)
 {
+    if(false == ckeckEmgSignal())
+        return false;
     MotionControl m;
     QMap<int,int> pos;
     pos.clear();
@@ -222,7 +244,7 @@ void LogicalFlow::airVoid(const bool isVoid)
     MotionControl m;
     if(true == isVoid)
     {
-         m.outPutDo(0,14,1); //平台吸气
+        m.outPutDo(0,14,1); //平台吸气
     }
     else
         m.outPutDo(0,14,0); //平台吸气
@@ -230,8 +252,30 @@ void LogicalFlow::airVoid(const bool isVoid)
 
 bool LogicalFlow::airOn(const int &car, const int &out, const int &checkId)
 {
-     MotionControl m;
+    MotionControl m;
     return m.airActionOn(car,out,checkId);
+}
+
+///
+/// \brief LogicalFlow::runOffect 根据相机给的角点坐标 进行补偿
+/// \param cornerPosition  角点的坐标
+/// \return
+///
+bool LogicalFlow::runOffect(QMap<double, double> &cornerPosition)
+{
+    if(false == ckeckEmgSignal())
+        return false;
+    auto it = cornerPosition.begin();
+    QMap<int,int> mark = ShareData::GetInstance()->m_position["markPosition"];
+    MotionControl  m;
+    if((it.key()-mark[2])/2000 > 10 ||  (it.key()-mark[2])/2000 > 10)
+    {
+        return false;
+    }
+    m.relativeMove(2,(it.key()-mark[2]));
+    m.relativeMove(1,-1*(it.key()-mark[2]));
+    m.relativeMove(3,-1*(it.value()-mark[3]));
+    return true;
 }
 
 void LogicalFlow::delay_msc(int msc)
@@ -239,4 +283,15 @@ void LogicalFlow::delay_msc(int msc)
     QEventLoop loop;
     QTimer::singleShot(msc,&loop,SLOT(quit()));
     loop.exec();
+}
+
+bool LogicalFlow::ckeckEmgSignal()
+{
+    if(ShareData::GetInstance()->m_stopFlag == true)
+    {
+        QLOG_WARN()<<"在运动的时检测到用户按下急停信号";
+        return false;
+    }
+    return true;
+
 }

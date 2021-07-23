@@ -20,6 +20,7 @@
 #include "Units/cameradevice.h"
 #include "Units/imageprocess.h"
 #include "databasemanager.h"
+#include <QtMath>
 
 using namespace cv;
 using namespace std;
@@ -74,7 +75,7 @@ private slots:
     void delay_msc(int msc);
     void onCliabreationClicked();
 public:
-    bool trigger(QPoint &point, QString &msg);
+    bool trigger(QPoint &point, double &angle, QString &msg, QMap<double, double> &cornerPosition);
 };
 
 #endif // VISIONFROM_H
