@@ -52,6 +52,7 @@ public:
     bool getCurrentPos(const int &axisId, I32 &currentPosition);
     bool runJog(const int &axisId, const int &dir);
     bool stopJog(const int &axisId);
+    bool setLinearTriggerPos(const int &board_ID, const int &LCmpCh, const int &StartPoint);
 };
 
 #endif // MOTIONCONTROL_H

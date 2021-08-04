@@ -138,12 +138,12 @@ void IoMonitor::onDoClicked()
    if(((currentData >> doNum) & 1) != 1) //on
    {
         d.outPutDo(m_carNum,doNum,1);
-        QLOG_ERROR()<<doNum<<"on"<<" currentData<<"<<currentData;;
+        //QLOG_ERROR()<<doNum<<"on"<<" currentData<<"<<currentData;;
    }
    else //off
    {
         d.outPutDo(m_carNum,doNum,0);
-        QLOG_ERROR()<<doNum<<"off";
+        //QLOG_ERROR()<<doNum<<"off";
    }
 //   qDebug()<<value;
 }

@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     //程序当前运行目录
     m_path = QCoreApplication::applicationDirPath();
-   // initParameter();
+    // initParameter();
     initSqlite();
     initMainUI();
     initLogInstance();
@@ -23,19 +23,20 @@ MainWindow::MainWindow(QWidget *parent)
     }
     else
         QLOG_ERROR()<<"板卡初始化失败！";
-    QLOG_INFO()<<m_path;
 }
 
 MainWindow::~MainWindow()
 {
-    APS_close(); //关闭系统中所有的板卡
-    delete ui;
+    if(p_visionForm != nullptr)
+        p_visionForm->closeDevice();
 }
+
+
 
 void MainWindow::start()
 {
     QString status = m_start->text();
-   // ShareData::GetInstance()->m_stopFlag = false; //急停标志位 复位掉(急停后要回原点，应该在回原点的地方复位急停信号)
+    // ShareData::GetInstance()->m_stopFlag = false; //急停标志位 复位掉(急停后要回原点，应该在回原点的地方复位急停信号)
     if(status == "启动")
     {
         //执行启动逻辑
@@ -46,14 +47,18 @@ void MainWindow::start()
         {
             ShareData::GetInstance()->m_isRuning = true;
             QString errMsg = "NoErr";
-            if(false == logical(errMsg))
+            for(int times = 0 ; times <20;times++)
             {
-                  QLOG_INFO()<<errMsg;
-                  m_start->setIcon(QIcon(":/src/Image/start"));
-                  m_start->setText("启动");
-                  ShareData::GetInstance()->m_isRuning = false;
-                  return;
-             }
+                if(false == logical(errMsg))
+                {
+                    QLOG_INFO()<<errMsg;
+                    m_start->setIcon(QIcon(":/src/Image/start"));
+                    m_start->setText("启动");
+                    ShareData::GetInstance()->m_isRuning = false;
+                    return;
+                }
+                delay_msc(1000);
+            }
         }
         else
         {
@@ -95,89 +100,90 @@ void MainWindow::initParameter()
 
 bool MainWindow::initSqlite()
 {
-  bool result =  DataBaseManager::GetInstance()->OpenDb(m_path+"\\"+"position.db");
-  QStringList names;
-  QStringList values;
-  QSqlQuery query = DataBaseManager::GetInstance()->ExcQueryDb("select * from t_axisInfo;");
-  int axisId = 99;
-  AxisStruct axisStruct;
-  while (query.next()) {
-     QString axisName = query.value("axis_name").toString();//axisName
-     QStringList list = axisName.split("_");
-     axisId = list[1].toInt();
-     axisStruct.acc = query.value("acc").toInt();
-     axisStruct.dcc = query.value("dec").toInt();
-     axisStruct.vMax = query.value("v_max").toInt();
-     axisStruct.homeVmax = query.value("home_vMax").toInt();
-     ShareData::GetInstance()->m_axisMap.insert(axisId,axisStruct);
-  }
-  query = DataBaseManager::GetInstance()->ExcQueryDb("select * from t_point;");
-  while(query.next())
-  {
-      QString pointName = query.value("point_name").toString();
-      QString pointInfo = query.value("point_info").toString();
-      QStringList list = pointInfo.split(";");
-      QMap<int,int> subPos;
-      subPos.clear();
-      foreach (QString str, list) {
-         QStringList p_list = str.split(":");
-          if(p_list.size() == 2)
-          {
-              subPos.insert(p_list[0].toInt(),p_list[1].toInt());
-          }
-      }
-      ShareData::GetInstance()->m_position.insert(pointName,subPos);
-  }
-  //读取相机准换信息
-   query = DataBaseManager::GetInstance()->ExcQueryDb("select * from t_visionParameter;");
-   VisionStu visionStruct;
-   while(query.next())
-   {
-       QString cameraName = query.value("camera_name").toString();
-       visionStruct.A = query.value("A").toDouble();
-       visionStruct.B = query.value("B").toDouble();
-       visionStruct.C = query.value("C").toDouble();
-       visionStruct.D = query.value("D").toDouble();
-       visionStruct.E = query.value("E").toDouble();
-       visionStruct.F = query.value("F").toDouble();
-       visionStruct.pix2mm = query.value("pix2mm").toDouble();
-       ShareData::GetInstance()->m_visionMap.insert(cameraName,visionStruct);
-       qDebug()<<"ABCDEF"<<visionStruct.A<<visionStruct.B<<visionStruct.C<<visionStruct.D<<visionStruct.E<<visionStruct.F;
-   }
-  //qDebug()<<ShareData::GetInstance()->m_position;
+    bool result =  DataBaseManager::GetInstance()->OpenDb(m_path+"\\"+"position.db");
+    QStringList names;
+    QStringList values;
+    QSqlQuery query = DataBaseManager::GetInstance()->ExcQueryDb("select * from t_axisInfo;");
+    int axisId = 99;
+    AxisStruct axisStruct;
+    while (query.next()) {
+        QString axisName = query.value("axis_name").toString();//axisName
+        QStringList list = axisName.split("_");
+        axisId = list[1].toInt();
+        axisStruct.acc = query.value("acc").toInt();
+        axisStruct.dcc = query.value("dec").toInt();
+        axisStruct.vMax = query.value("v_max").toInt();
+        axisStruct.homeVmax = query.value("home_vMax").toInt();
+        ShareData::GetInstance()->m_axisMap.insert(axisId,axisStruct);
+    }
+    query = DataBaseManager::GetInstance()->ExcQueryDb("select * from t_point;");
+    while(query.next())
+    {
+        QString pointName = query.value("point_name").toString();
+        QString pointInfo = query.value("point_info").toString();
+        QStringList list = pointInfo.split(";");
+        QMap<int,int> subPos;
+        subPos.clear();
+        foreach (QString str, list) {
+            QStringList p_list = str.split(":");
+            if(p_list.size() == 2)
+            {
+                subPos.insert(p_list[0].toInt(),p_list[1].toInt());
+            }
+        }
+        ShareData::GetInstance()->m_position.insert(pointName,subPos);
+    }
+    //读取相机准换信息
+    query = DataBaseManager::GetInstance()->ExcQueryDb("select * from t_visionParameter;");
+    VisionStu visionStruct;
+    while(query.next())
+    {
+        QString cameraName = query.value("camera_name").toString();
+        visionStruct.A = query.value("A").toDouble();
+        visionStruct.B = query.value("B").toDouble();
+        visionStruct.C = query.value("C").toDouble();
+        visionStruct.D = query.value("D").toDouble();
+        visionStruct.E = query.value("E").toDouble();
+        visionStruct.F = query.value("F").toDouble();
+        visionStruct.pix2mm = query.value("pix2mm").toDouble();
+        ShareData::GetInstance()->m_visionMap.insert(cameraName,visionStruct);
+        qDebug()<<"ABCDEF"<<visionStruct.A<<visionStruct.B<<visionStruct.C<<visionStruct.D<<visionStruct.E<<visionStruct.F;
+    }
+    //qDebug()<<ShareData::GetInstance()->m_position;
 
-  //读取喷头设置信息
-  query = DataBaseManager::GetInstance()->ExcQueryDb("select * from t_nozzle;");
+    //读取喷头设置信息
+    query = DataBaseManager::GetInstance()->ExcQueryDb("select * from t_nozzle;");
 
-  NozzleStu nozzleStruct;
-  while(query.next())
-  {
-       ShareData::GetInstance()->m_nozzleStu.name = query.value("nozzleName").toString();
-       ShareData::GetInstance()->m_nozzleStu.dpiTimes = query.value("dpitimes").toInt();
-       ShareData::GetInstance()->m_nozzleStu.startP = query.value("startPin").toInt();
-       ShareData::GetInstance()->m_nozzleStu.endP = query.value("endPin").toInt();
-       ShareData::GetInstance()->m_nozzleStu.filePath = query.value("imagePath").toString();
-       ShareData::GetInstance()->m_nozzleStu.WavePath = query.value("wavePath").toString();
-       ShareData::GetInstance()->m_nozzleStu.flashJetStatus = query.value("flashStatus").toInt();
-       ShareData::GetInstance()->m_nozzleStu.cycle = query.value("cycle").toInt();
-  }
-   return result;
+    NozzleStu nozzleStruct;
+    while(query.next())
+    {
+        ShareData::GetInstance()->m_nozzleStu.name = query.value("nozzleName").toString();
+        ShareData::GetInstance()->m_nozzleStu.dpiTimes = query.value("dpitimes").toInt();
+        ShareData::GetInstance()->m_nozzleStu.startP = query.value("startPin").toInt();
+        ShareData::GetInstance()->m_nozzleStu.endP = query.value("endPin").toInt();
+        ShareData::GetInstance()->m_nozzleStu.filePath = query.value("imagePath").toString();
+        ShareData::GetInstance()->m_nozzleStu.WavePath = query.value("wavePath").toString();
+        ShareData::GetInstance()->m_nozzleStu.flashJetStatus = query.value("flashStatus").toInt();
+        ShareData::GetInstance()->m_nozzleStu.cycle = query.value("cycle").toInt();
+        ShareData::GetInstance()->m_nozzleStu.offect = query.value("offect").toInt();
+    }
+    return result;
 }
 
 void MainWindow::getIniParameter(const int axisId)
 {
     Q_UNUSED(axisId)
     //m_ini.Config();
-//    QString node = QString("Axis%1").arg(axisId);
-//    AxisStruct axisInfo;
-//    axisInfo.vMax = m_ini.Get(node,"vMax").toInt();
-//    axisInfo.acc = m_ini.Get(node,"Acc").toInt();
-//    axisInfo.dcc = m_ini.Get(node,"Dcc").toInt();
-//    axisInfo.homeVmax = m_ini.Get(node,"HomeVmax").toInt();
-//    if(ShareData::GetInstance()->m_axisMap.contains(axisId))
-//        ShareData::GetInstance()->m_axisMap[axisId] = axisInfo;
-//    else
-//        ShareData::GetInstance()->m_axisMap.insert(axisId,axisInfo);
+    //    QString node = QString("Axis%1").arg(axisId);
+    //    AxisStruct axisInfo;
+    //    axisInfo.vMax = m_ini.Get(node,"vMax").toInt();
+    //    axisInfo.acc = m_ini.Get(node,"Acc").toInt();
+    //    axisInfo.dcc = m_ini.Get(node,"Dcc").toInt();
+    //    axisInfo.homeVmax = m_ini.Get(node,"HomeVmax").toInt();
+    //    if(ShareData::GetInstance()->m_axisMap.contains(axisId))
+    //        ShareData::GetInstance()->m_axisMap[axisId] = axisInfo;
+    //    else
+    //        ShareData::GetInstance()->m_axisMap.insert(axisId,axisInfo);
 }
 
 void MainWindow::childrenFormHide()
@@ -197,19 +203,19 @@ void MainWindow::initMainUI()
 {
     QScreen *screen = QGuiApplication::primaryScreen ();
     QRect screenRect = screen->availableVirtualGeometry();
-    ShareData::GetInstance()->m_width = 1900;//screenRect.width()-2;
-    ShareData::GetInstance()->m_heitht = 968;// screenRect.height()-40;
+    ShareData::GetInstance()->m_width = screenRect.width()-2;//1700;
+    ShareData::GetInstance()->m_heitht = screenRect.height()-40;//968;
     this->resize(ShareData::GetInstance()->m_width,ShareData::GetInstance()->m_heitht);
     this->setWindowTitle("HS_P66");
     m_hsLog = new QLabel(this);
-    m_hsLog->resize(ShareData::GetInstance()->m_width/6,ShareData::GetInstance()->m_heitht/10 -2);
+    m_hsLog->resize(ShareData::GetInstance()->m_width/6+120,ShareData::GetInstance()->m_heitht/10 -2);
     m_hsLogTest = new QLabel(this);
     m_hsLogTest->setText("HS-P66");
     m_hsLogTest->setMinimumWidth(200);
-    m_hsLogTest->move(ShareData::GetInstance()->m_width/6-40,70);
+    m_hsLogTest->move(ShareData::GetInstance()->m_width/6-20,60);
     m_hsLogTest->setStyleSheet("font:Times;font-size:40px; color: rgb(135, 206, 250);");
     QPixmap pix = QPixmap(":/src/Image/hs.png");
-    pix.scaled(QSize(ShareData::GetInstance()->m_width/6,ShareData::GetInstance()->m_heitht/10 -2),Qt::KeepAspectRatio);
+    pix.scaled(QSize(m_hsLog->width(),m_hsLog->height()),Qt::KeepAspectRatio);
     m_hsLog->setPixmap(pix);
     m_LWidget =new QWidget(this);
     m_LWidget->move(0,ShareData::GetInstance()->m_heitht/10);
@@ -245,18 +251,18 @@ void MainWindow::initMainUI()
 
     m_MainWidget = new QWidget(this);
     m_MainWidget->move(ShareData::GetInstance()->m_width/7+3,ShareData::GetInstance()->m_heitht/10);
-    m_MainWidget->resize(ShareData::GetInstance()->m_width/6*5+25-200,ShareData::GetInstance()->m_heitht-10);
+    m_MainWidget->resize(ShareData::GetInstance()->m_width/6*5+25,ShareData::GetInstance()->m_heitht-10);//=25
     m_pLogText = new QTextEdit(m_MainWidget);
     m_pLogText->move(3,m_MainWidget->height()/5*3+100);
     m_pLogText->resize(m_MainWidget->width()-15,m_MainWidget->height()/5-15);
-    m_pLogText->setStyleSheet("font-family:Times; font:17px;background:transparent;border-width: 1px;border-color:rgb(150,150,150); border-style: solid;border-radius:10px;");
+    m_pLogText->setStyleSheet("font-family:Times; font:22px;background:transparent;border-width: 1px;border-color:rgb(150,150,150); border-style: solid;border-radius:10px;");
 
     p_positionManager = new PositionManager(m_MainWidget);
     p_positionManager->hide();
 
     p_ioForm = new IoForm(m_MainWidget);
     p_ioForm->setObjectName("p_ioForm");
-   // p_ioForm->setStyleSheet("#p_ioForm{background-color:rgb(130,130,130)}");
+    // p_ioForm->setStyleSheet("#p_ioForm{background-color:rgb(130,130,130)}");
     p_ioForm->hide();
 
     p_axisCheck = new AxisCheck(m_MainWidget);
@@ -276,6 +282,8 @@ void MainWindow::initMainUI()
     m_pNozzle->hide();
 
     m_pMainWidget = new MainWidget(m_MainWidget);
+    //if(p_visionForm->m_pVision_R != nullptr)
+        //connect(p_visionForm->m_pVision_R,&VisionFrom::onFindMark,m_pMainWidget,&MainWidget::showMark);
 
 }
 
@@ -307,7 +315,7 @@ void MainWindow::initLWidget()
     p_singlAxisControl = new QStandardItem("单轴运动");
     p_singlAxisControl->setIcon(QIcon(":/src/Image/axisCheck.png"));
     p_xxyItem = new QStandardItem("XXY载台");
-        p_xxyItem->setIcon(QIcon(":/src/Image/xxy.png"));
+    p_xxyItem->setIcon(QIcon(":/src/Image/xxy.png"));
     p_positionItem = new QStandardItem("点位管理");
     p_positionItem->setIcon(QIcon(":/src/Image/position.png"));
     p_standarItem->appendRow(p_ordersItem);
@@ -340,7 +348,7 @@ void MainWindow::initLogInstance()
     Logger& logger = Logger::instance();
     logger.setLoggingLevel(QsLogging::TraceLevel);
 
-//  添加文件为目的地
+    //  添加文件为目的地
     const QString sLogPath(QDir(QApplication::applicationDirPath()).filePath("log.txt"));
     DestinationPtr fileDestination(DestinationFactory::MakeFileDestination(
                                        sLogPath, EnableLogRotation, MaxSizeBytes(512*1024), MaxOldLogCount(5)));
@@ -348,21 +356,21 @@ void MainWindow::initLogInstance()
 
 
     // 添加stdout为目的地
-//       DestinationPtr debugDestination(DestinationFactory::MakeDebugOutputDestination());
-//       logger.addDestination(debugDestination);
+    //       DestinationPtr debugDestination(DestinationFactory::MakeDebugOutputDestination());
+    //       logger.addDestination(debugDestination);
 
 
-       //添加到textEdit
-       DestinationPtr objectDestination(DestinationFactory::MakeFunctorDestination(this, SLOT(appendLog(QString,int))));
-       logger.addDestination(objectDestination);
+    //添加到textEdit
+    DestinationPtr objectDestination(DestinationFactory::MakeFunctorDestination(this, SLOT(appendLog(QString,int))));
+    logger.addDestination(objectDestination);
 
     // 打印日志
-//    QLOG_TRACE() << "1-trace msg";
-//    QLOG_DEBUG() << "2-debug msg";
-//    QLOG_INFO() << "3-info msg";
-//    QLOG_WARN() << "4-warn msg";
-//    QLOG_ERROR() << "5-error msg";
-     QLOG_ERROR() << "5-error Qlog 日志记录模块启动";
+    //    QLOG_TRACE() << "1-trace msg";
+    //    QLOG_DEBUG() << "2-debug msg";
+    //    QLOG_INFO() << "3-info msg";
+    //    QLOG_WARN() << "4-warn msg";
+    //    QLOG_ERROR() << "5-error msg";
+    QLOG_INFO() << "日志记录模块启动";
 
 }
 
@@ -377,8 +385,8 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     }
     else if(row_name == "IO监视")
     {
-         setChildrenBtnEnable(p_ioForm);
-       p_ioForm->show();
+        setChildrenBtnEnable(p_ioForm);
+        p_ioForm->show();
     }
     else if(row_name == "参数设置")
     {
@@ -424,20 +432,20 @@ int MainWindow::initAdlinkDriver(const QString &fileName)
 bool MainWindow::airInit()
 {
     MotionControl m;
+    m.outPutDo(0,14,0); //平台破真空
     if(m.airActionOff(1,10,20)) //上升气缸原点
     {
         if(m.airActionOff(1,11,16)) //拍边原点
         {
-            if(m.airActionOn(1,13,18))//阻挡动点
-            {
-                m.outPutDo(0,14,0); //平台破真空
-                return true;
-            }
-            else
-            {
-                qDebug()<<13;
-                return false;
-            }
+//            if(m.airActionOn(1,13,18))//阻挡动点
+//            {
+//                return true;
+//            }
+//            else
+//            {
+//                qDebug()<<13;
+//                return false;
+//            }
 
         }
         else
@@ -475,65 +483,79 @@ bool MainWindow::runPosition(const QString &positionName)
 
 bool MainWindow::logical(QString &msg)
 {
-    m_logical.beginIn(1);//流道进料
-    if(false == m_logical.runPosition("Zdown"))
-    {
-        msg = "流道放料到载台失败";
-        return false;
-    }
-     m_logical.airVoid(true); //平台吸气
-     if(false == m_logical.airAction())
-     {
-         msg = "拍边气缸固定流程执行失败";
-         return false;
-     }
-     //去一个固定的拍照位置  这里先省略
+//    m_logical.beginIn(1);//流道进料
+//    if(false == m_logical.runPosition("Zdown"))
+//    {
+//        msg = "流道放料到载台失败";
+//        return false;
+//    }
+//    m_logical.airVoid(true); //平台吸气
+//    if(false == m_logical.airAction())
+//    {
+//        msg = "拍边气缸固定流程执行失败";
+//        return false;
+//    }
+    //去一个固定的拍照位置  这里先省略
 
-     //拍照算出此时玻璃角点的位置，以及角度
-     QPoint coner;double angle;QString errmsg;
-     QMap<double,double> cornerPosition;//角点相对于xxy平台的坐标
-     if(p_visionForm->m_pVision_R->trigger(coner,angle,errmsg,cornerPosition))
-     {
-           if(false == m_logical.runOffect(cornerPosition))
-           {
-                QLOG_INFO()<<"拍照补偿大于 1CM";
-           }
-     }
-     else
-     {
-          msg = "拍照定位失败";
-          QLOG_INFO()<<msg;
-     }
+    //拍照算出此时玻璃角点的位置，以及角度
+    QPoint coner;double angle;QString errmsg;
+    QMap<double,double> cornerPosition;//角点相对于xxy平台的坐标
 
-    if(false == m_logical.getGlass())
+//    if(p_visionForm->m_pVision_R->trigger(coner,angle,errmsg,cornerPosition))
+//    {
+//        if(false == m_logical.runAngleOffect(angle))
+//        {
+//            QLOG_INFO()<<"XXY载台角度补偿失败";
+//        }
+//    }
+//    else
+//    {
+//        msg = "拍照定位失败";
+//        QLOG_INFO()<<msg;
+//    }
+//    delay_msc(1000);
+    if(p_visionForm->m_pVision_R->trigger(coner,angle,errmsg,cornerPosition))
     {
-        msg = "玻璃刚到载台时流程执行失败";
-        return false;
+        if(false == m_logical.runOffect(cornerPosition))
+        {
+            QLOG_INFO()<<"拍照补偿大于 1CM,补偿失败";
+        }
     }
-    if(false == m_logical.printFlow())
+    else
     {
-        msg = "喷头打印过程中发生错误";
-        return false;
+        msg = "拍照定位失败";
+        QLOG_INFO()<<msg;
     }
-    delay_msc(500);
-    if(false == m_logical.glassBack())
-    {
-        msg = "打印出料时发生错误";
-        return false;
-    }
-    m_logical.airVoid(false);//破真空
-    if(false == m_logical.runPosition("Zup"))
-    {
-        msg = "将物料从载台升到流道时发生错误";
-        return false;
-    }
-    if(false == m_logical.airOn(1,13,18))
-    {
-        msg = "挡料气缸复位异常";
-        return false;
-    }
-     m_logical.beginIn(0);//流道进料
-      QLOG_INFO()<<"打印完成";
+    delay_msc(3000);
+//    if(false == m_logical.getGlass())
+//    {
+//        msg = "玻璃刚到载台时流程执行失败";
+//        return false;
+//    }
+//    if(false == m_logical.printFlow())
+//    {
+//        msg = "喷头打印过程中发生错误";
+//        return false;
+//    }
+//    delay_msc(500);
+//    if(false == m_logical.glassBack())
+//    {
+//        msg = "打印出料时发生错误";
+//        return false;
+//    }
+//    m_logical.airVoid(false);//破真空
+//    if(false == m_logical.runPosition("Zup"))
+//    {
+//        msg = "将物料从载台升到流道时发生错误";
+//        return false;
+//    }
+//    if(false == m_logical.airOn(1,13,18))
+//    {
+//        msg = "挡料气缸复位异常";
+//        return false;
+//    }
+   // m_logical.beginIn(0);//流道进料
+    QLOG_INFO()<<"打印完成";
     return true;
 
 }
@@ -568,7 +590,7 @@ void MainWindow::setChildrenBtnEnable(QWidget *widget)
 
 void MainWindow::appendLog(const QString &message, int level)
 {
-    m_pLogText->append(message + " " + QString::number(level));
+    m_pLogText->append(message);// + " " + QString::number(level));
 }
 
 ///
@@ -577,45 +599,45 @@ void MainWindow::appendLog(const QString &message, int level)
 void MainWindow::home()
 {
     ShareData::GetInstance()->m_stopFlag = false; //急停标志位 复位掉
-     m_home->setEnabled(false);
+    m_home->setEnabled(false);
     //需要判断里面时候有料，如果有料不可以启动回原点流程
     QLOG_INFO()<<"回原点中，请稍后...";
     MotionControl control;
     QVector<int> axisVec;
     axisVec.append(16);//进料z
     //axisVec.append(20);//进料x
-//    axisVec.append(6);//外侧相机
-//    axisVec.append(7);//内侧相机
+    //    axisVec.append(6);//外侧相机
+    //    axisVec.append(7);//内侧相机
     axisVec.append(15);//喷头z
     axisVec.append(1);//上载台x
     axisVec.append(2);//上载台x
     axisVec.append(3);//上载台y
     if(control.goHomes(axisVec))
     {
-//        QMap<int,int> pos;
-//        pos.insert(1,6000);
-//        pos.insert(2,-6000);
-//        if(control.runPosition(pos))
-//           QLOG_INFO()<<"回原点第一段成功";
-//        else
-//        {
-//            QLOG_INFO()<<"回原点第一段失败";
-//            return;
-//        }
+        //        QMap<int,int> pos;
+        //        pos.insert(1,6000);
+        //        pos.insert(2,-6000);
+        //        if(control.runPosition(pos))
+        //           QLOG_INFO()<<"回原点第一段成功";
+        //        else
+        //        {
+        //            QLOG_INFO()<<"回原点第一段失败";
+        //            return;
+        //        }
     }
     else
     {
         QLOG_INFO()<<"回原点第一段失败";
-         m_home->setEnabled(true);
+        m_home->setEnabled(true);
         return;
     }
-     QVector<int> axisVec2;
+    QVector<int> axisVec2;
 
-     axisVec2.append(14);//喷头x
-     axisVec2.append(0);//上载台Y
+    axisVec2.append(14);//喷头x
+    axisVec2.append(0);//上载台Y
     if(control.goHomes(axisVec2))
     {
-         QLOG_INFO()<<"回原点第二段成功";
+        QLOG_INFO()<<"第二阶段回零完成，请稍后...";
     }
     else
     {
@@ -625,9 +647,9 @@ void MainWindow::home()
     }
     if(false == airInit())
     {
-       QLOG_INFO()<<"气缸复位失败";
-       m_home->setEnabled(true);
-       return;
+        QLOG_INFO()<<"气缸复位失败";
+        m_home->setEnabled(true);
+        return;
     }
     if(false == runPosition("Zup"))
     {
@@ -637,7 +659,7 @@ void MainWindow::home()
     }
     ShareData::GetInstance()->m_isHomePosition = true;
     m_home->setEnabled(false);
-     QLOG_INFO()<<"回原点完成。";
+    QLOG_INFO()<<"回原点完成。";
 }
 
 void MainWindow::emgStop()

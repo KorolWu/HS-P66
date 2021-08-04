@@ -6,12 +6,12 @@ PositionFrom::PositionFrom(const QString &posName, const QVector<int> &axisVec, 
     m_pointName = posName;
     QLabel *posNameLabel = new QLabel(posName);
     posNameLabel->setMinimumWidth(70);
-    QFont font("Times", 14);
+    QFont font("Times", 13);
     posNameLabel->setFont(font);
-    posNameLabel->setStyleSheet("background-color:rgb(10,20,30);color:white;border-radius:5px;");
+    posNameLabel->setStyleSheet("background-color:rgb(65,79,99);color:white;border-radius:5px;");
     hbox = new QHBoxLayout();
     hbox->addWidget(posNameLabel);
-    QFont font_name("Helvetica",9, QFont::Normal);
+    QFont font_name("Times",11, QFont::Normal);
     for (int i = 0;i < axisVec.size();i++) {
         m_paxisId = new QLabel(axisId2axisName(axisVec.at(i)));
         m_paxisId->setMinimumWidth(80);
@@ -31,8 +31,8 @@ PositionFrom::PositionFrom(const QString &posName, const QVector<int> &axisVec, 
     this->setLayout(hbox);
     this->setObjectName("PositionFrom");
     this->setAutoFillBackground(true);
-    setPalette(QPalette(QColor(201,201,201)));
-    this->setStyleSheet("QPushButton{ background-color:rgb(70,70,70);Min-width:57px;Min-height:35px;color:white}QPushButton:hover{background-color:rgb(110,210,110)}QPushButton:pressed{background-color:rgb(160,160,160)}QSpinBox{Padding-right:20px;Border:2px solid white;font:18px; Min-width:67px;Min-height:25px;border-radius:5px;}QSpinBox::up-button,QSpinBox::down-button{ width:0px;}");
+    setPalette(QPalette(QColor("#F0E0B8")));
+    this->setStyleSheet("QPushButton{ background-color:rgb(99,158,171);Min-width:57px;Min-height:35px;color:white}QPushButton:hover{background-color:rgb(110,210,110)}QPushButton:pressed{background-color:rgb(160,160,160)}QSpinBox{Padding-right:20px;Border:2px solid white;font:18px; Min-width:67px;Min-height:25px;border-radius:5px;}QSpinBox::up-button,QSpinBox::down-button{ width:0px;}");
 
 }
 ///

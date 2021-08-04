@@ -490,13 +490,12 @@ bool VisionFrom::trigger(QPoint &point, double &angle, QString &msg,QMap<double,
         QMap <double ,double> lineStart = transformation(s_x,s_y);
         QMap <double ,double> lineEnd = transformation(s_xEnd,s_yEnd);
         QMap <double ,double> corner = transformation(point.x(),point.y());
-        qDebug()<<"(x,y)"<<corner.begin().key()<<corner.begin().value();
         cornerPosition.insert(corner.begin().key(),corner.begin().value());
         //计算斜率
        double k = (lineEnd.begin().value() - lineStart.begin().value())/(lineEnd.begin().key() - lineStart.begin().key());
        double h = qAtan(k);
        angle = h*180/3.1415926;
-       if(qAbs(angle) > 5)
+       if(qAbs(angle) > 5) //过滤Y线条的斜率
        {
            QMap <double ,double> lineStart = transformation(end[0],end[1]);
            QMap <double ,double> lineEnd = transformation(end[2],end[3]);
@@ -504,10 +503,15 @@ bool VisionFrom::trigger(QPoint &point, double &angle, QString &msg,QMap<double,
            h = qAtan(k);
            angle = h*180/3.1415926;
        }
-       qDebug()<<"Angle = "<<angle;
+       qDebug()<<"找到角点，Angle = "<<angle<<"(x,y)"<<corner.begin().key()<<","<<corner.begin().value()<<"start Point "<<lineStart.begin().key()<<","<<lineStart.begin().value()<<"end Point"<<lineEnd.begin().key()<<","<<lineEnd.begin().value();
+       onFindMark(src);
+       return true;
     }
     else
+    {
+        onFindMark(src);
         return false;
+    }
 }
 
 

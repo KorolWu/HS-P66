@@ -543,6 +543,24 @@ bool MotionControl::stopJog(const int &axisId)
     APS_jog_mode_switch(axisId, 0 ); //关闭点动模式。
     return true;
 }
+
+///
+/// \brief MotionControl::setLinearTriggerPos 设置x(14)轴的线性比较触发
+/// \param board_ID  板卡号
+/// \param LCmpCh    线性比较触发通道 0-3
+/// \param StartPoint 触发位置
+/// \return
+///
+bool MotionControl::setLinearTriggerPos(const int &board_ID, const int &LCmpCh, const int &StartPoint)
+{
+    bool r = false;
+    APS_set_trigger_param(board_ID,1,14);
+   I32 ret = APS_set_trigger_linear(board_ID,LCmpCh,StartPoint,1,1);
+   //APS_set_trigger_param(board_ID,4,1); //enable
+   ret == ERR_NoError ? r = true : r = false;
+   return r;
+}
+
 int MotionControl::gettimeofday(struct timeval *tp, void *tzp)
 {
     Q_UNUSED(tzp)

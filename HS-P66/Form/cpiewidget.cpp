@@ -8,7 +8,7 @@ CPieWidget::CPieWidget(int w, int h, QWidget *parent)
     //resize(600,500);
     this->w = w;
     this->h = h;
-    this->setStyleSheet("background-color: rgb(18, 162, 111, 40);");
+    this->setStyleSheet("background-color: rgb(245,245,240);");//18, 162, 111, 40
     //init();
 }
 
@@ -97,15 +97,15 @@ void CPieWidget::init()
 //	m_colorlist << QColor(102,170,238);
 //	m_colorlist << QColor(136,68,255);
 
-	m_colorlist << QColor(116,169,26);
-    m_colorlist << QColor(120,120,120);
-    m_colorlist << QColor(168,209,207);
-    m_colorlist << QColor(201,64,73);
-    m_colorlist << QColor(210,151,153);
-    m_colorlist << QColor(77,82,175);
-    m_colorlist << QColor(158,102,155);
-    m_colorlist << QColor(172,126,126);
-    m_colorlist << QColor(90,179,86);
+//	m_colorlist << QColor(116,169,26);
+//    m_colorlist << QColor(120,120,120);
+//    m_colorlist << QColor(168,209,207);
+//    m_colorlist << QColor(201,64,73);
+//    m_colorlist << QColor(210,151,153);
+//    m_colorlist << QColor(77,82,175);
+//    m_colorlist << QColor(158,102,155);
+//    m_colorlist << QColor(172,126,126);
+//    m_colorlist << QColor(90,179,86);
 
 
 //    m_datamap.insert("Empty:",3);
@@ -362,7 +362,7 @@ void CPieWidget::drawDountDefault( QPainter *painter )
 	qreal sum = getSumValue();
 //	int w = width();
 //	int h = height();
-    int radius = qMin(w,h)*0.6; //ֱ��
+    int radius = qMin(w,h)*0.55; //ֱ��
     QRect rect(w/2-radius/2-20,h/2-radius/2-200,radius,radius);
 
 	painter->save();

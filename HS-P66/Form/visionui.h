@@ -20,6 +20,7 @@ class VisionUi : public QWidget
 public:
     VisionUi(QWidget *parent = nullptr);
     void init();
+    void closeDevice();
     VisionFrom* m_pVision_L;
     VisionFrom* m_pVision_R;
 private:

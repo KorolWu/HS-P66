@@ -17,7 +17,7 @@ void NozzleFrom::initUi()
 {
     m_pDpiSetGroubox = new QGroupBox(this);
     m_pDpiSetGroubox->setFixedSize(m_width*0.8,m_height*0.15);
-    QString stylesheet = "QLabel{font: 18px; Max-width:90px;}QPushButton{Max-width:90px;;Min-width:85px;Min-height:35px;}QSpinBox{Padding-right:20px;Border:2px solid white;font:20px; Max-width:90px;Min-height:25px;border-radius:5px;}QSpinBox{Padding-right:20px;Border:2px solid white;font:20px; Max-width:90px;Min-height:25px;border-radius:5px;}QLineEdit{border: 2px solid white;border-radius:8px;margin-top:6px;Max-height:125px;Max-width:360px;}QGroupBox:title{color:rgb(24,24,58);subcontrol-origin: margin;left: 10px;}QGroupBox{font: 22px;}";
+    QString stylesheet = "QLabel{font: 18px; Max-width:90px;}QPushButton{Max-width:90px;;Min-width:85px;Min-height:35px;}QSpinBox{Padding-right:20px;Border:2px solid white;font:20px; Max-width:90px;Min-height:25px;border-radius:5px;}QSpinBox{Padding-right:20px;Border:2px solid white;font:20px; Max-width:90px;Min-height:25px;border-radius:5px;}QLineEdit{border: 2px solid white;border-radius:8px;margin-top:6px;Max-height:125px;Max-width:360px;}QGroupBox{background-color:rgb(245,245,240);border: 2px solid white;border-radius:8px;margin-top:6px;}QGroupBox:title{color:rgb(104,104,118);subcontrol-origin: margin;left: 10px;}QGroupBox{font: 22px;}";
     m_pDpiSetGroubox->setStyleSheet(stylesheet);
 
     m_pDpiSetGroubox->setTitle("DPI设置");
@@ -28,11 +28,11 @@ void NozzleFrom::initUi()
     m_pDpiTimes = new QSpinBox(m_pDpiSetGroubox);
     m_pDpiTimes->setRange(0,10);
     h->addWidget(m_pDpiTimes);
-    h->addStretch(1);
+    h->addStretch(3);
     m_pDpiSetBtn = new QPushButton("设置",m_pDpiSetGroubox);
     connect(m_pDpiSetBtn,&QPushButton::clicked,this,&NozzleFrom::onDpiSetBtnClicked);
     h->addWidget(m_pDpiSetBtn);
-    h->addStretch(8);
+    h->addStretch(16);
     h->addStretch();
     m_pDpiSetGroubox->setLayout(h);
 
@@ -47,6 +47,9 @@ void NozzleFrom::initUi()
     QLabel *end = new QLabel("终止位置 ",m_pNozzleGroubox);
     m_pEndP = new QSpinBox(m_pNozzleGroubox);
     m_pEndP->setRange(0,2000);
+    QLabel *offect = new QLabel("喷头偏移 ",m_pNozzleGroubox);
+    m_pOffect = new QSpinBox(m_pNozzleGroubox);
+    m_pOffect->setRange(-50000,50000);
     m_pPSetBtn = new QPushButton("设置",m_pNozzleGroubox);
     connect(m_pPSetBtn,&QPushButton::clicked,this,&NozzleFrom::onSetBtnClicked);
     QHBoxLayout *pHbox = new QHBoxLayout();
@@ -54,13 +57,17 @@ void NozzleFrom::initUi()
     pHbox->addWidget(start);
     pHbox->addStretch(1);
     pHbox->addWidget(m_pStartP);
-    pHbox->addStretch(1);
+    pHbox->addStretch(3);
     pHbox->addWidget(end);
     pHbox->addStretch(1);
     pHbox->addWidget(m_pEndP);
+    pHbox->addStretch(3);
+    pHbox->addWidget(offect);
     pHbox->addStretch(1);
+    pHbox->addWidget(m_pOffect);
+    pHbox->addStretch(3);
     pHbox->addWidget(m_pPSetBtn);
-    pHbox->addStretch(6);
+    pHbox->addStretch(14);
     m_pVbox->addLayout(pHbox);
     pHbox = new QHBoxLayout();
     QLabel *filePath = new QLabel("图形地址:",m_pNozzleGroubox);
@@ -91,6 +98,7 @@ void NozzleFrom::initUi()
     for (int i = 0;i < 3 ;i++) {
         m_pCheckBox[i] = new QRadioButton(m_pNozzleSetGroubox);
         pHbox->addWidget(m_pCheckBox[i]);
+          pHbox->addStretch(1);
     }
     m_pCheckBox[0]->setText("单次闪喷");
     m_pCheckBox[1]->setText("持续闪喷");
@@ -98,9 +106,11 @@ void NozzleFrom::initUi()
     m_pCycle = new QSpinBox(m_pNozzleSetGroubox);
     m_pCycle->setRange(0,2000);
     pHbox->addWidget(m_pCycle);
+      pHbox->addStretch(1);
     m_pFlashJetSet = new QPushButton("设置",m_pNozzleSetGroubox);
     connect(m_pFlashJetSet,&QPushButton::clicked,this,&NozzleFrom::onFlashJetSetClicked);
     pHbox->addWidget(m_pFlashJetSet);
+    pHbox->addStretch(6);
     m_pNozzleSetGroubox->setLayout(pHbox);
 
 
@@ -120,8 +130,8 @@ void NozzleFrom::initUi()
 bool NozzleFrom::updateNozzleParameter()
 {
     QStringList names,values;
-    names<<"dpitimes"<<"startPin"<<"endPin"<<"imagePath"<<"wavePath"<<"flashStatus"<<"cycle";
-    values<<QString::number(m_pDpiTimes->value())<<QString::number(m_pStartP->value())<<QString::number(m_pEndP->value())<<m_pFilePath->text()<<m_pWavePath->text()<<QString::number(m_flashStatus)<<QString::number(m_pCycle->value());
+    names<<"dpitimes"<<"startPin"<<"endPin"<<"imagePath"<<"wavePath"<<"flashStatus"<<"cycle"<<"offect";
+    values<<QString::number(m_pDpiTimes->value())<<QString::number(m_pStartP->value())<<QString::number(m_pEndP->value())<<m_pFilePath->text()<<m_pWavePath->text()<<QString::number(m_flashStatus)<<QString::number(m_pCycle->value())<<QString::number(m_pOffect->value());
     QString expression =  QString("nozzleName = 'frist'");
    return DataBaseManager::GetInstance()->ExcUpdateDb("t_nozzle",names,values,expression);
 }
@@ -136,6 +146,7 @@ void NozzleFrom::onSetBtnClicked()
 
     ShareData::GetInstance()->m_nozzleStu.startP = startPin;
     ShareData::GetInstance()->m_nozzleStu.endP = endPin;
+    ShareData::GetInstance()->m_nozzleStu.offect = m_pOffect->value();
     if(updateNozzleParameter() == false)
     {
         QMessageBox msgBox;
@@ -240,6 +251,7 @@ void NozzleFrom::setParameter(NozzleStu nozzleStruct)
     m_pFilePath->setText(nozzleStruct.filePath);
     m_pWavePath->setText(nozzleStruct.WavePath);
     m_pCycle->setValue(nozzleStruct.cycle);
+    m_pOffect->setValue(nozzleStruct.offect);
     switch (nozzleStruct.flashJetStatus) {
     case 0:
         m_pCheckBox[0]->setChecked(true); //单次

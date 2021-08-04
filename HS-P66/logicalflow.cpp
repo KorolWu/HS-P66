@@ -268,14 +268,33 @@ bool LogicalFlow::runOffect(QMap<double, double> &cornerPosition)
     auto it = cornerPosition.begin();
     QMap<int,int> mark = ShareData::GetInstance()->m_position["markPosition"];
     MotionControl  m;
-    if((it.key()-mark[2])/2000 > 10 ||  (it.key()-mark[2])/2000 > 10)
+    if(qAbs((it.key()-mark[2])/2000) > 10 ||  qAbs((it.key()-mark[2])/2000) > 10)
     {
         return false;
     }
-    m.relativeMove(2,(it.key()-mark[2]));
-    m.relativeMove(1,-1*(it.key()-mark[2]));
+    m.relativeMove(2,(it.key()-mark[1]));
+    m.relativeMove(1,-1*(it.key()-mark[1]));
     m.relativeMove(3,-1*(it.value()-mark[3]));
     return true;
+}
+
+///
+/// \brief LogicalFlow::runAngleOffect 根据需要补偿的角度来驱动xxy平台抵消这个角度
+/// \param angle 需要补偿的角度
+/// \return xxy运行成功后返回
+///
+bool LogicalFlow::runAngleOffect(double &angle)
+{
+    XxyCalc c;
+    double x1,x2,y1;
+    //在补偿前xxy载台已经回过原点，默认原有角度为0
+    c.AFDegConvert(angle,0,&x1,&x2,&y1);
+    MotionControl  m;
+    QMap<int, int> posinfo;
+    posinfo.insert(1,x1*2000);
+    posinfo.insert(2,x2*2000);
+    posinfo.insert(3,y1*2000);
+    return m.runPosition(posinfo);
 }
 
 void LogicalFlow::delay_msc(int msc)

@@ -1,10 +1,11 @@
-#ifndef POSITIONMANAGER_H
+﻿#ifndef POSITIONMANAGER_H
 #define POSITIONMANAGER_H
 
 #include <QObject>
 #include <QWidget>
 #include <QGroupBox>
 #include <QVBoxLayout>
+#include <QScrollArea>
 #include "positionfrom.h"
 #include "sharedata.h"
 #include "axisinfoui.h"

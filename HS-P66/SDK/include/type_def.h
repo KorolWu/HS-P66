@@ -1,5 +1,5 @@
-#ifndef TYPE_DEF
-  #define TYPE_DEF
+﻿#ifndef TYPE_DEF
+#define TYPE_DEF
 
 #include <windows.h>
 

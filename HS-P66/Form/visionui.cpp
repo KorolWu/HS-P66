@@ -18,6 +18,7 @@ VisionUi::VisionUi(QWidget *parent) : QWidget(parent)
             m_pVision_L->setDeviceObj(m_mapDeviceInformation["Camera_2"]);
             m_pVision_L->setGrouboxTitle("左CCD");
         }
+        QLOG_INFO()<<"相机连接成功";
     }
     else
         QLOG_ERROR()<<"相机初始化失败！";
@@ -72,6 +73,20 @@ void VisionUi::init()
 
 }
 
+void VisionUi::closeDevice()
+{
+    for(int i = 0; i < 2 ; i++)
+    {
+        if(m_pDeviceProcess[i] != nullptr)
+        {
+            m_pDeviceProcess[i]->CloseDevice();
+            m_pDeviceProcess[i] = nullptr;
+            delete m_pDeviceProcess[i];
+        }
+
+    }
+}
+
 bool VisionUi::initCameraDevice()
 {
     try
@@ -119,6 +134,7 @@ bool VisionUi::initCameraDevice()
     {
         return false;
     }
+    return true;
 }
 
 void VisionUi::onMoveButtonClicked()

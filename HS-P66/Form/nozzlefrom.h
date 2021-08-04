@@ -1,4 +1,4 @@
-#ifndef NOZZLEFROM_H
+﻿#ifndef NOZZLEFROM_H
 #define NOZZLEFROM_H
 
 #include <QObject>
@@ -35,7 +35,7 @@ private:
     QGroupBox *m_pNozzleGroubox;//喷头设置，起始喷孔，终止喷孔，打印位置，写入的波形
     QVBoxLayout *m_pVbox;
     QHBoxLayout *m_pHbox;
-    QSpinBox *m_pStartP,*m_pEndP;
+    QSpinBox *m_pStartP,*m_pEndP,*m_pOffect;
     QPushButton *m_pPSetBtn;//起始喷孔和终止喷孔设置
     QLineEdit *m_pFilePath;
     QLineEdit *m_pWavePath;

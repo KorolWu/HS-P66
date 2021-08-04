@@ -2,8 +2,8 @@
 
 PositionManager::PositionManager(QWidget *parent) : QWidget(parent)
 {
-   this->resize(parent->width()-5,parent->height()-5);
-   //this->setStyleSheet("background-color:grb(102,139,139)");
+    this->resize(parent->width()-5,parent->height()-5);
+    //this->setStyleSheet("background-color:grb(102,139,139)");
     m_width = parent->width();
     m_height = parent->height();
     initUi();
@@ -11,7 +11,15 @@ PositionManager::PositionManager(QWidget *parent) : QWidget(parent)
 
 void PositionManager::initUi()
 {
-    QGroupBox *group = new QGroupBox(this);
+    QScrollArea *scrollArea = new QScrollArea(this);
+    scrollArea->resize(1200,m_height/4*2.7);
+    scrollArea->setFrameStyle(0);
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    scrollArea->setWidgetResizable(true);
+    //m_pcontainer = new QWidget(scrollArea);
+   // m_pcontainer->resize(parent->width()-20,parent->height());
+    QGroupBox *group = new QGroupBox(scrollArea);
+    scrollArea->setWidget(group);
     QVBoxLayout *vbox = new QVBoxLayout();
 
     QVector<int> vec;
@@ -23,7 +31,7 @@ void PositionManager::initUi()
     vec.clear();
     vec.push_back(14);
     PositionFrom *test1 = new PositionFrom("BeginS",vec);
-     test1->setParameter(ShareData::GetInstance()->m_position["BeginS"]);
+    test1->setParameter(ShareData::GetInstance()->m_position["BeginS"]);
     test1->move(0,80);
     vec.clear();
     vec.push_back(14);
@@ -56,19 +64,31 @@ void PositionManager::initUi()
 
     vec.clear();
     vec.push_back(1);
-     vec.push_back(2);
-      vec.push_back(3);
+    vec.push_back(2);
+    vec.push_back(3);
     PositionFrom *test7 = new PositionFrom("Camera_R",vec);
     vbox->addWidget(test7);
     test7->setParameter(ShareData::GetInstance()->m_position["Camera_R"]);
 
     PositionFrom *camera_l = new PositionFrom("Camera_L",vec);
     vbox->addWidget(camera_l);
-    test7->setParameter(ShareData::GetInstance()->m_position["Camera_L"]);
+    camera_l->setParameter(ShareData::GetInstance()->m_position["Camera_L"]);
 
-            PositionFrom *markPosition = new PositionFrom("markPosition",vec);
-            vbox->addWidget(markPosition);
-            test7->setParameter(ShareData::GetInstance()->m_position["markPosition"]);
+    PositionFrom *markPosition = new PositionFrom("markPosition",vec);
+    vbox->addWidget(markPosition);
+    markPosition->setParameter(ShareData::GetInstance()->m_position["markPosition"]);
+
+    vec.clear();
+    vec.push_back(14);
+    PositionFrom *triggerPosition = new PositionFrom("TriggerPos",vec);
+    vbox->addWidget(triggerPosition);
+    triggerPosition->setParameter(ShareData::GetInstance()->m_position["TriggerPos"]);
+
+    vec.clear();
+    vec.push_back(27);
+    PositionFrom *AnglePosition = new PositionFrom("AnglePos",vec);
+    vbox->addWidget(AnglePosition);
+    AnglePosition->setParameter(ShareData::GetInstance()->m_position["AnglePos"]);
     //----
     group->setLayout(vbox);
     m_pX = new AxisInfoUI(14,this);

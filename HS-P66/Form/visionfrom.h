@@ -26,6 +26,7 @@ using namespace cv;
 using namespace std;
 class VisionFrom : public QWidget
 {
+    Q_OBJECT
 public:
     VisionFrom(QWidget *parent = nullptr);
     void setDeviceObj(CameraDevice* obj);
@@ -76,6 +77,8 @@ private slots:
     void onCliabreationClicked();
 public:
     bool trigger(QPoint &point, double &angle, QString &msg, QMap<double, double> &cornerPosition);
+signals:
+    void onFindMark(Mat &mark);
 };
 
 #endif // VISIONFROM_H

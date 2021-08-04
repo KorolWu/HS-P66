@@ -80,7 +80,7 @@ void AxisParameterSet::initUI()
     m_hbox->addWidget(m_saveBtn);
 
     m_groupBox->setLayout(m_hbox);
-    this->setStyleSheet("QLabel{font: 18px;}QSpinBox{Padding-right:20px;Border:2px solid white;font:20px; Min-width:90px;Min-height:25px;border-radius:5px;}QGroupBox{border: 2px solid white;border-radius:8px;margin-top:6px;}QGroupBox:title{color:rgb(24,24,58);subcontrol-origin: margin;left: 10px;}QGroupBox{font: 20px;}");
+    this->setStyleSheet("QLabel{font: 18px;}QSpinBox{Padding-right:20px;Border:2px solid white;font:20px; Min-width:90px;Min-height:25px;border-radius:5px;}QSpinBox::up-button,QSpinBox::down-button{ width:0px;}QGroupBox{background-color:rgb(245,245,240);border: 2px solid white;border-radius:8px;margin-top:6px;}QGroupBox:title{color:rgb(24,24,58);subcontrol-origin: margin;left: 10px;}QGroupBox{font: 20px;}");
 
 }
 
@@ -123,6 +123,8 @@ QString AxisParameterSet::axisId2axisName(int id)
         return "出料Y1";
     case 23:
         return "出料Y2";
+    case 27:
+        return "喷头旋转";
     default:
         return "UnKnow";
     }

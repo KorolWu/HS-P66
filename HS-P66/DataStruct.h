@@ -118,5 +118,6 @@ typedef struct _NozzleStu
     QString WavePath;//波形地址
     int flashJetStatus;//0:单次闪喷1:连续闪喷2:持续闪喷
     int cycle;//闪喷周期
+    int offect;//比较触发的偏差
 }NozzleStu;
 #endif // DATASTRUCT_H
